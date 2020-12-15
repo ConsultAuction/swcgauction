@@ -1,4 +1,4 @@
-package se.swcg.consultauction.User;
+package se.swcg.consultauction.Entity;
 
 public class UserEntity {
     private int test;
