@@ -30,6 +30,8 @@ public class User {
     private String phoneNumber;
     private String image;
     private int minPrice;
+    //private Address address ;
+    //private Qualifications qualifications
 
     public User() {}
 
