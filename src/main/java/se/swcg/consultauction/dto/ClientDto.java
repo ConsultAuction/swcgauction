@@ -1,23 +1,9 @@
-package se.swcg.consultauction.entity;
+package se.swcg.consultauction.dto;
 
-
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.util.Date;
-import java.util.Objects;
 
-@Entity
-public class Client {
+public class ClientDto {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String id;
 
     private String companyName;
@@ -48,7 +34,7 @@ public class Client {
 
 
 
-    public Client(String id, String companyName, String firstName, String lastName,
+    public ClientDto(String id, String companyName, String firstName, String lastName,
                   String email, boolean active, Date dateForSignUp, Date lastActive,
                   String phoneNumber, String password, String role, String image) {
         this.id = id;
@@ -65,11 +51,12 @@ public class Client {
         this.image = image;
     }
 
-    public Client() {
-    }
-
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getCompanyName() {
@@ -158,36 +145,5 @@ public class Client {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return active == client.active && Objects.equals(id, client.id) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                "id='" + id + '\'' +
-                ", companyName='" + companyName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", active=" + active +
-                ", dateForSignUp=" + dateForSignUp +
-                ", lastActive=" + lastActive +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", image='" + image + '\'' +
-                '}';
     }
 }
