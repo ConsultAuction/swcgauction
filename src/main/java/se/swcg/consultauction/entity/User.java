@@ -1,6 +1,6 @@
-package se.swcg.consultauction.Entity;
+package se.swcg.consultauction.entity;
 
-public class UserEntity {
+public class User {
     private int Id;
     private String name;
     private String email;

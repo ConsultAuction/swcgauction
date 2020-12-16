@@ -1,4 +1,4 @@
-package se.swcg.consultauction.client.entity;
+package se.swcg.consultauction.entity;
 
 
 import org.hibernate.annotations.GenericGenerator;
