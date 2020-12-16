@@ -18,18 +18,22 @@ public class Qualifications {
     private String id;
     private boolean frontend;
     private boolean backend;
-    private List<String> certificate;
-    private List<String> experience;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private List<Certificate> certificate;
+
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private List<Experience> experience;
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Languages> language;
 
-    public Qualifications(String id, boolean frontend, boolean backend, List<String> certificate, List<String> experience, List<Languages> language) {
+    public Qualifications(String id, boolean frontend, boolean backend, List<Certificate> certificate, List<Experience> experience, List<Languages> language) {
         this(frontend, backend, certificate, experience, language);
         this.id = id;
     }
 
-    public Qualifications(boolean frontend, boolean backend, List<String> certificate, List<String> experience, List<Languages> language) {
+    public Qualifications(boolean frontend, boolean backend, List<Certificate> certificate, List<Experience> experience, List<Languages> language) {
         this.frontend = frontend;
         this.backend = backend;
         this.certificate = certificate;
@@ -52,11 +56,11 @@ public class Qualifications {
         return backend;
     }
 
-    public List<String> getCertificate() {
+    public List<Certificate> getCertificate() {
         return certificate;
     }
 
-    public List<String> getExperience() {
+    public List<Experience> getExperience() {
         return experience;
     }
 
@@ -72,11 +76,11 @@ public class Qualifications {
         this.backend = backend;
     }
 
-    public void setCertificate(List<String> certificate) {
+    public void setCertificate(List<Certificate> certificate) {
         this.certificate = certificate;
     }
 
-    public void setExperience(List<String> experience) {
+    public void setExperience(List<Experience> experience) {
         this.experience = experience;
     }
 
