@@ -2,9 +2,7 @@ package se.swcg.consultauction.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -31,11 +29,12 @@ public class User {
     private String image;
     private int minPrice;
     //private Address address ;
-    //private Qualifications qualifications
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Qualifications qualifications;
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice) {
+    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Qualifications qualifications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -48,9 +47,10 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.qualifications = qualifications;
     }
 
-    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice) {
+    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Qualifications qualifications) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,6 +64,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.qualifications = qualifications;
     }
 
     public String getUserId() {
@@ -166,6 +167,14 @@ public class User {
         this.minPrice = minPrice;
     }
 
+    public Qualifications getQualifications() {
+        return qualifications;
+    }
+
+    public void setQualifications(Qualifications qualifications) {
+        this.qualifications = qualifications;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -183,12 +192,13 @@ public class User {
                 Objects.equals(password, user.password) &&
                 Objects.equals(role, user.role) &&
                 Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(image, user.image);
+                Objects.equals(image, user.image) &&
+                Objects.equals(qualifications, user.qualifications);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice);
+        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice, qualifications);
     }
 
     @Override
@@ -207,6 +217,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", image='" + image + '\'' +
                 ", minPrice=" + minPrice +
+                ", qualifications=" + qualifications +
                 '}';
     }
 }
