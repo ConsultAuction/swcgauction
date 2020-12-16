@@ -18,6 +18,7 @@ public class Languages {
     )
     private String id;
 
+    //Not blank
     private String language;
 
     public Languages(String id, String language) {
