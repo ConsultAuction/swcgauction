@@ -18,13 +18,13 @@ public class Qualifications {
     private String id;
     private boolean frontend;
     private boolean backend;
-    private List<String> certificate;
-    private List<String> experience;
+    //private List<String> certificate;
+    //private List<String> experience;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private List<Languages> language;
+    //@OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "qualifications")
+    //private List<Languages> language;
 
-    public Qualifications(String id, boolean frontend, boolean backend, List<String> certificate, List<String> experience, List<Languages> language) {
+   /* public Qualifications(String id, boolean frontend, boolean backend, List<String> certificate, List<String> experience, List<Languages> language) {
         this(frontend, backend, certificate, experience, language);
         this.id = id;
     }
@@ -35,6 +35,7 @@ public class Qualifications {
         this.certificate = certificate;
         this.experience = experience;
         this.language = language;
+
     }
 
     public Qualifications() {
@@ -112,5 +113,5 @@ public class Qualifications {
                 ", experience=" + experience +
                 ", language=" + language +
                 '}';
-    }
+    }*/
 }
