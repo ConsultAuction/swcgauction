@@ -4,21 +4,30 @@ import se.swcg.consultauction.entity.Qualifications;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDate;
 
 public class UserDTO {
 
+    private String userId;
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
     @NotBlank
-    //unique
-    //Regex
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
+    private boolean active;
+    private LocalDate dateOfSignUp;
+    private LocalDate lastActive;
     private boolean available;
     @NotBlank
+    @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
-    //Regex
+    private String role;
+    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
     private String phoneNumber;
     private String image;
     @NotNull
@@ -26,6 +35,10 @@ public class UserDTO {
     private Qualifications qualifications;
     //private Address address;
 
+
+    public String getUserId() {
+        return userId;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -51,6 +64,30 @@ public class UserDTO {
         this.email = email;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public LocalDate getDateOfSignUp() {
+        return dateOfSignUp;
+    }
+
+    public void setDateOfSignUp(LocalDate dateOfSignUp) {
+        this.dateOfSignUp = dateOfSignUp;
+    }
+
+    public LocalDate getLastActive() {
+        return lastActive;
+    }
+
+    public void setLastActive(LocalDate lastActive) {
+        this.lastActive = lastActive;
+    }
+
     public boolean isAvailable() {
         return available;
     }
@@ -65,6 +102,14 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPhoneNumber() {
