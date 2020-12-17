@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.service.ClientService;
 
+import java.util.Collection;
+import java.util.Locale;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/client")
@@ -26,6 +29,29 @@ public class ClientController {
     public ResponseEntity<ClientDto> findById(@PathVariable String id){
 
         return ResponseEntity.ok(service.findById(id));
+
+    }
+
+
+    @GetMapping
+    public ResponseEntity<?> find(
+            @RequestParam(name = "type", defaultValue = ALL) final String type,
+            @RequestParam(name = "value",defaultValue = ALL) final String value
+    ){
+        switch (type.toUpperCase().trim()) {
+
+
+            case ID:
+                return ResponseEntity.ok(service.findById(value));
+
+            case ALL:
+                Collection<ClientDto> found = service.findAll();
+                return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
+
+            default:
+                return ResponseEntity.badRequest().body("Not a valid type: " + type);
+
+        }
 
     }
 

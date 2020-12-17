@@ -17,16 +17,14 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public Client dtoToClient(ClientDto dto) {
-        return new Client(dto.getId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),dto.getEmail(),
-                dto.isActive(),dto.getDateForSignUp(),dto.getLastActive(),dto.getPhoneNumber(),dto.getPassword(),
-                dto.getRole(),dto.getImage());
+        return new Client(dto.getCompanyName(), dto.getFirstName(), dto.getLastName(), dto.getEmail(),
+                dto.getPhoneNumber(), dto.getPassword());
     }
 
     @Override
     public ClientDto clientToDto(Client client) {
-        return new ClientDto(client.getId(),client.getCompanyName(),client.getFirstName(),client.getLastName(),
-                client.getEmail(),client.isActive(),client.getDateForSignUp(),client.getLastActive(),
-                client.getPhoneNumber(),client.getPassword(),client.getRole(),client.getImage());
+        return new ClientDto(client.getCompanyName(),client.getFirstName(),client.getLastName(),
+                client.getEmail(), client.getPhoneNumber(),client.getPassword());
     }
 
     @Override
@@ -42,3 +40,5 @@ public class DtoConversionServiceImpl implements DtoConversionService {
        return clientDtos;
     }
 }
+
+

@@ -3,9 +3,12 @@ package se.swcg.consultauction.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,13 +23,25 @@ public class Client {
     )
     private String id;
 
+    @NotBlank
     private String companyName;
 
+
+    @NotBlank
     private String firstName;
 
+
+    @NotBlank
     private String lastName;
 
+
+    @Column(unique = true)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="{invalid.email}")
     private String email;
+
 
     private boolean active;
 
@@ -34,8 +49,11 @@ public class Client {
 
     private Date lastActive;
 
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+            message="{invalid.phonenumber}")
     private String phoneNumber;
 
+    @Pattern(regexp =  "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
 
     private String role;
@@ -63,6 +81,16 @@ public class Client {
         this.password = password;
         this.role = role;
         this.image = image;
+    }
+
+    public Client(String companyName, String firstName, String lastName,
+                  String email, String phoneNumber, String password) {
+        this.companyName = companyName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
     public Client() {

@@ -6,10 +6,13 @@ import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.repository.ClientRepository;
 
+
 import java.util.Collection;
 
 @Service
 public class ClientServiceImpl implements ClientService {
+
+
 
     ClientRepository clientRepository;
     DtoConversionService converter;
@@ -40,6 +43,13 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto findByEmail(String email) {
         return converter.clientToDto(clientRepository.findByEmail(email));
+    }
+
+    @Override
+    public ClientDto create(ClientDto clientDto) {
+
+
+        return null;
     }
 
     @Override

@@ -16,7 +16,7 @@ public interface ClientService {
 
     ClientDto findByEmail(String email);
 
-
+    ClientDto create(ClientDto clientDto);
 
 
     void delete(Client client);
