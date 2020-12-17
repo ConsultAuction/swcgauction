@@ -2,9 +2,11 @@ package se.swcg.consultauction.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.ClientDto;
+import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.service.ClientService;
 
 import java.util.Collection;
@@ -53,6 +55,19 @@ public class ClientController {
 
         }
 
+    }
+
+    @PostMapping
+    public ResponseEntity<ClientDto> createByForm(@RequestBody ClientForm dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createByForm(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDto> updateByForm(@PathVariable String id, @RequestBody ClientForm updated){
+        if (!id.equals(updated.getId())){
+            throw new IllegalArgumentException("ID's need to match");
+        }
+        return ResponseEntity.ok(service.update(updated));
     }
 
 }

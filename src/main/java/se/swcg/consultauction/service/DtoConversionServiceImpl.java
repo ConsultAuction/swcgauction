@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.ClientDto;
+import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
 
 import java.util.ArrayList;
@@ -17,14 +18,17 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public Client dtoToClient(ClientDto dto) {
-        return new Client(dto.getCompanyName(), dto.getFirstName(), dto.getLastName(), dto.getEmail(),
-                dto.getPhoneNumber(), dto.getPassword());
+        return new Client(dto.getId(),dto.getFirstName(),dto.getLastName(),dto.getLastName(),dto.getPhoneNumber(),
+               dto.isActive(),dto.getDateForSignUp(),dto.getLastActive(),dto.getPhoneNumber(),
+                dto.getPassword(),dto.getRole(),dto.getImage());
     }
 
     @Override
     public ClientDto clientToDto(Client client) {
-        return new ClientDto(client.getCompanyName(),client.getFirstName(),client.getLastName(),
-                client.getEmail(), client.getPhoneNumber(),client.getPassword());
+        return new ClientDto(client.getId(),client.getCompanyName(),client.getFirstName(),
+                client.getLastName(),client.getEmail(),client.isActive(),client.getDateForSignUp(),
+                client.getLastActive(),client.getPhoneNumber(),client.getPassword(),client.getRole(),
+                client.getImage());
     }
 
     @Override
@@ -39,6 +43,13 @@ public class DtoConversionServiceImpl implements DtoConversionService {
        }
        return clientDtos;
     }
-}
 
+    @Override
+    public Client clientFormToClient(ClientForm dto) {
+
+        return new Client(dto.getId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
+                dto.getEmail(), dto.isActive(), dto.getDateForSignUp(),dto.getLastActive(),
+                dto.getPhoneNumber(),dto.getPassword(),dto.getRole(),dto.getImage());
+    }
+}
 

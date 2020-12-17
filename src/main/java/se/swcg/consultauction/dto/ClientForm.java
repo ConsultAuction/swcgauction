@@ -1,16 +1,8 @@
 package se.swcg.consultauction.dto;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Date;
 
-public class ClientDto {
-
+public class ClientForm {
 
     private String id;
 
@@ -41,10 +33,26 @@ public class ClientDto {
     /*private Projects projects;*/
 
 
-    public ClientDto(String id, String companyName, String firstName, String lastName, String email,
-                     boolean active, Date dateForSignUp, Date lastActive, String phoneNumber,
-                     String password, String role, String image) {
+    public ClientForm(String id, String companyName, String firstName, String lastName,
+                      String email, boolean active, Date dateForSignUp, Date lastActive,
+                      String phoneNumber, String password, String role, String image) {
         this.id = id;
+        this.companyName = companyName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.active = active;
+        this.dateForSignUp = dateForSignUp;
+        this.lastActive = lastActive;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.role = role;
+        this.image = image;
+    }
+
+    public ClientForm(String companyName, String firstName, String lastName,
+                      String email, boolean active, Date dateForSignUp, Date lastActive,
+                      String phoneNumber, String password, String role, String image) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;

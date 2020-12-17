@@ -2,6 +2,7 @@ package se.swcg.consultauction.service;
 
 
 import se.swcg.consultauction.dto.ClientDto;
+import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
 
 import java.util.Collection;
@@ -16,8 +17,9 @@ public interface ClientService {
 
     ClientDto findByEmail(String email);
 
-    ClientDto create(ClientDto clientDto);
+    ClientDto createByForm(ClientForm clientForm);
 
+    ClientDto update(ClientForm clientForm);
 
     void delete(Client client);
 }
