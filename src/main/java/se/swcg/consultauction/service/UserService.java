@@ -1,20 +1,22 @@
 package se.swcg.consultauction.service;
 
+import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.dto.UserForm;
 import se.swcg.consultauction.entity.User;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collection;
 
 public interface UserService {
 
-    User create(User user);
-    User findById(String userId);
-    List<User> findAll();
-    List<User> findByLanguage(String language);
-    List<User> findByLastActive(LocalDate lastActive);
-    List<User> findAllByActive(boolean active);
-    List<User> findByAvailable(boolean available);
-    User update(User user);
+    UserDto create(UserForm userForm);
+    UserDto findById(String userId);
+    Collection<UserDto> findAll();
+    Collection<UserDto> findByLanguage(String language);
+    Collection<UserDto> findByLastActive(LocalDate lastActive);
+    Collection<UserDto> findAllByActive(boolean active);
+    Collection<UserDto> findByAvailable(boolean available);
+    UserDto update(UserForm userForm);
     void delete(User user);
 
 }
