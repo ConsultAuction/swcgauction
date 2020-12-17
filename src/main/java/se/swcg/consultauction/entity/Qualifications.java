@@ -44,6 +44,31 @@ public class Qualifications {
     public Qualifications() {
     }
 
+    // TODO add validation for all add/remove methods
+    public void addCertificate(Certificate certificateToAdd) {
+        certificate.add(certificateToAdd);
+    }
+
+    public void removeCertificate(Certificate certificateToRemove) {
+        certificate.remove(certificateToRemove);
+    }
+
+    public void addExperience(Experience experienceToAdd) {
+        experience.add(experienceToAdd);
+    }
+
+    public void removeExperience(Experience experienceToRemove) {
+        experience.remove(experienceToRemove);
+    }
+
+    public void addLanguage(Languages languageToAdd) {
+        language.add(languageToAdd);
+    }
+
+    public void removeLanguage(Languages languageToRemove) {
+        language.remove(languageToRemove);
+    }
+
     public String getId() {
         return id;
     }
