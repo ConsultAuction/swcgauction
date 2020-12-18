@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<UserDto> findAll() {
-        Collection<UserDto> foundUsers = converter.userToDto(repo.findAll());
+    public List<UserDto> findAll() {
+        List<UserDto> foundUsers = converter.userToDto(repo.findAll());
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<UserDto> findByLanguage(String language) {
-        Collection<UserDto> foundUsers = converter.userToDto(repo.findByQualificationContainingLanguageIgnoreCase(language));
+    public List<UserDto> findByLanguage(String language) {
+        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageContainingIgnoreCase(language));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<UserDto> findByLastActive(LocalDate lastActive) {
-        Collection<UserDto> foundUsers = converter.userToDto(repo.findByLastActive(lastActive));
+    public List<UserDto> findByLastActive(LocalDate lastActive) {
+        List<UserDto> foundUsers = converter.userToDto(repo.findByLastActive(lastActive));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
@@ -68,8 +68,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<UserDto> findAllByActive(boolean active) {
-        Collection<UserDto> foundUsers = converter.userToDto(repo.findAllByActive(active));
+    public List<UserDto> findAllByActive(boolean active) {
+        List<UserDto> foundUsers = converter.userToDto(repo.findAllByActive(active));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Collection<UserDto> findByAvailable(boolean available) {
-        Collection<UserDto> foundUsers = converter.userToDto(repo.findByAvailable(available));
+    public List<UserDto> findByAvailable(boolean available) {
+        List<UserDto> foundUsers = converter.userToDto(repo.findByAvailable(available));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
