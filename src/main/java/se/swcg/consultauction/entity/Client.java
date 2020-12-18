@@ -21,25 +21,19 @@ public class Client {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String clientId;
 
-    @NotBlank
     private String companyName;
 
 
-    @NotBlank
     private String firstName;
 
 
-    @NotBlank
+
     private String lastName;
 
 
-    @Column(unique = true)
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            message="{invalid.email}")
+
     private String email;
 
 
@@ -49,11 +43,8 @@ public class Client {
 
     private Date lastActive;
 
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-            message="{invalid.phonenumber}")
     private String phoneNumber;
 
-    @Pattern(regexp =  "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
 
     private String role;
@@ -66,10 +57,10 @@ public class Client {
 
 
 
-    public Client(String id, String companyName, String firstName, String lastName,
+    public Client(String clientId, String companyName, String firstName, String lastName,
                   String email, boolean active, Date dateForSignUp, Date lastActive,
                   String phoneNumber, String password, String role, String image) {
-        this.id = id;
+        this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -97,7 +88,7 @@ public class Client {
     }
 
     public String getId() {
-        return id;
+        return clientId;
     }
 
     public String getCompanyName() {
@@ -193,18 +184,18 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return active == client.active && Objects.equals(id, client.id) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
+        return active == client.active && Objects.equals(clientId, client.clientId) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
+        return Objects.hash(clientId, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "id='" + id + '\'' +
+                "id='" + clientId + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

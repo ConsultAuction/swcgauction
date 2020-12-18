@@ -8,5 +8,7 @@ import java.util.Collection;
 public interface ClientRepository extends CrudRepository<Client, String > {
 
             Collection<Client> findByCompanyNameIgnoreCase(String companyName);
+
             Client findByEmail(String email);
+
 }

@@ -15,9 +15,9 @@ import java.util.Collection;
 public class ClientServiceImpl implements ClientService {
 
 
+   private ClientRepository clientRepository;
 
-    ClientRepository clientRepository;
-    DtoConversionService converter;
+   private DtoConversionService converter;
 
 
     @Autowired

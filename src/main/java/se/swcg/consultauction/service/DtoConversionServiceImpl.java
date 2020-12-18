@@ -18,7 +18,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public Client dtoToClient(ClientDto dto) {
-        return new Client(dto.getId(),dto.getFirstName(),dto.getLastName(),dto.getLastName(),dto.getPhoneNumber(),
+        return new Client(dto.getClientId(),dto.getFirstName(),dto.getLastName(),dto.getLastName(),dto.getPhoneNumber(),
                dto.isActive(),dto.getDateForSignUp(),dto.getLastActive(),dto.getPhoneNumber(),
                 dto.getPassword(),dto.getRole(),dto.getImage());
     }
