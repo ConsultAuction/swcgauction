@@ -1,12 +1,10 @@
 package se.swcg.consultauction.entity;
 
-import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -45,13 +43,14 @@ public class User {
     private String image;
     @NotNull
     private int minPrice;
-    //private Address address ;
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Address address;
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Qualifications qualifications;
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Qualifications qualifications) {
+    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -64,10 +63,11 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.address = address;
         this.qualifications = qualifications;
     }
 
-    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Qualifications qualifications) {
+    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -81,6 +81,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.address = address;
         this.qualifications = qualifications;
     }
 
@@ -184,6 +185,14 @@ public class User {
         this.minPrice = minPrice;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public Qualifications getQualifications() {
         return qualifications;
     }
@@ -210,12 +219,13 @@ public class User {
                 Objects.equals(role, user.role) &&
                 Objects.equals(phoneNumber, user.phoneNumber) &&
                 Objects.equals(image, user.image) &&
+                Objects.equals(address, user.address) &&
                 Objects.equals(qualifications, user.qualifications);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice, qualifications);
+        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice, address, qualifications);
     }
 
     @Override
@@ -234,6 +244,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", image='" + image + '\'' +
                 ", minPrice=" + minPrice +
+                ", address=" + address +
                 ", qualifications=" + qualifications +
                 '}';
     }
