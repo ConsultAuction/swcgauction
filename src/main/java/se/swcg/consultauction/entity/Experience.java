@@ -16,12 +16,12 @@ public class Experience {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String experienceId;
     private String experienceContent;
 
-    public Experience(String id, String experienceContent) {
+    public Experience(String experienceId, String experienceContent) {
         this(experienceContent);
-        this.id = id;
+        this.experienceId = experienceId;
     }
 
     public Experience(String experienceContent) {
@@ -31,8 +31,8 @@ public class Experience {
     public Experience() {
     }
 
-    public String getId() {
-        return id;
+    public String getExperienceId() {
+        return experienceId;
     }
 
     public String getExperienceContent() {
@@ -48,19 +48,19 @@ public class Experience {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Experience that = (Experience) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(experienceId, that.experienceId) &&
                 Objects.equals(experienceContent, that.experienceContent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, experienceContent);
+        return Objects.hash(experienceId, experienceContent);
     }
 
     @Override
     public String toString() {
         return "Experience{" +
-                "id='" + id + '\'' +
+                "id='" + experienceId + '\'' +
                 ", experienceContent='" + experienceContent + '\'' +
                 '}';
     }

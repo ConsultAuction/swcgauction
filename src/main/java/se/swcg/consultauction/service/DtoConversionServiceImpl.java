@@ -13,7 +13,6 @@ import se.swcg.consultauction.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,7 +28,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public ClientDto clientToDto(Client client) {
-        return new ClientDto(client.getId(),client.getCompanyName(),client.getFirstName(),
+        return new ClientDto(client.getClientId(),client.getCompanyName(),client.getFirstName(),
                 client.getLastName(),client.getEmail(),client.isActive(),client.getDateForSignUp(),
                 client.getLastActive(),client.getPhoneNumber(),client.getPassword(),client.getRole(),
                 client.getImage());

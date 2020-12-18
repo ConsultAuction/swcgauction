@@ -15,7 +15,7 @@ public class Qualifications {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String qualificationsId;
     private boolean frontend;
     private boolean backend;
 
@@ -28,9 +28,9 @@ public class Qualifications {
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Languages> language;
 
-    public Qualifications(String id, boolean frontend, boolean backend, List<Certificate> certificate, List<Experience> experience, List<Languages> language) {
+    public Qualifications(String qualificationsId, boolean frontend, boolean backend, List<Certificate> certificate, List<Experience> experience, List<Languages> language) {
         this(frontend, backend, certificate, experience, language);
-        this.id = id;
+        this.qualificationsId = qualificationsId;
     }
 
     public Qualifications(boolean frontend, boolean backend, List<Certificate> certificate, List<Experience> experience, List<Languages> language) {
@@ -69,8 +69,8 @@ public class Qualifications {
         language.remove(languageToRemove);
     }
 
-    public String getId() {
-        return id;
+    public String getQualificationsId() {
+        return qualificationsId;
     }
 
     public boolean isFrontend() {
@@ -101,7 +101,7 @@ public class Qualifications {
         this.backend = backend;
     }
 
-    public void setCertificate(List<Certificate> certificate) {
+   /* public void setCertificate(List<Certificate> certificate) {
         this.certificate = certificate;
     }
 
@@ -111,7 +111,7 @@ public class Qualifications {
 
     public void setLanguage(List<Languages> language) {
         this.language = language;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -120,7 +120,7 @@ public class Qualifications {
         Qualifications that = (Qualifications) o;
         return frontend == that.frontend &&
                 backend == that.backend &&
-                Objects.equals(id, that.id) &&
+                Objects.equals(qualificationsId, that.qualificationsId) &&
                 Objects.equals(certificate, that.certificate) &&
                 Objects.equals(experience, that.experience) &&
                 Objects.equals(language, that.language);
@@ -128,13 +128,13 @@ public class Qualifications {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, frontend, backend, certificate, experience, language);
+        return Objects.hash(qualificationsId, frontend, backend, certificate, experience, language);
     }
 
     @Override
     public String toString() {
         return "Qualifications{" +
-                "id='" + id + '\'' +
+                "id='" + qualificationsId + '\'' +
                 ", frontend=" + frontend +
                 ", backend=" + backend +
                 ", certificate=" + certificate +
