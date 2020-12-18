@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
         foundUser.setPhoneNumber(updatedUser.getPhoneNumber());
         foundUser.setImage(updatedUser.getImage());
         foundUser.setMinPrice(updatedUser.getMinPrice());
+        foundUser.setAddress(updatedUser.getAddress());
         foundUser.setQualifications(updatedUser.getQualifications());
 
         return converter.userToDto(repo.save(foundUser));

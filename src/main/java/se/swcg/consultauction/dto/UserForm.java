@@ -1,42 +1,31 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.Address;
 import se.swcg.consultauction.entity.Qualifications;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class UserForm {
 
     private String userId;
-    @NotBlank
     private String firstName;
-    @NotBlank
     private String lastName;
-    @NotBlank
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
     private boolean active;
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean available;
-    @NotBlank
-    @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
     private String role;
-    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
     private String phoneNumber;
     private String image;
-    @NotNull
     private int minPrice;
+    private Address address;
     private Qualifications qualifications;
 
     public UserForm(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
                     LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
-                    String image, int minPrice, Qualifications qualifications) {
+                    String image, int minPrice, Address address, Qualifications qualifications) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -50,12 +39,13 @@ public class UserForm {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.address = address;
         this.qualifications = qualifications;
     }
 
     public UserForm(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
                     LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
-                    String image, int minPrice, Qualifications qualifications) {
+                    String image, int minPrice, Address address, Qualifications qualifications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -68,6 +58,7 @@ public class UserForm {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.address = address;
         this.qualifications = qualifications;
     }
 
@@ -169,6 +160,14 @@ public class UserForm {
 
     public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Qualifications getQualifications() {

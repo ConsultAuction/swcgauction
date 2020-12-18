@@ -1,5 +1,6 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.Address;
 import se.swcg.consultauction.entity.Qualifications;
 
 import javax.validation.constraints.NotBlank;
@@ -32,13 +33,15 @@ public class UserDto {
     private String image;
     @NotNull
     private int minPrice;
+    private Address address;
     private Qualifications qualifications;
-    //private Address address;
+
 
 
     public UserDto(String userId, String firstName, String lastName,String email, boolean active,
                    LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password,
-                   String role, String phoneNumber, String image, int minPrice, Qualifications qualifications) {
+                   String role, String phoneNumber, String image, int minPrice, Address address,
+                   Qualifications qualifications) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,6 +55,7 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
         this.image = image;
         this.minPrice = minPrice;
+        this.address = address;
         this.qualifications = qualifications;
     }
 
@@ -153,6 +157,14 @@ public class UserDto {
 
     public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Qualifications getQualifications() {
