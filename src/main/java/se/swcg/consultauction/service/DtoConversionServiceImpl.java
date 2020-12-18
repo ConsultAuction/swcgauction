@@ -13,6 +13,7 @@ import se.swcg.consultauction.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -72,11 +73,11 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     }
 
     @Override
-    public Collection<UserDto> userToDto(Collection<User> users) {
+    public List<UserDto> userToDto(List<User> users) {
         if (users == null){
             users = new ArrayList<>();
         }
-        Collection<UserDto> userDtos = new ArrayList<>();
+        List<UserDto> userDtos = new ArrayList<>();
 
         for(User c: users){
             userDtos.add(userToDto(c));

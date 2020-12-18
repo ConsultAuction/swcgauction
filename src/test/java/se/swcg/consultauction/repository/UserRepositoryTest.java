@@ -8,6 +8,8 @@ import se.swcg.consultauction.entity.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,6 +51,13 @@ class UserRepositoryTest {
 
     @Test
     void testFindByQualificationContainingLanguageIgnoreCase(){
+        //Arrange
+        String search = "jaVa";
+
+        //Act
+        //Collection<User> foundUsers = repo.findByQualificationContainingLanguageIgnoreCase(search);
+
+        //Assert
 
     }
 

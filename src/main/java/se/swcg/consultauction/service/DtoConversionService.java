@@ -20,7 +20,7 @@ public interface DtoConversionService {
 
     User dtoToUser(UserDto dto);
     UserDto userToDto(User user);
-    Collection<UserDto> userToDto(Collection<User> users);
+    List<UserDto> userToDto(List<User> users);
 
     User userFormToUser(UserForm dto);
 
