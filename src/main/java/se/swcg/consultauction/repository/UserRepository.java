@@ -4,13 +4,13 @@ import org.springframework.data.repository.CrudRepository;
 import se.swcg.consultauction.entity.User;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Collection;
 
 public interface UserRepository extends CrudRepository<User, String> {
 
-    List<User> findAll();
-    //List<User> findByLanguageIgnoreCase(String language);
-    List<User> findByLastActive(LocalDate lastActive);
-    List<User> findAllByActive(boolean active);
-    List<User> findByAvailable(boolean available);
+    Collection<User> findAll();
+    Collection<User> findByQualificationContainingLanguageIgnoreCase(String Language);
+    Collection<User> findByLastActive(LocalDate lastActive);
+    Collection<User> findAllByActive(boolean active);
+    Collection<User> findByAvailable(boolean available);
 }

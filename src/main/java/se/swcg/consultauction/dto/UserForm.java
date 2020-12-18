@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-public class UserDTO {
+public class UserForm {
 
     private String userId;
     @NotBlank
@@ -33,8 +33,43 @@ public class UserDTO {
     @NotNull
     private int minPrice;
     private Qualifications qualifications;
-    //private Address address;
 
+    public UserForm(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
+                    LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
+                    String image, int minPrice, Qualifications qualifications) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.active = active;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.available = available;
+        this.password = password;
+        this.role = role;
+        this.phoneNumber = phoneNumber;
+        this.image = image;
+        this.minPrice = minPrice;
+        this.qualifications = qualifications;
+    }
+
+    public UserForm(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
+                    LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
+                    String image, int minPrice, Qualifications qualifications) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.active = active;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.available = available;
+        this.password = password;
+        this.role = role;
+        this.phoneNumber = phoneNumber;
+        this.image = image;
+        this.minPrice = minPrice;
+        this.qualifications = qualifications;
+    }
 
     public String getUserId() {
         return userId;
