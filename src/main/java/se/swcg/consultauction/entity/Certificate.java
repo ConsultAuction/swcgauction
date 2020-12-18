@@ -16,12 +16,12 @@ public class Certificate {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String certificateId;
     private String certificateContent;
 
-    public Certificate(String id, String certificateContent) {
+    public Certificate(String certificateId, String certificateContent) {
         this(certificateContent);
-        this.id = id;
+        this.certificateId = certificateId;
     }
 
     public Certificate(String certificateContent) {
@@ -31,8 +31,8 @@ public class Certificate {
     public Certificate() {
     }
 
-    public String getId() {
-        return id;
+    public String getCertificateId() {
+        return certificateId;
     }
 
     public String getCertificateContent() {
@@ -48,19 +48,19 @@ public class Certificate {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Certificate that = (Certificate) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(certificateId, that.certificateId) &&
                 Objects.equals(certificateContent, that.certificateContent);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, certificateContent);
+        return Objects.hash(certificateId, certificateContent);
     }
 
     @Override
     public String toString() {
         return "Certificate{" +
-                "id='" + id + '\'' +
+                "id='" + certificateId + '\'' +
                 ", certificateContent='" + certificateContent + '\'' +
                 '}';
     }

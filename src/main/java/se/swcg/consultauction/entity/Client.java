@@ -21,7 +21,7 @@ public class Client {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String clientId;
 
     @NotBlank
     private String companyName;
@@ -66,10 +66,10 @@ public class Client {
 
 
 
-    public Client(String id, String companyName, String firstName, String lastName,
+    public Client(String clientId, String companyName, String firstName, String lastName,
                   String email, boolean active, Date dateForSignUp, Date lastActive,
                   String phoneNumber, String password, String role, String image) {
-        this.id = id;
+        this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -96,8 +96,8 @@ public class Client {
     public Client() {
     }
 
-    public String getId() {
-        return id;
+    public String getClientId() {
+        return clientId;
     }
 
     public String getCompanyName() {
@@ -193,18 +193,18 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return active == client.active && Objects.equals(id, client.id) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
+        return active == client.active && Objects.equals(clientId, client.clientId) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
+        return Objects.hash(clientId, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "id='" + id + '\'' +
+                "id='" + clientId + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
