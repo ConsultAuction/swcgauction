@@ -9,7 +9,6 @@ import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.UserRepository;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 @Service
