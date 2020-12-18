@@ -10,27 +10,17 @@ import java.time.LocalDate;
 public class UserForm {
 
     private String userId;
-    @NotBlank
     private String firstName;
-    @NotBlank
     private String lastName;
-    @NotBlank
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
     private boolean active;
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean available;
-    @NotBlank
-    @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
     private String role;
-    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
     private String phoneNumber;
     private String image;
-    @NotNull
     private int minPrice;
     private Qualifications qualifications;
 

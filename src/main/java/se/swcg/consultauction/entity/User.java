@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -21,25 +22,26 @@ public class User {
     )
     private String userId;
     @NotBlank
-    @Column(length = 50)
+    @Size(max = 50)
     private String firstName;
     @NotBlank
-    @Column(length = 50)
+    @Size(max = 50)
     private String lastName;
     @NotBlank
-    @Column(unique = true , length = 100)
+    @Column(unique = true)
+    @Size(max = 100)
     private String email;
     private boolean active;
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean available;
-    @Column(length = 50)
+    @Size(max = 50)
     private String password;
-    @Column(length = 10)
+    @Size(max = 10)
     private String role;
-    @Column(length = 10)
+    @Size(max = 10)
     private String phoneNumber;
-    @Column(length = 200)
+    @Size(max = 200)
     private String image;
     @NotNull
     private int minPrice;
