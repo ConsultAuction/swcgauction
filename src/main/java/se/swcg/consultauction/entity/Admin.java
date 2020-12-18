@@ -2,6 +2,7 @@ package se.swcg.consultauction.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-public class AdminUser {
+public class Admin {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -20,18 +21,19 @@ public class AdminUser {
     private String adminId;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String password;
     private String role;
     private boolean active;
     private LocalDate lastActive;
 
-    public AdminUser(String adminId, String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {
+    public Admin(String adminId, String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {
         this(firstName, lastName, email, password, role, active, lastActive);
         this.adminId = adminId;
     }
 
-    public AdminUser(String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {
+    public Admin(String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -41,7 +43,7 @@ public class AdminUser {
         this.lastActive = lastActive;
     }
 
-    public AdminUser() {
+    public Admin() {
     }
 
     public String getAdminId() {
@@ -108,15 +110,15 @@ public class AdminUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AdminUser adminUser = (AdminUser) o;
-        return active == adminUser.active &&
-                Objects.equals(adminId, adminUser.adminId) &&
-                Objects.equals(firstName, adminUser.firstName) &&
-                Objects.equals(lastName, adminUser.lastName) &&
-                Objects.equals(email, adminUser.email) &&
-                Objects.equals(password, adminUser.password) &&
-                Objects.equals(role, adminUser.role) &&
-                Objects.equals(lastActive, adminUser.lastActive);
+        Admin admin = (Admin) o;
+        return active == admin.active &&
+                Objects.equals(adminId, admin.adminId) &&
+                Objects.equals(firstName, admin.firstName) &&
+                Objects.equals(lastName, admin.lastName) &&
+                Objects.equals(email, admin.email) &&
+                Objects.equals(password, admin.password) &&
+                Objects.equals(role, admin.role) &&
+                Objects.equals(lastActive, admin.lastActive);
     }
 
     @Override
