@@ -16,13 +16,13 @@ public class Languages {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String id;
+    private String languagesId;
 
     private String language;
 
-    public Languages(String id, String language) {
+    public Languages(String languagesId, String language) {
         this(language);
-        this.id = id;
+        this.languagesId = languagesId;
     }
 
     public Languages(String language) {
@@ -32,8 +32,8 @@ public class Languages {
     public Languages() {
     }
 
-    public String getId() {
-        return id;
+    public String getLanguagesId() {
+        return languagesId;
     }
 
     public String getLanguage() {
@@ -49,19 +49,19 @@ public class Languages {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Languages languages = (Languages) o;
-        return Objects.equals(id, languages.id) &&
+        return Objects.equals(languagesId, languages.languagesId) &&
                 Objects.equals(language, languages.language);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, language);
+        return Objects.hash(languagesId, language);
     }
 
     @Override
     public String toString() {
         return "Languages{" +
-                "id='" + id + '\'' +
+                "id='" + languagesId + '\'' +
                 ", language='" + language + '\'' +
                 '}';
     }
