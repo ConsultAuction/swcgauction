@@ -60,7 +60,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
         return new User(dto.getUserId(), dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                 dto.isActive(), dto.getDateOfSignUp(), dto.getLastActive(), dto.isAvailable(),
                 dto.getPassword(), dto.getRole(), dto.getPhoneNumber(), dto.getImage(), dto.getMinPrice(),
-                dto.getQualifications());
+                dto.getAddress(), dto.getQualifications());
     }
 
     @Override
@@ -68,7 +68,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
         return new UserDto(user.getUserId(), user.getFirstName(), user.getLastName(), user.getEmail(),
                 user.isActive(), user.getDateOfSignUp(), user.getLastActive(), user.isAvailable(),
                 user.getPassword(), user.getRole(), user.getPhoneNumber(), user.getImage(), user.getMinPrice(),
-                user.getQualifications());
+                user.getAddress(), user.getQualifications());
     }
 
     @Override
@@ -89,7 +89,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
         return new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                 dto.isActive(), dto.getDateOfSignUp(), dto.getLastActive(), dto.isAvailable(),
                 dto.getPassword(), dto.getRole(), dto.getPhoneNumber(), dto.getImage(), dto.getMinPrice(),
-                dto.getQualifications());
+                dto.getAddress(), dto.getQualifications());
     }
 
 
