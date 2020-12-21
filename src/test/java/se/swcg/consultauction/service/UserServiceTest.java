@@ -67,6 +67,7 @@ class UserServiceTest {
                 "0704139500", "/image.jpg", 25, null, null);
         //testObject2 = converterMock.userToDto(repoMock.save(converterMock.userFormToUser(testForm2)));
         testObject2 = userService.create(testForm2);
+        System.out.println(userService.findAll());
 
     }
 
