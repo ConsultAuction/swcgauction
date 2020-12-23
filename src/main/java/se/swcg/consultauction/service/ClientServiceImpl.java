@@ -6,18 +6,18 @@ import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.exception.EntityNotFoundException;
+import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
-
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
 
+   private ClientRepository clientRepository;
 
-    ClientRepository clientRepository;
-    DtoConversionService converter;
+   private DtoConversionService converter;
 
 
     @Autowired
@@ -28,17 +28,18 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public Collection<ClientDto> findAll() {
-        return converter.clientToDto((Collection<Client>) clientRepository.findAll());
+    public List<ClientDto> findAll() {
+        return converter.clientToDto(clientRepository.findAll());
     }
 
     @Override
     public ClientDto findById(String id)  {
-        return converter.clientToDto(clientRepository.findById(id).get());
+        return converter.clientToDto(clientRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Could not find a client with ID: " + id)));
     }
 
     @Override
-    public Collection<ClientDto> findByCompanyName(String companyName) {
+    public List<ClientDto> findByCompanyName(String companyName) {
         return converter.clientToDto(clientRepository.findByCompanyNameIgnoreCase(companyName));
     }
 
@@ -62,7 +63,7 @@ public class ClientServiceImpl implements ClientService {
         if (clientForm.getId() == null){
             throw new IllegalArgumentException("Client had a Invalid ID: ");
         }
-        Client client = clientRepository.findById(clientForm.getId()).orElseThrow(() -> new EntityNotFoundException(
+        Client client = clientRepository.findById(clientForm.getId()).orElseThrow(() -> new ResourceNotFoundException(
                 "Could not find Client with ID: " + clientForm.getId()));
 
         Client updated = converter.clientFormToClient(clientForm);
