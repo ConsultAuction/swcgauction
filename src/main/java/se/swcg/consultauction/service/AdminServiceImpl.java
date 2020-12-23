@@ -43,13 +43,18 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public List<AdminDto> findByLastActive(LocalDate lastActive) {
-        return checkIfEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active");
+    public List<AdminDto> findByRole(String role) {
+        return checkIfEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role");
     }
 
     @Override
-    public List<AdminDto> findByRole(String role) {
-        return checkIfEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role");
+    public List<AdminDto> findByActive(boolean active) {
+        return checkIfEmpty(converter.adminToDto(repo.findByActive(active)), "Could not find any admins by active");
+    }
+
+    @Override
+    public List<AdminDto> findByLastActive(LocalDate lastActive) {
+        return checkIfEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active");
     }
 
     @Override

@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface AdminRepository extends CrudRepository<Admin, String> {
     List<Admin> findAll();
     Optional<Admin> findByEmail(String email);
-    List<Admin> findByLastActive(LocalDate date);
     List<Admin> findByRole(String role);
+    List<Admin> findByActive(boolean active);
+    List<Admin> findByLastActive(LocalDate date);
+
 }
