@@ -23,17 +23,23 @@ public class Client {
     )
     private String clientId;
 
+    @NotBlank
     private String companyName;
 
 
+    @NotBlank
     private String firstName;
 
 
-
+    @NotBlank
     private String lastName;
 
 
-
+    @Column(unique = true)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="{invalid.email}")
     private String email;
 
 
@@ -43,8 +49,11 @@ public class Client {
 
     private Date lastActive;
 
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+            message="{invalid.phonenumber}")
     private String phoneNumber;
 
+    @Pattern(regexp =  "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
 
     private String role;
@@ -87,7 +96,7 @@ public class Client {
     public Client() {
     }
 
-    public String getId() {
+    public String getClientId() {
         return clientId;
     }
 

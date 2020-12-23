@@ -21,7 +21,7 @@ class LanguagesTest {
 
     @Test
     void getId() {
-        String id = languages.getId();
+        String id = languages.getLanguagesId();
 
         assertEquals(id, languageId);
     }
@@ -63,7 +63,7 @@ class LanguagesTest {
     void testToString() {
         String toString = languages.toString();
 
-        assertTrue(toString.contains(languages.getId()));
+        assertTrue(toString.contains(languages.getLanguagesId()));
         assertTrue(toString.contains(languages.getLanguage()));
     }
 }

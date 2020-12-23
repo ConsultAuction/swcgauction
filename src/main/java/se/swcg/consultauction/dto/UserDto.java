@@ -1,5 +1,6 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.Address;
 import se.swcg.consultauction.entity.Qualifications;
 
 import javax.validation.constraints.NotBlank;
@@ -7,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-public class UserDTO {
+public class UserDto {
 
     private String userId;
     @NotBlank
@@ -32,9 +33,31 @@ public class UserDTO {
     private String image;
     @NotNull
     private int minPrice;
+    private Address address;
     private Qualifications qualifications;
-    //private Address address;
 
+
+
+    public UserDto(String userId, String firstName, String lastName,String email, boolean active,
+                   LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password,
+                   String role, String phoneNumber, String image, int minPrice, Address address,
+                   Qualifications qualifications) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.active = active;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.available = available;
+        this.password = password;
+        this.role = role;
+        this.phoneNumber = phoneNumber;
+        this.image = image;
+        this.minPrice = minPrice;
+        this.address = address;
+        this.qualifications = qualifications;
+    }
 
     public String getUserId() {
         return userId;
@@ -134,6 +157,14 @@ public class UserDTO {
 
     public void setMinPrice(int minPrice) {
         this.minPrice = minPrice;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Qualifications getQualifications() {

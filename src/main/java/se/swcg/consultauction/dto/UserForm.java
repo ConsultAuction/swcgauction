@@ -1,56 +1,32 @@
-package se.swcg.consultauction.entity;
+package se.swcg.consultauction.dto;
 
-import org.hibernate.annotations.GenericGenerator;
+import se.swcg.consultauction.entity.Address;
+import se.swcg.consultauction.entity.Qualifications;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Objects;
 
-@Entity
-public class User {
+public class UserForm {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String userId;
-    @NotBlank
-    @Size(max = 50)
     private String firstName;
-    @NotBlank
-    @Size(max = 50)
     private String lastName;
-    @NotBlank
-    @Column(unique = true)
-    @Size(max = 100)
     private String email;
     private boolean active;
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean available;
-    @Size(max = 50)
     private String password;
-    @Size(max = 10)
     private String role;
-    @Size(max = 10)
     private String phoneNumber;
-    @Size(max = 200)
     private String image;
-    @NotNull
     private int minPrice;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Address address;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Qualifications qualifications;
 
-    public User() {}
-
-    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
+    public UserForm(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
+                    LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
+                    String image, int minPrice, Address address, Qualifications qualifications) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -67,8 +43,9 @@ public class User {
         this.qualifications = qualifications;
     }
 
-    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
-        this.userId = userId;
+    public UserForm(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp,
+                    LocalDate lastActive, boolean available, String password, String role, String phoneNumber,
+                    String image, int minPrice, Address address, Qualifications qualifications) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -199,53 +176,5 @@ public class User {
 
     public void setQualifications(Qualifications qualifications) {
         this.qualifications = qualifications;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return active == user.active &&
-                available == user.available &&
-                minPrice == user.minPrice &&
-                Objects.equals(userId, user.userId) &&
-                Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(email, user.email) &&
-                Objects.equals(dateOfSignUp, user.dateOfSignUp) &&
-                Objects.equals(lastActive, user.lastActive) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(role, user.role) &&
-                Objects.equals(phoneNumber, user.phoneNumber) &&
-                Objects.equals(image, user.image) &&
-                Objects.equals(address, user.address) &&
-                Objects.equals(qualifications, user.qualifications);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice, address, qualifications);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", active=" + active +
-                ", dateOfSignUp=" + dateOfSignUp +
-                ", lastActive=" + lastActive +
-                ", available=" + available +
-                ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", image='" + image + '\'' +
-                ", minPrice=" + minPrice +
-                ", address=" + address +
-                ", qualifications=" + qualifications +
-                '}';
     }
 }
