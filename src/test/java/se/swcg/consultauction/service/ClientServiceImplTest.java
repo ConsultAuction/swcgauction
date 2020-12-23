@@ -58,8 +58,7 @@ public class ClientServiceImplTest {
     }
 
 
-    @Test
-    public void whenValidName_ThenClientShouldBeFound(){
+    @Test public void findByEmail(){
 
 
         when(clientService.findByEmail(anyString())).thenReturn(tobias);
@@ -80,8 +79,21 @@ public class ClientServiceImplTest {
 
         assertEquals(Arrays.asList(tobias),res);
 
+    }
+    @Test
+    public void findById(){
+
+        // wont work, don't know why
+
+        when(clientService.findById(("g3l0df"))).thenReturn(tobias);
+
+        ClientDto res = dtoMock.clientToDto(clientRepositoryMock.findById());
+
+        assertEquals(tobias.getClientId(),res.getClientId());
 
     }
+
+
 
 
 }

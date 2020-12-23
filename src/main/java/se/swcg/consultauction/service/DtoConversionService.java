@@ -13,6 +13,7 @@ import java.util.List;
 public interface DtoConversionService {
 
     Client dtoToClient(ClientDto dto);
+
     ClientDto clientToDto(Client client);
     List<ClientDto> clientToDto(List<Client> clients);
 

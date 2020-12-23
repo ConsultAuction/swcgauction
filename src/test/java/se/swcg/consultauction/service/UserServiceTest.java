@@ -24,6 +24,7 @@ class UserServiceTest {
 
     @TestConfiguration
     public static class UserServiceTestConfig{
+
         @Bean
         public UserService userService(UserRepository repo, DtoConversionService converter){
             return new UserServiceImpl(repo,converter);
