@@ -11,7 +11,7 @@ public interface AdminService {
     AdminDto findById(String id);
     List<AdminDto> findAll();
     AdminDto findByEmail(String email);
-    //List<AdminDto> findByLastActive(LocalDate lastActive);
+    List<AdminDto> findByLastActive(LocalDate lastActive);
     List<AdminDto> findByRole(String role);
 
     AdminDto create(AdminForm adminForm);
