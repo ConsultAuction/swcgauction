@@ -8,8 +8,7 @@ import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.exception.EntityNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
-
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -28,8 +27,8 @@ public class ClientServiceImpl implements ClientService {
 
 
     @Override
-    public Collection<ClientDto> findAll() {
-        return converter.clientToDto((Collection<Client>) clientRepository.findAll());
+    public List<ClientDto> findAll() {
+        return converter.clientToDto(clientRepository.findAll());
     }
 
     @Override
@@ -38,7 +37,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Collection<ClientDto> findByCompanyName(String companyName) {
+    public List<ClientDto> findByCompanyName(String companyName) {
         return converter.clientToDto(clientRepository.findByCompanyNameIgnoreCase(companyName));
     }
 

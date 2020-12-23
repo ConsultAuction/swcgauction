@@ -6,14 +6,15 @@ import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ClientService {
 
-    Collection<ClientDto>  findAll();
+    List<ClientDto> findAll();
 
     ClientDto findById(String id);
 
-    Collection<ClientDto> findByCompanyName(String companyName);
+    List<ClientDto> findByCompanyName(String companyName);
 
     ClientDto findByEmail(String email);
 

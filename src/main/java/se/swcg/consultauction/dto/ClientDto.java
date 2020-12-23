@@ -1,5 +1,7 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.Address;
+
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -44,14 +46,14 @@ public class ClientDto {
 
     private String image;
 
-    /*private Address address;*/
+    private Address address;
 
     /*private Projects projects;*/
 
 
     public ClientDto(String clientId, String companyName, String firstName, String lastName, String email,
                      boolean active, Date dateForSignUp, Date lastActive, String phoneNumber,
-                     String password, String role, String image) {
+                     String password, String role, String image, Address address) {
         this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -64,6 +66,15 @@ public class ClientDto {
         this.password = password;
         this.role = role;
         this.image = image;
+        this.address = address;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getClientId() {

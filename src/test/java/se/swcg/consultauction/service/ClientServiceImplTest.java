@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 import se.swcg.consultauction.dto.ClientDto;
+import se.swcg.consultauction.entity.Address;
 import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.repository.ClientRepository;
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +32,6 @@ public class ClientServiceImplTest {
 
     @TestConfiguration
     static class ClientServiceImplTestContextConfiguration{
-
         @Primary
         @Bean
         public ClientService clientService(ClientRepository clientRepository, DtoConversionService dtoConversionService){
@@ -52,8 +52,9 @@ public class ClientServiceImplTest {
     @BeforeEach
     public void setup(){
         Date d = new Date();
+        Address a = new Address("gdsfg","gamla vagen 51","Sweden","Trekanten","39245");
         tobias = new ClientDto("g3l0df","SWCG","Tobias","Hakansson","tobias19995@gmail.com",
-                true,d,d,"0704129400","qwerty","Admin","zxcvbnm");
+                true,d,d,"0704129400","qwerty","Admin","zxcvbnm",a);
     }
 
 
@@ -73,6 +74,14 @@ public class ClientServiceImplTest {
     @Test
     public void findAll(){
 
+        when(clientService.findAll()).thenReturn(Arrays.asList(tobias));
+
+        List<ClientDto> res = dtoMock.clientToDto(clientRepositoryMock.findAll());
+
+        assertEquals(Arrays.asList(tobias),res);
+
 
     }
+
+
 }

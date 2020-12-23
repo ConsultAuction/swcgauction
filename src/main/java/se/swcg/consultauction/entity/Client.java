@@ -3,10 +3,7 @@ package se.swcg.consultauction.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -59,8 +56,8 @@ public class Client {
     private String role;
 
     private String image;
-
-    /*private Address address;*/
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Address address;
 
     /*private Projects projects;*/
 
@@ -68,7 +65,7 @@ public class Client {
 
     public Client(String clientId, String companyName, String firstName, String lastName,
                   String email, boolean active, Date dateForSignUp, Date lastActive,
-                  String phoneNumber, String password, String role, String image) {
+                  String phoneNumber, String password, String role, String image, Address address) {
         this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -81,19 +78,29 @@ public class Client {
         this.password = password;
         this.role = role;
         this.image = image;
+        this.address = address;
     }
 
     public Client(String companyName, String firstName, String lastName,
-                  String email, String phoneNumber, String password) {
+                  String email, String phoneNumber, String password, Address address) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.address = address;
     }
 
     public Client() {
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public String getClientId() {
@@ -193,18 +200,27 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return active == client.active && Objects.equals(clientId, client.clientId) && Objects.equals(companyName, client.companyName) && Objects.equals(firstName, client.firstName) && Objects.equals(lastName, client.lastName) && Objects.equals(email, client.email) && Objects.equals(dateForSignUp, client.dateForSignUp) && Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) && Objects.equals(password, client.password) && Objects.equals(role, client.role) && Objects.equals(image, client.image);
+        return active == client.active && Objects.equals(clientId, client.clientId) &&
+                Objects.equals(companyName, client.companyName) &&
+                Objects.equals(firstName, client.firstName) &&
+                Objects.equals(lastName, client.lastName) &&
+                Objects.equals(email, client.email) &&
+                Objects.equals(dateForSignUp, client.dateForSignUp) &&
+                Objects.equals(lastActive, client.lastActive) && Objects.equals(phoneNumber, client.phoneNumber) &&
+                Objects.equals(password, client.password) && Objects.equals(role, client.role) &&
+                Objects.equals(image, client.image) && Objects.equals(address, client.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, companyName, firstName, lastName, email, active, dateForSignUp, lastActive, phoneNumber, password, role, image);
+        return Objects.hash(clientId, companyName, firstName, lastName, email, active, dateForSignUp,
+                lastActive, phoneNumber, password, role, image, address);
     }
 
     @Override
     public String toString() {
         return "Client{" +
-                "id='" + clientId + '\'' +
+                "clientId='" + clientId + '\'' +
                 ", companyName='" + companyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
@@ -216,6 +232,7 @@ public class Client {
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 ", image='" + image + '\'' +
+                ", address=" + address +
                 '}';
     }
 }
