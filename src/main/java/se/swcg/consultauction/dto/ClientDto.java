@@ -1,10 +1,8 @@
 package se.swcg.consultauction.dto;
 
-import org.hibernate.annotations.GenericGenerator;
+import se.swcg.consultauction.entity.Address;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -12,14 +10,22 @@ import java.util.Date;
 public class ClientDto {
 
 
-    private String id;
+    private String clientId;
 
+    @NotBlank
     private String companyName;
 
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
+    @Column(unique = true)
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="{invalid.email}")
     private String email;
 
     private boolean active;
@@ -28,23 +34,27 @@ public class ClientDto {
 
     private Date lastActive;
 
+    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
+            message="{invalid.phone number}")
     private String phoneNumber;
 
+    @Pattern(regexp =  "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$",
+    message = "{Password does not meet the requirements}")
     private String password;
 
     private String role;
 
     private String image;
 
-    /*private Address address;*/
+    private Address address;
 
     /*private Projects projects;*/
 
 
-    public ClientDto(String id, String companyName, String firstName, String lastName, String email,
+    public ClientDto(String clientId, String companyName, String firstName, String lastName, String email,
                      boolean active, Date dateForSignUp, Date lastActive, String phoneNumber,
-                     String password, String role, String image) {
-        this.id = id;
+                     String password, String role, String image, Address address) {
+        this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -56,14 +66,23 @@ public class ClientDto {
         this.password = password;
         this.role = role;
         this.image = image;
+        this.address = address;
     }
 
-    public String getId() {
-        return id;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getCompanyName() {
