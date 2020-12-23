@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AdminService {
 
-    AdminDto findById(String id);
+    AdminDto findById(String adminId);
     List<AdminDto> findAll();
     AdminDto findByEmail(String email);
     List<AdminDto> findByLastActive(LocalDate lastActive);

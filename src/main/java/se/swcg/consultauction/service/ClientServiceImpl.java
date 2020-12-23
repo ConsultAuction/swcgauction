@@ -50,9 +50,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto createByForm(ClientForm clientForm) {
 
-      /*  if (clientForm.getId() != null){
+        if (clientForm.getId() != null){
             throw new IllegalArgumentException("Invalid Client ID: ID should be specified at creation.");
-        }*/
+        }
 
         return converter.clientToDto(clientRepository.save(converter.clientFormToClient(clientForm)));
     }

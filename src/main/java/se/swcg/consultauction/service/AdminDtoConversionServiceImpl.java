@@ -3,6 +3,7 @@ package se.swcg.consultauction.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.AdminDto;
+import se.swcg.consultauction.dto.AdminForm;
 import se.swcg.consultauction.entity.Admin;
 
 import java.util.ArrayList;
@@ -38,5 +39,11 @@ public class AdminDtoConversionServiceImpl implements AdminDtoConversionService{
         }
 
         return adminDtos;
+    }
+
+    @Override
+    public Admin adminFormToAdmin(AdminForm form) {
+        return new Admin(form.getAdminId(), form.getFirstName(), form.getLastName(), form.getEmail(),
+                form.getPassword(), form.getRole(), form.isActive(), form.getLastActive());
     }
 }
