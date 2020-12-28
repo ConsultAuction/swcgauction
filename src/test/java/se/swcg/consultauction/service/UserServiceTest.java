@@ -38,13 +38,13 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        List<Experience> experiences1 = new ArrayList<Experience>();
+        List<Experience> experiences1 = new ArrayList<>();
         experiences1.add(new Experience("Never worked."));
-        List<Languages> languages1 = new ArrayList<Languages>();
+        List<Languages> languages1 = new ArrayList<>();
         languages1.add(new Languages("Java"));
-        List<Experience> experiences2 = new ArrayList<Experience>();
+        List<Experience> experiences2 = new ArrayList<>();
         experiences2.add(new Experience("worked 25 years."));
-        List<Languages> languages2 = new ArrayList<Languages>();
+        List<Languages> languages2 = new ArrayList<>();
         languages2.add(new Languages("Ruby"));
         Address address1 = new Address("Road 1", "sweden" , "Stockholm" , "08");
         Address address2 = new Address("Road 2", "sweden" , "malmö" , "047714");
@@ -133,9 +133,9 @@ class UserServiceTest {
     void CreateTest(){
         //Arrange
         int size = 3;
-        List<Experience> experiences = new ArrayList<Experience>();
+        List<Experience> experiences = new ArrayList<>();
         experiences.add(new Experience("Worked for 2 years."));
-        List<Languages> languages = new ArrayList<Languages>();
+        List<Languages> languages = new ArrayList<>();
         languages.add(new Languages(".Net"));
         Address address3 = new Address("Road 3", "sweden" , "göteborg" , "21546");
         UserDto user;
