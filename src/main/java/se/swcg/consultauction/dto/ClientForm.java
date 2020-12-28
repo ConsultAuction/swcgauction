@@ -1,5 +1,7 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.Address;
+
 import java.util.Date;
 
 public class ClientForm {
@@ -28,14 +30,14 @@ public class ClientForm {
 
     private String image;
 
-    /*private Address address;*/
+    private Address address;
 
     /*private Projects projects;*/
 
 
     public ClientForm(String id, String companyName, String firstName, String lastName,
                       String email, boolean active, Date dateForSignUp, Date lastActive,
-                      String phoneNumber, String password, String role, String image) {
+                      String phoneNumber, String password, String role, String image, Address address) {
         this.id = id;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -48,11 +50,12 @@ public class ClientForm {
         this.password = password;
         this.role = role;
         this.image = image;
+        this.address = address;
     }
 
     public ClientForm(String companyName, String firstName, String lastName,
                       String email, boolean active, Date dateForSignUp, Date lastActive,
-                      String phoneNumber, String password, String role, String image) {
+                      String phoneNumber, String password, String role, String image, Address address) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -64,6 +67,7 @@ public class ClientForm {
         this.password = password;
         this.role = role;
         this.image = image;
+        this.address = address;
     }
 
     public String getId() {
@@ -160,5 +164,13 @@ public class ClientForm {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
