@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findByLanguage(String language) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageContainingIgnoreCase(language));
+        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageLanguageIgnoreCase(language));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
