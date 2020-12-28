@@ -1,7 +1,5 @@
 package se.swcg.consultauction.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public class AdminForm {
@@ -17,6 +15,7 @@ public class AdminForm {
 
     public AdminForm(String adminId, String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {
         this(firstName, lastName, email, password, role, active, lastActive);
+        this.adminId = adminId;
     }
 
     public AdminForm(String firstName, String lastName, String email, String password, String role, boolean active, LocalDate lastActive) {

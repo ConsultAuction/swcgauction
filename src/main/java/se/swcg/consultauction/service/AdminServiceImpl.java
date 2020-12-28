@@ -44,7 +44,7 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List<AdminDto> findByRole(String role) {
-        return checkIfEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role");
+        return checkIfEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role: " + role);
     }
 
     @Override
@@ -54,15 +54,21 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List<AdminDto> findByLastActive(LocalDate lastActive) {
-        return checkIfEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active");
+        return checkIfEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active: " + lastActive);
     }
 
     @Override
     public AdminDto create(AdminForm adminForm) {
-        Admin newAdmin = new Admin(adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
+
+        AdminDto newAdminDto = new AdminDto(null, adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
                 adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());
 
-        return converter.adminToDto(repo.save(newAdmin));
+        return converter.adminToDto(repo.save(converter.dtoToAdmin(newAdminDto)));
+
+        /*Admin newAdmin = new Admin(adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
+        adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());
+
+        return converter.adminToDto(repo.save(newAdmin));*/
 
         //return converter.adminToDto(repo.save(converter.adminFormToAdmin(adminForm)));
     }
@@ -70,7 +76,7 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public AdminDto update(AdminForm adminForm) {
         if (adminForm.getAdminId() == null) {
-            throw new IllegalArgumentException("Invalid id for admin");
+            throw new IllegalArgumentException("Invalid id for admin: update");
         }
 
         Admin foundAdmin = converter.dtoToAdmin(findById(adminForm.getAdminId()));
@@ -89,6 +95,10 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public void delete(AdminDto adminDto) {
+        if (adminDto.getAdminId() == null) {
+            throw new IllegalArgumentException("Invalid id for admin");
+        }
+
         Admin adminToDelete = converter.dtoToAdmin(findById(adminDto.getAdminId()));
 
         repo.delete(adminToDelete);

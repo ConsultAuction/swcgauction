@@ -16,6 +16,7 @@ public class AdminDto {
     @NotBlank
     @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
+    @NotBlank
     private String role;
     private boolean active;
     private LocalDate lastActive;
