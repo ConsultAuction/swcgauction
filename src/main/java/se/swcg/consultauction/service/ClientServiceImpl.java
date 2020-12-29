@@ -16,11 +16,11 @@ public class ClientServiceImpl implements ClientService {
 
    private ClientRepository clientRepository;
 
-   private DtoConversionService converter;
+   private ClientDtoConversionService converter;
 
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, DtoConversionService converter) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientDtoConversionService converter) {
         this.clientRepository = clientRepository;
         this.converter = converter;
     }
@@ -50,7 +50,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto createByForm(ClientForm clientForm) {
 
-        if (clientForm.getId() != null){
+        if (clientForm.getClientId() != null){
             throw new IllegalArgumentException("Invalid Client ID: ID should be specified at creation.");
         }
 
@@ -59,11 +59,11 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto update(ClientForm clientForm) {
-        if (clientForm.getId() == null){
+        if (clientForm.getClientId() == null){
             throw new IllegalArgumentException("Client had a Invalid ID: ");
         }
-        Client client = clientRepository.findById(clientForm.getId()).orElseThrow(() -> new ResourceNotFoundException(
-                "Could not find Client with ID: " + clientForm.getId()));
+        Client client = clientRepository.findById(clientForm.getClientId()).orElseThrow(() -> new ResourceNotFoundException(
+                "Could not find Client with ID: " + clientForm.getClientId()));
 
         Client updated = converter.clientFormToClient(clientForm);
 
@@ -85,4 +85,6 @@ public class ClientServiceImpl implements ClientService {
     public void delete(Client client) {
         clientRepository.delete(client);
     }
+
+
 }

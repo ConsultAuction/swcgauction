@@ -6,18 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
-import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.dto.UserForm;
 import se.swcg.consultauction.entity.Client;
-import se.swcg.consultauction.entity.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class DtoConversionServiceImpl implements DtoConversionService {
+public class ClientDtoConversionServiceImpl implements ClientDtoConversionService {
 
 
     @Override
@@ -51,8 +47,15 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     @Override
     public Client clientFormToClient(ClientForm dto) {
 
-        return new Client(dto.getId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
+        return new Client(dto.getClientId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
                 dto.getEmail(), dto.isActive(), dto.getDateForSignUp(),dto.getLastActive(),
+                dto.getPhoneNumber(),dto.getPassword(),dto.getRole(),dto.getImage(),dto.getAddress());
+    }
+
+    @Override
+    public ClientForm DtoToForm(ClientDto dto) {
+        return new ClientForm(dto.getClientId(),dto.getFirstName(),dto.getLastName(),dto.getLastName(),
+                dto.getPhoneNumber(),dto.isActive(),dto.getDateForSignUp(),dto.getLastActive(),
                 dto.getPhoneNumber(),dto.getPassword(),dto.getRole(),dto.getImage(),dto.getAddress());
     }
 

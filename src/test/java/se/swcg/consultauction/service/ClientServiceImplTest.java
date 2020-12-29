@@ -1,7 +1,6 @@
 package se.swcg.consultauction.service;
 
 
-import org.junit.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ import java.util.*;
     @Autowired
     private ClientService clientService;
     @Autowired
-    private DtoConversionService convert;
+    private ClientDtoConversionService convert;
     @Autowired
     private ClientRepository clientRepositoryMock;
 
@@ -120,11 +119,11 @@ import java.util.*;
 
     @Test
     void update(){
-        ClientForm updatedClient = convert.doToClientForm(convert.clientToDto(tobias));
+        ClientForm updatedClient = convert.DtoToForm(convert.clientToDto(tobias));
         updatedClient.getAddress().setCity("Växjö");
-        //Act
+
         tobias = convert.dtoToClient(clientService.update(updatedClient));
-        //Assert
+
         assertEquals(updatedClient.getAddress(), tobias.getAddress());
 
     }

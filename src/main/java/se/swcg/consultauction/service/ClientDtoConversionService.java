@@ -10,7 +10,7 @@ import se.swcg.consultauction.entity.User;
 import java.util.Collection;
 import java.util.List;
 
-public interface DtoConversionService {
+public interface ClientDtoConversionService {
 
     Client dtoToClient(ClientDto dto);
 
@@ -18,5 +18,7 @@ public interface DtoConversionService {
     List<ClientDto> clientToDto(List<Client> clients);
 
     Client clientFormToClient(ClientForm dto);
+
+    ClientForm DtoToForm(ClientDto dto);
 
 }

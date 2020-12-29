@@ -22,5 +22,5 @@ public interface ClientService {
 
     ClientDto update(ClientForm clientForm);
 
-    boolean delete(String  id);
+    void delete(Client  client);
 }
