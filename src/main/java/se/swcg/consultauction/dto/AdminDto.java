@@ -1,5 +1,7 @@
 package se.swcg.consultauction.dto;
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
@@ -7,11 +9,15 @@ import java.time.LocalDate;
 public class AdminDto {
 
     private String adminId;
-    @NotBlank
+    @NotBlank(message = "First name is mandatory")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Last name is mandatory")
     private String lastName;
-    @NotBlank
+    @NotBlank(message = "Email is mandatory")
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="invalid.email")
     private String email;
     @NotBlank
     @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
