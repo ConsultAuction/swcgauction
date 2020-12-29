@@ -2,16 +2,17 @@ package se.swcg.consultauction.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.dto.UserForm;
-import se.swcg.consultauction.entity.User;
+import se.swcg.consultauction.entity.*;
+import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.UserRepository;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,73 +20,171 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
+@RunWith(SpringRunner.class)
+@Transactional
 class UserServiceTest {
 
-    @TestConfiguration
-    public static class UserServiceTestConfig{
-
-        @Bean
-        public UserService userService(UserRepository repo, DtoConversionService converter){
-            return new UserServiceImpl(repo,converter);
-        }
-    }
-
     @Autowired
-    UserService userService;
-    @MockBean
-            UserRepository repoMock;
-    @MockBean
-            DtoConversionService converterMock;
+    UserService testObject;
+    @Autowired
+    UserRepository repo;
+    @Autowired
+    UserDtoConversionServiceImpl converter;
 
-    User newUser;
-    UserDto testObject;
-    UserDto testObject2;
-    UserForm testForm;
-    UserForm testForm2;
-   /* Address testAddress;
-    Qualifications testQualifications;
-    Experience testExperience;
-    Languages testLanguage;*/
+    User user1;
+    User user2;
 
     @BeforeEach
     void setUp() {
-       /* List<Experience> experienceList = new ArrayList<>();
-        List<Languages> languages = new ArrayList<>();
-        testExperience = new Experience("expId4", "Worked for everyone.");
-        testLanguage = new Languages("langId3", "Java");
-        experienceList.add(testExperience);
-        languages.add(testLanguage);
-        testAddress = new Address("addressId1", "road 1", "sweden" , "stockholm" , "08");
-        testQualifications = new Qualifications("qId2", false , true , experienceList , languages);*/
-
-        testForm = new UserForm("Robin" , "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234abcD" , "user",
-                "0704729300", "/image.jpg", 25, null, null);
-        testObject = userService.create(testForm);
-        //newUser = repoMock.save(converterMock.userFormToUser(testForm));
-        //testObject = converterMock.userToDto(newUser);
-        testForm2 = new UserForm("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Dcsa" , "user",
-                "0704139500", "/image.jpg", 25, null, null);
-        //testObject2 = converterMock.userToDto(repoMock.save(converterMock.userFormToUser(testForm2)));
-        testObject2 = userService.create(testForm2);
-        System.out.println(userService.findAll());
+        List<Experience> experiences1 = new ArrayList<>();
+        experiences1.add(new Experience("Never worked."));
+        List<Languages> languages1 = new ArrayList<>();
+        languages1.add(new Languages("Java"));
+        List<Experience> experiences2 = new ArrayList<>();
+        experiences2.add(new Experience("worked 25 years."));
+        List<Languages> languages2 = new ArrayList<>();
+        languages2.add(new Languages("Ruby"));
+        Address address1 = new Address("Road 1", "sweden" , "Stockholm" , "08");
+        Address address2 = new Address("Road 2", "sweden" , "malmö" , "047714");
+        user1 = new User("Robin", "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234abcD" , "user",
+                "0704729300", "/image.jpg", 25, address1, new Qualifications(true, false, experiences1, languages1));
+        user1 = repo.save(user1);
+        user2 = new User("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Dcsa" , "user",
+                "0704139500", "/image.jpg", 25, address2, new Qualifications(false, true, experiences2, languages2));
+        user2 = repo.save(user2);
 
     }
 
     @Test
-    void testFindById(){
+    void findByIdTest(){
         //Arrange
-        //String id = testObject.getUserId();
+        String id = user1.getUserId();
+        //Act
+        UserDto result = testObject.findById(id);
+        //Assert
+        assertEquals(id, result.getUserId());
+    }
+
+    @Test
+    void findAllTest(){
+        //Arrange
+        int size = 2;
+        //Act
+        List<UserDto> result = testObject.findAll();
+        //Assert
+        assertEquals(size, result.size());
+    }
+
+    @Test
+    void findByLanguageTest(){
+        //Arrange
+        int size = 1;
+        String language = "Java";
+        //Act
+        List<UserDto> result = testObject.findByLanguage(language);
+        //Assert
+        assertEquals(size, result.size());
+    }
+
+    @Test
+    void findByLanguageExceptionTest(){
+        //Arrange
+        String language = ".Net";
+        //Act
+        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> testObject.findByLanguage(language));
+        //Assert
+        assertThat(e).hasMessageContaining("Could not find any users with language: " + language);
+    }
+
+    @Test
+    void findByActiveTest(){
+        //Arrange
+        int size = 1;
+        //Act
+        List<UserDto> result = testObject.findAllByActive(true);
+        //Assert
+        assertEquals(size, result.size());
+    }
+
+    @Test
+    void findByAvailableTest(){
+        //Arrange
+        int size = 1;
+        //Act
+        List<UserDto> result = testObject.findByAvailable(true);
+        //Assert
+        assertEquals(size, result.size());
+    }
+
+    @Test
+    void findByLastActiveTest(){
+        //Arrange
+        int size = 2;
+        LocalDate date = user1.getLastActive();
+        //Act
+        List<UserDto> result = testObject.findByLastActive(date);
+        //Assert
+        assertEquals(size, result.size());
+    }
+
+    @Test
+    void CreateTest(){
+        //Arrange
+        int size = 3;
+        List<Experience> experiences = new ArrayList<>();
+        experiences.add(new Experience("Worked for 2 years."));
+        List<Languages> languages = new ArrayList<>();
+        languages.add(new Languages(".Net"));
+        Address address3 = new Address("Road 3", "sweden" , "göteborg" , "21546");
+        UserDto user;
+        //Act
+        testObject.create(new UserForm("Kent", "Malmberg", "kent@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "Dstr1289" , "user",
+                "0704729432", "/image.jpg", 25, address3, new Qualifications(true, true, experiences, languages)));
+        List<UserDto> result = testObject.findAll();
+        //Assert
+        assertEquals(size, result.size());
+        for (UserDto dto: result) {
+            user = dto;
+            assertFalse(user.getUserId().isEmpty());
+        }
+    }
+
+    @Test
+    void updateAddressTest(){
+        //Arrange
+        UserForm updatedUser = converter.dtoToForm(converter.userToDto(user1));
+        updatedUser.getAddress().setCity("Växjö");
+        //Act
+        user1 = converter.dtoToUser(testObject.update(updatedUser));
+        //Assert
+        assertEquals(updatedUser.getAddress(), user1.getAddress());
+    }
+
+    @Test
+    void updateAddLanguageTest(){
+        //Arrange
         int expected = 2;
-        List<UserDto> foundUsers;
+        UserForm updatedUser = converter.dtoToForm(converter.userToDto(user1));
+        updatedUser.getQualifications().addLanguage(new Languages(".Net"));
+        //Act
+        user1 = converter.dtoToUser(testObject.update(updatedUser));
+        //Assert
+        assertEquals(expected, user1.getQualifications().getLanguage().size());
+        user1.getQualifications().getLanguage().forEach(languages -> assertFalse(languages.getLanguagesId().isEmpty()));
+    }
+
+    @Test
+    void deleteTest(){
+        //Arrange
+        int expected = 1;
 
         //Act
-        //UserDto foundUser = userService.findById(id);
-        foundUsers = userService.findAll();
-
+        testObject.delete(user2);
+        List<UserDto> result = testObject.findAll();
         //Assert
-       // assertEquals(testObject.getEmail(), foundUser.getEmail());
-        assertEquals(expected, foundUsers.size());
+        assertEquals(expected, result.size());
     }
 
 }

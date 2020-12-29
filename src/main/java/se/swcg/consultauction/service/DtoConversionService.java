@@ -19,11 +19,4 @@ public interface DtoConversionService {
 
     Client clientFormToClient(ClientForm dto);
 
-    User dtoToUser(UserDto dto);
-    UserDto userToDto(User user);
-    List<UserDto> userToDto(List<User> users);
-
-    User userFormToUser(UserForm dto);
-
-
 }
