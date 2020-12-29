@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
-import se.swcg.consultauction.exception.EntityNotFoundException;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
@@ -51,9 +50,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto createByForm(ClientForm clientForm) {
 
-      /*  if (clientForm.getId() != null){
+        if (clientForm.getId() != null){
             throw new IllegalArgumentException("Invalid Client ID: ID should be specified at creation.");
-        }*/
+        }
 
         return converter.clientToDto(clientRepository.save(converter.clientFormToClient(clientForm)));
     }
