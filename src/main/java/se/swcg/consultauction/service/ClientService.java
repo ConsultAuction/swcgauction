@@ -22,5 +22,5 @@ public interface ClientService {
 
     ClientDto update(ClientForm clientForm);
 
-    void delete(Client client);
+    void delete(Client  client);
 }

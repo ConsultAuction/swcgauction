@@ -10,7 +10,6 @@ import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.service.ClientService;
 
 import java.util.Collection;
-import java.util.Locale;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -64,7 +63,7 @@ public class ClientController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ClientDto> updateByForm(@PathVariable String id, @RequestBody ClientForm updated){
-        if (!id.equals(updated.getId())){
+        if (!id.equals(updated.getClientId())){
             throw new IllegalArgumentException("ID's need to match");
         }
         return ResponseEntity.ok(service.update(updated));

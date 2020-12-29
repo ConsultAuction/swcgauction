@@ -33,10 +33,6 @@ public class Client {
 
 
     @Column(unique = true)
-    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
-            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
-            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
-            message="{invalid.email}")
     private String email;
 
 
@@ -46,11 +42,10 @@ public class Client {
 
     private Date lastActive;
 
-    @Pattern(regexp="^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$",
-            message="{invalid.phonenumber}")
+
     private String phoneNumber;
 
-    @Pattern(regexp =  "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
+
     private String password;
 
     private String role;
@@ -82,13 +77,19 @@ public class Client {
     }
 
     public Client(String companyName, String firstName, String lastName,
-                  String email, String phoneNumber, String password, Address address) {
+                  String email, boolean active, Date dateForSignUp, Date lastActive,
+                  String phoneNumber, String password, String role, String image, Address address) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.active = active;
+        this.dateForSignUp = dateForSignUp;
+        this.lastActive = lastActive;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.role = role;
+        this.image = image;
         this.address = address;
     }
 
