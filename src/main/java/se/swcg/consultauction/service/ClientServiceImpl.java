@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
-import se.swcg.consultauction.exception.EntityNotFoundException;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
