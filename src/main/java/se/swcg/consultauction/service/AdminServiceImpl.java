@@ -19,12 +19,6 @@ public class AdminServiceImpl implements AdminService{
     @Autowired
     AdminDtoConversionService converter;
 
-    /*@Autowired
-    public AdminServiceImpl(AdminRepository repo, AdminDtoConversionService converter) {
-        this.repo = repo;
-        this.converter = converter;
-    }*/
-
     @Override
     public AdminDto findById(String adminId) {
         return converter.adminToDto(
@@ -61,28 +55,17 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminDto create(AdminDto dto) {
-
-        /*AdminDto newAdminDto = new AdminDto(null, adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
-                adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());*/
-
         return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
-
-        /*Admin newAdmin = new Admin(adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
-        adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());
-
-        return converter.adminToDto(repo.save(newAdmin));*/
-
-        //return converter.adminToDto(repo.save(converter.adminFormToAdmin(adminForm)));
     }
 
     @Override
-    public AdminDto update(AdminForm adminForm) {
-        if (adminForm.getAdminId() == null) {
+    public AdminDto update(AdminDto dto) {
+        if (dto.getAdminId() == null) {
             throw new IllegalArgumentException("Invalid id for admin: update");
         }
 
-        Admin foundAdmin = converter.dtoToAdmin(findById(adminForm.getAdminId()));
-        Admin updatedAdmin = converter.adminFormToAdmin(adminForm);
+        Admin foundAdmin = converter.dtoToAdmin(findById(dto.getAdminId()));
+        Admin updatedAdmin = converter.dtoToAdmin(dto);
 
         foundAdmin.setFirstName(updatedAdmin.getFirstName());
         foundAdmin.setLastName(updatedAdmin.getLastName());
@@ -98,7 +81,7 @@ public class AdminServiceImpl implements AdminService{
     @Override
     public void delete(AdminDto adminDto) {
         if (adminDto.getAdminId() == null) {
-            throw new IllegalArgumentException("Invalid id for admin");
+            throw new IllegalArgumentException("Invalid id for admin: delete");
         }
 
         Admin adminToDelete = converter.dtoToAdmin(findById(adminDto.getAdminId()));

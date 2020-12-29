@@ -24,7 +24,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<MyExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
+    protected ResponseEntity<MyExceptionResponse> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request){
 
         MyExceptionResponse response = new MyExceptionResponse(
                 LocalDateTime.now(),
@@ -39,7 +39,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<MyExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
+    protected ResponseEntity<MyExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request){
 
         MyExceptionResponse response = new MyExceptionResponse(
                 LocalDateTime.now(),

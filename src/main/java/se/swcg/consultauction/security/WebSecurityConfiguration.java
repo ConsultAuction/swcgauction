@@ -13,6 +13,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/admin").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/admin/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/admin/email/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/admin/role/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/admin/active/*").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/admin/lastActive/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/admin").permitAll()
                 .anyRequest().authenticated();
     }
