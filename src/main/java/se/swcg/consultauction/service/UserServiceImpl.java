@@ -15,17 +15,19 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository repo;
-    DtoConversionService converter;
+    UserDtoConversionServiceImpl converter;
 
     @Autowired
-    public UserServiceImpl(UserRepository repo, DtoConversionService converter) {
+    public UserServiceImpl(UserRepository repo, UserDtoConversionServiceImpl converter) {
         this.repo = repo;
         this.converter = converter;
     }
 
     @Override
     public UserDto create(UserForm userForm) {
-        return converter.userToDto(repo.save(converter.userFormToUser(userForm)));
+        //return converter.userToDto(repo.save(converter.userFormToUser(userForm)));
+        UserDto dto = converter.userToDto(converter.userFormToUser(userForm));
+        return converter.userToDto(repo.save(converter.dtoToUser(dto)));
     }
 
     @Override
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findByLanguage(String language) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageContainingIgnoreCase(language));
+        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageLanguageIgnoreCase(language));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
