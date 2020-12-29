@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class ClientForm {
 
-    private String id;
+    private String clientId;
 
     private String companyName;
 
@@ -35,10 +35,10 @@ public class ClientForm {
     /*private Projects projects;*/
 
 
-    public ClientForm(String id, String companyName, String firstName, String lastName,
+    public ClientForm(String clientId, String companyName, String firstName, String lastName,
                       String email, boolean active, Date dateForSignUp, Date lastActive,
                       String phoneNumber, String password, String role, String image, Address address) {
-        this.id = id;
+        this.clientId = clientId;
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -70,12 +70,12 @@ public class ClientForm {
         this.address = address;
     }
 
-    public String getId() {
-        return id;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getCompanyName() {

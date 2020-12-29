@@ -1,96 +1,137 @@
 package se.swcg.consultauction.service;
 
-import org.aspectj.lang.annotation.Before;
+
+import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.commons.util.StringUtils;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.mockito.internal.util.StringUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 
-import org.springframework.context.annotation.Primary;
+import org.junit.runner.RunWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
 import org.springframework.test.context.junit4.SpringRunner;
 import se.swcg.consultauction.dto.ClientDto;
+import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Address;
 import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.repository.ClientRepository;
+
+import javax.transaction.Transactional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
 
 @SpringBootTest
-public class ClientServiceImplTest {
+@RunWith(SpringRunner.class)
+@Transactional
+ class ClientServiceTest {
 
-    @TestConfiguration
-    static class ClientServiceImplTestContextConfiguration{
-        @Primary
-        @Bean
-        public ClientService clientService(ClientRepository clientRepository, DtoConversionService dtoConversionService){
-            return new ClientServiceImpl(clientRepository,dtoConversionService);
-        }
-    }
+
+
 
 
     @Autowired
     private ClientService clientService;
-    @MockBean
-    private DtoConversionService dtoMock;
-    @MockBean
+    @Autowired
+    private DtoConversionService convert;
+    @Autowired
     private ClientRepository clientRepositoryMock;
 
-    private ClientDto tobias;
+     Client tobias;
+
+
 
     @BeforeEach
-    public void setup(){
+     void setup(){
         Date d = new Date();
         Address a = new Address("gdsfg","gamla vagen 51","Sweden","Trekanten","39245");
-        tobias = new ClientDto("g3l0df","SWCG","Tobias","Hakansson","tobias19995@gmail.com",
-                true,d,d,"0704129400","qwerty","Admin","zxcvbnm",a);
+        tobias = new Client("g3l0df","SWCG","Tobias","Hakansson","tobias19995@gmail.com",
+                true,d,d,"0704129400","qwertY1asdsd","Admin","zxcvbnm",a);
+       tobias = clientRepositoryMock.save(tobias);
     }
 
-
-    @Test public void findByEmail(){
-
-
-        when(clientService.findByEmail(anyString())).thenReturn(tobias);
-
-
-        ClientDto result =  dtoMock.clientToDto(clientRepositoryMock.findByEmail(anyString()));
-
-        assertEquals(tobias.getEmail(),result.getEmail());
-
-    }
 
     @Test
-    public void findAll(){
+     void findByEmail(){
+        String email = tobias.getEmail();
 
-        when(clientService.findAll()).thenReturn(Arrays.asList(tobias));
+        ClientDto res = clientService.findByEmail(email);
 
-        List<ClientDto> res = dtoMock.clientToDto(clientRepositoryMock.findAll());
-
-        assertEquals(Arrays.asList(tobias),res);
+        assertEquals(email,res.getEmail());
 
     }
     @Test
-    public void findById(){
+     void findByCompanyName(){
 
-        // wont work, don't know why
+        int exp = 1;
 
-        when(clientService.findById(("g3l0df"))).thenReturn(tobias);
+        List<ClientDto> res = clientService.findByCompanyName(tobias.getCompanyName());
 
-        /*ClientDto res = dtoMock.clientToDto(clientRepositoryMock.findById());
+        assertEquals(exp,res.size());
+    }
 
-        assertEquals(tobias.getClientId(),res.getClientId());*/
 
+
+    @Test
+     void findAll(){
+
+        int expected = 1;
+
+        List<ClientDto> res = clientService.findAll();
+
+        assertEquals(expected,res.size());
+
+    }
+    @Test
+     void findById(){
+
+        String  id = tobias.getClientId();
+
+        ClientDto res =  clientService.findById(id);
+
+        assertEquals(id,res.getClientId());
+
+    }
+    @Test
+     void createByForm(){
+
+        int size = 2;
+
+     clientService.createByForm(new ClientForm("SWCGc","dfg","ASDFGH",
+             "tobias199935@gmail.com", true, new Date(),new Date(),
+             "0704129400","qwertY1asdsd", "Admin","zxcvbnm",null));
+
+
+        List<ClientDto> res = clientService.findAll();
+
+        ClientDto dto;
+
+        assertEquals(size,res.size());
+        for (ClientDto d: res){
+            dto = d;
+            assertFalse(dto.getClientId().isEmpty());
+        }
+    }
+
+    @Test
+    void update(){
+        ClientForm updatedClient = convert.doToClientForm(convert.clientToDto(tobias));
+        updatedClient.getAddress().setCity("Växjö");
+        //Act
+        tobias = convert.dtoToClient(clientService.update(updatedClient));
+        //Assert
+        assertEquals(updatedClient.getAddress(), tobias.getAddress());
+
+    }
+
+    @AfterEach
+    void after(){
+        clientRepositoryMock.deleteAll();
     }
 
 

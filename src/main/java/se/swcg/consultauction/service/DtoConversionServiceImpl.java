@@ -12,7 +12,6 @@ import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.entity.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -51,7 +50,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     @Override
     public Client clientFormToClient(ClientForm dto) {
 
-        return new Client(dto.getId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
+        return new Client(dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
                 dto.getEmail(), dto.isActive(), dto.getDateForSignUp(),dto.getLastActive(),
                 dto.getPhoneNumber(),dto.getPassword(),dto.getRole(),dto.getImage(),dto.getAddress());
     }
@@ -91,6 +90,14 @@ public class DtoConversionServiceImpl implements DtoConversionService {
                 dto.isActive(), dto.getDateOfSignUp(), dto.getLastActive(), dto.isAvailable(),
                 dto.getPassword(), dto.getRole(), dto.getPhoneNumber(), dto.getImage(), dto.getMinPrice(),
                 dto.getAddress(), dto.getQualifications());
+    }
+
+    @Override
+    public ClientForm doToClientForm(ClientDto dto) {
+
+        return new ClientForm(dto.getClientId(),dto.getFirstName(),dto.getLastName(),dto.getLastName(),
+                dto.getPhoneNumber(),dto.isActive(),dto.getDateForSignUp(),dto.getLastActive(),dto.getPhoneNumber(),
+                dto.getPassword(),dto.getRole(),dto.getImage(),dto.getAddress());
     }
 
 

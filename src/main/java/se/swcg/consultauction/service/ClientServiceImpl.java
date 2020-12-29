@@ -5,19 +5,20 @@ import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
 import se.swcg.consultauction.entity.Client;
-import se.swcg.consultauction.exception.EntityNotFoundException;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
 
-   private ClientRepository clientRepository;
+    ClientRepository clientRepository;
 
-   private DtoConversionService converter;
+    DtoConversionService converter;
 
 
     @Autowired
@@ -29,18 +30,36 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDto> findAll() {
-        return converter.clientToDto(clientRepository.findAll());
+            List<Client> clients = (List<Client>) clientRepository.findAll();
+            if (clients.isEmpty()){
+                throw new ResourceNotFoundException();
+            } else {
+                return converter.clientToDto(clients);
+            }
     }
 
     @Override
     public ClientDto findById(String id)  {
-        return converter.clientToDto(clientRepository.findById(id).orElseThrow(()
-                -> new ResourceNotFoundException("Could not find a client with ID: " + id)));
+        Optional<Client> optional =     clientRepository.findById(id);
+        if (optional.isPresent()){
+            Client client = optional.get();
+            return converter.clientToDto(client);
+        }
+        else throw  new ResourceNotFoundException( "Could not find Client with ID: "+optional.get().getClientId());
+
+
+
     }
 
     @Override
     public List<ClientDto> findByCompanyName(String companyName) {
-        return converter.clientToDto(clientRepository.findByCompanyNameIgnoreCase(companyName));
+        List<Client> clients = (List<Client>) clientRepository.findByCompanyNameIgnoreCase(companyName);
+        if (clients.isEmpty()){
+            throw new ResourceNotFoundException();
+        } else {
+            return converter.clientToDto(clients);
+        }
+
     }
 
     @Override
@@ -51,20 +70,16 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto createByForm(ClientForm clientForm) {
 
-      /*  if (clientForm.getId() != null){
-            throw new IllegalArgumentException("Invalid Client ID: ID should be specified at creation.");
-        }*/
-
         return converter.clientToDto(clientRepository.save(converter.clientFormToClient(clientForm)));
     }
 
     @Override
     public ClientDto update(ClientForm clientForm) {
-        if (clientForm.getId() == null){
+        if (clientForm.getClientId() == null){
             throw new IllegalArgumentException("Client had a Invalid ID: ");
         }
-        Client client = clientRepository.findById(clientForm.getId()).orElseThrow(() -> new ResourceNotFoundException(
-                "Could not find Client with ID: " + clientForm.getId()));
+        Client client = clientRepository.findById(clientForm.getClientId()).orElseThrow(() -> new ResourceNotFoundException(
+                "Could not find Client with ID: " + clientForm.getClientId()));
 
         Client updated = converter.clientFormToClient(clientForm);
 
@@ -83,7 +98,15 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void delete(Client client) {
-        clientRepository.delete(client);
+    public boolean delete(String  id) {
+
+        Optional<Client> remove = clientRepository.findById(id);
+        if (remove.isPresent()){
+            Client old = remove.get();
+            clientRepository.delete(old);
+            return true;
+        }
+        return false;
+
     }
 }
