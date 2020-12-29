@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.entity.*;
@@ -16,6 +18,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+// @ActiveProfiles("test") prevents CommandLine from running during test.
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 class AdminServiceImplTest {
@@ -199,7 +203,7 @@ class AdminServiceImplTest {
     void test_delete_successfully() {
         int size = adminService.findAll().size() - 1;
 
-        adminService.delete(converter.adminToDto(admin1));
+        adminService.delete(admin1.getAdminId());
 
         assertEquals(size, adminService.findAll().size());
     }
@@ -209,8 +213,8 @@ class AdminServiceImplTest {
         AdminDto toDelete = new AdminDto(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
                 admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> adminService.delete(toDelete));
+        InvalidDataAccessApiUsageException e = assertThrows(InvalidDataAccessApiUsageException.class, () -> adminService.delete(toDelete.getAdminId()));
 
-        assertThat(e).hasMessageContaining("Invalid id");
+        assertThat(e).hasMessageContaining("The given id must not be null");
     }
 }

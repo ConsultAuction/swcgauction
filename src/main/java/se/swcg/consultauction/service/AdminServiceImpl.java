@@ -3,7 +3,6 @@ package se.swcg.consultauction.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.AdminDto;
-import se.swcg.consultauction.dto.AdminForm;
 import se.swcg.consultauction.entity.Admin;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.AdminRepository;
@@ -55,6 +54,8 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminDto create(AdminDto dto) {
+        if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
+
         return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
     }
 
@@ -79,15 +80,11 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public void delete(AdminDto adminDto) {
-        if (adminDto.getAdminId() == null) {
-            throw new IllegalArgumentException("Invalid id for admin: delete");
-        }
+    public boolean delete(String adminId) {
+        repo.delete(converter.dtoToAdmin(findById(adminId)));
 
-        Admin adminToDelete = converter.dtoToAdmin(findById(adminDto.getAdminId()));
-
-        repo.delete(adminToDelete);
-
+        //Returns true if its not present
+        return !repo.findById(adminId).isPresent();
     }
 
     private List<AdminDto> checkIfEmpty(List<AdminDto> adminDtos, String message) {

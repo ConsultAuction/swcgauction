@@ -17,7 +17,7 @@ public interface AdminService {
 
     AdminDto create(AdminDto dto);
     AdminDto update(AdminDto dto);
-    void  delete (AdminDto adminDto);
+    boolean  delete (String adminId);
 
 
 }
