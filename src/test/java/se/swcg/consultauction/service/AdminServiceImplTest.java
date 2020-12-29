@@ -27,6 +27,7 @@ class AdminServiceImplTest {
     private AdminRepository adminRepository;
     @Autowired
     private AdminDtoConversionService converter;
+
     private Admin admin1;
     private Admin admin2;
 
@@ -77,7 +78,7 @@ class AdminServiceImplTest {
         adminRepository.delete(admin1);
         adminRepository.delete(admin2);
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findAll());
+        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, adminService::findAll);
 
         assertThat(e).hasMessageContaining("Could not find any admins");
     }
@@ -161,7 +162,7 @@ class AdminServiceImplTest {
     void test_create_successfully() {
         int size = adminService.findAll().size() + 1;
 
-        AdminForm toCreate = new AdminForm("firstname3", "lastname3", "f@l.com3",
+        AdminDto toCreate = new AdminDto(null, "firstname3", "lastname3", "f@l.com3",
                 "password3", "Admin", true,
                 LocalDate.of(2020, 12, 1));
 

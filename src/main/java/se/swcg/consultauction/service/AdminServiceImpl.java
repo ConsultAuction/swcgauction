@@ -14,14 +14,16 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService{
 
+    @Autowired
     AdminRepository repo;
+    @Autowired
     AdminDtoConversionService converter;
 
-    @Autowired
+    /*@Autowired
     public AdminServiceImpl(AdminRepository repo, AdminDtoConversionService converter) {
         this.repo = repo;
         this.converter = converter;
-    }
+    }*/
 
     @Override
     public AdminDto findById(String adminId) {
@@ -58,12 +60,12 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public AdminDto create(AdminForm adminForm) {
+    public AdminDto create(AdminDto dto) {
 
-        AdminDto newAdminDto = new AdminDto(null, adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
-                adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());
+        /*AdminDto newAdminDto = new AdminDto(null, adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
+                adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());*/
 
-        return converter.adminToDto(repo.save(converter.dtoToAdmin(newAdminDto)));
+        return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
 
         /*Admin newAdmin = new Admin(adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
         adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());

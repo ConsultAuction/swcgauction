@@ -16,7 +16,7 @@ public interface AdminService {
     List<AdminDto> findByLastActive(LocalDate lastActive);
 
 
-    AdminDto create(AdminForm adminForm);
+    AdminDto create(AdminDto dto);
     AdminDto update(AdminForm adminForm);
     void  delete (AdminDto adminDto);
 
