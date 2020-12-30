@@ -87,7 +87,7 @@ class AdminServiceImplTest {
     }
 
     @Test
-    void test_findByEmail_should_return_optinal_of_email() {
+    void test_findByEmail_should_return_optional_of_email() {
         String email = admin1.getEmail();
 
         AdminDto result = adminService.findByEmail(email);

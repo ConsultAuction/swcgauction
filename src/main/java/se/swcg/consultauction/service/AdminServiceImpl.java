@@ -54,7 +54,7 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminDto create(AdminDto dto) {
-        if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
+        checkIfValid(dto);
 
         return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
     }
@@ -67,6 +67,9 @@ public class AdminServiceImpl implements AdminService{
 
         Admin foundAdmin = converter.dtoToAdmin(findById(dto.getAdminId()));
         Admin updatedAdmin = converter.dtoToAdmin(dto);
+
+        //Check to not throw exception if email is the same
+        if (!foundAdmin.getEmail().equals(dto.getEmail())) checkIfValid(dto);
 
         foundAdmin.setFirstName(updatedAdmin.getFirstName());
         foundAdmin.setLastName(updatedAdmin.getLastName());
@@ -93,5 +96,12 @@ public class AdminServiceImpl implements AdminService{
         }
 
         return adminDtos;
+    }
+
+    //Checks with the DB if value already exists
+    private AdminDto checkIfValid(AdminDto dto) {
+        if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
+
+        return dto;
     }
 }
