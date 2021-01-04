@@ -10,7 +10,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import se.swcg.consultauction.dto.AdminDto;
-import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.service.AdminServiceImpl;
 
@@ -38,7 +37,7 @@ class AdminControllerTest {
     private AdminServiceImpl service;
 
     @Autowired
-    private JacksonTester<AdminDto> jsonAdminDto;
+    private JacksonTester<AdminDto> jacksonTester;
 
     private AdminDto adminDto;
 
@@ -64,6 +63,17 @@ class AdminControllerTest {
     }
 
     @Test
+    void test_findAll_should_return_json_not_found() throws Exception {
+        when(service.findAll()).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
+    }
+
+    @Test
     void test_findById_should_return_json_with_admin() throws Exception {
         when(service.findById(anyString())).thenReturn(adminDto);
 
@@ -75,6 +85,17 @@ class AdminControllerTest {
     }
 
     @Test
+    void test_findById_should_return_json_not_found() throws Exception {
+        when(service.findById(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin/" + "2")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
+    }
+
+    @Test
     void test_findByEmail_should_return_json_with_email() throws Exception {
         when(service.findByEmail(anyString())).thenReturn(adminDto);
 
@@ -83,6 +104,17 @@ class AdminControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("email", is(adminDto.getEmail())));
+    }
+
+    @Test
+    void test_findByEmail_should_return_json_not_found() throws Exception {
+        when(service.findByEmail(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin/email/" + "email")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
     }
 
     @Test
@@ -100,6 +132,17 @@ class AdminControllerTest {
     }
 
     @Test
+    void test_findByRole_should_return_json_not_found() throws Exception {
+        when(service.findByRole(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin/role/" + "null")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
+    }
+
+    @Test
     void test_findByActive_should_return_json_array_with_active() throws Exception {
         List<AdminDto> allRoles = Collections.singletonList(adminDto);
 
@@ -111,6 +154,17 @@ class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].active", is(adminDto.isActive())));
+    }
+
+    @Test
+    void test_findByActive_should_return_json_not_found() throws Exception {
+        when(service.findByActive(anyBoolean())).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin/active/" + "false")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
     }
 
     @Test
@@ -128,6 +182,17 @@ class AdminControllerTest {
     }
 
     @Test
+    void test_findByLastActive_should_return_json_not_found() throws Exception {
+        when(service.findByLastActive(any(LocalDate.class))).thenThrow(ResourceNotFoundException.class);
+
+        mvc.perform(get("/api/admin/lastActive/" + "2020-01-01")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("error", is("NOT_FOUND")));
+    }
+
+    @Test
     void test_create_should_return_json_with_id() throws Exception {
         AdminDto toCreate = new AdminDto(null, "firstname2", "lastname2", "f@l.com2",
                 "kalmarSummer2020!", "Admin2", true,
@@ -142,7 +207,7 @@ class AdminControllerTest {
 
         mvc.perform(post("/api/admin")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonAdminDto.write(toCreate).getJson()))
+                .content(jacksonTester.write(toCreate).getJson()))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("adminId", is(created.getAdminId())));
@@ -153,7 +218,7 @@ class AdminControllerTest {
 
         mvc.perform(post("/api/admin")
                 .contentType(MediaType.APPLICATION_ATOM_XML)
-                .content(jsonAdminDto.write(adminDto).getJson()))
+                .content(jacksonTester.write(adminDto).getJson()))
                 .andDo(print())
                 .andExpect(status().isUnsupportedMediaType());
     }
@@ -167,7 +232,7 @@ class AdminControllerTest {
 
         mvc.perform(put("/api/admin/" + adminDto.getAdminId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonAdminDto.write(toUpdate).getJson()))
+                .content(jacksonTester.write(toUpdate).getJson()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("firstName", is(toUpdate.getFirstName())));
@@ -181,7 +246,7 @@ class AdminControllerTest {
 
         mvc.perform(put("/api/admin/" + adminDto.getAdminId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonAdminDto.write(toUpdate).getJson()))
+                .content(jacksonTester.write(toUpdate).getJson()))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", is("Id does not match.")));
