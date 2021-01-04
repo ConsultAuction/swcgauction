@@ -4,9 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.AdminDto;
-import se.swcg.consultauction.dto.AdminForm;
 import se.swcg.consultauction.entity.*;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.AdminRepository;
@@ -17,6 +18,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+// @ActiveProfiles("test") prevents CommandLine from running during test.
+@ActiveProfiles("test")
 @SpringBootTest
 @Transactional
 class AdminServiceImplTest {
@@ -84,7 +87,7 @@ class AdminServiceImplTest {
     }
 
     @Test
-    void test_findByEmail_should_return_optinal_of_email() {
+    void test_findByEmail_should_return_optional_of_email() {
         String email = admin1.getEmail();
 
         AdminDto result = adminService.findByEmail(email);
@@ -177,7 +180,7 @@ class AdminServiceImplTest {
         String oldName = admin1.getFirstName();
         String newFirstName = "NameFirst";
 
-        AdminForm toUpdate = new AdminForm(admin1.getAdminId(), newFirstName, admin1.getLastName(), admin1.getEmail(),
+        AdminDto toUpdate = new AdminDto(admin1.getAdminId(), newFirstName, admin1.getLastName(), admin1.getEmail(),
                 admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
 
         AdminDto updatedAdmin = adminService.update(toUpdate);
@@ -188,7 +191,7 @@ class AdminServiceImplTest {
 
     @Test
     void test_update_without_id_should_return_exception() {
-        AdminForm toUpdate = new AdminForm(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
+        AdminDto toUpdate = new AdminDto(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
                 admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> adminService.update(toUpdate));
@@ -200,7 +203,7 @@ class AdminServiceImplTest {
     void test_delete_successfully() {
         int size = adminService.findAll().size() - 1;
 
-        adminService.delete(converter.adminToDto(admin1));
+        adminService.delete(admin1.getAdminId());
 
         assertEquals(size, adminService.findAll().size());
     }
@@ -210,8 +213,8 @@ class AdminServiceImplTest {
         AdminDto toDelete = new AdminDto(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
                 admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> adminService.delete(toDelete));
+        InvalidDataAccessApiUsageException e = assertThrows(InvalidDataAccessApiUsageException.class, () -> adminService.delete(toDelete.getAdminId()));
 
-        assertThat(e).hasMessageContaining("Invalid id");
+        assertThat(e).hasMessageContaining("The given id must not be null");
     }
 }

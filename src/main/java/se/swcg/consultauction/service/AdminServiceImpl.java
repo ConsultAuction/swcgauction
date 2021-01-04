@@ -3,7 +3,6 @@ package se.swcg.consultauction.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.AdminDto;
-import se.swcg.consultauction.dto.AdminForm;
 import se.swcg.consultauction.entity.Admin;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.AdminRepository;
@@ -18,12 +17,6 @@ public class AdminServiceImpl implements AdminService{
     AdminRepository repo;
     @Autowired
     AdminDtoConversionService converter;
-
-    /*@Autowired
-    public AdminServiceImpl(AdminRepository repo, AdminDtoConversionService converter) {
-        this.repo = repo;
-        this.converter = converter;
-    }*/
 
     @Override
     public AdminDto findById(String adminId) {
@@ -61,28 +54,22 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public AdminDto create(AdminDto dto) {
-
-        /*AdminDto newAdminDto = new AdminDto(null, adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
-                adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());*/
+        checkIfValid(dto);
 
         return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
-
-        /*Admin newAdmin = new Admin(adminForm.getFirstName(), adminForm.getLastName(), adminForm.getEmail(),
-        adminForm.getPassword(), adminForm.getRole(), adminForm.isActive(), adminForm.getLastActive());
-
-        return converter.adminToDto(repo.save(newAdmin));*/
-
-        //return converter.adminToDto(repo.save(converter.adminFormToAdmin(adminForm)));
     }
 
     @Override
-    public AdminDto update(AdminForm adminForm) {
-        if (adminForm.getAdminId() == null) {
+    public AdminDto update(AdminDto dto) {
+        if (dto.getAdminId() == null) {
             throw new IllegalArgumentException("Invalid id for admin: update");
         }
 
-        Admin foundAdmin = converter.dtoToAdmin(findById(adminForm.getAdminId()));
-        Admin updatedAdmin = converter.adminFormToAdmin(adminForm);
+        Admin foundAdmin = converter.dtoToAdmin(findById(dto.getAdminId()));
+        Admin updatedAdmin = converter.dtoToAdmin(dto);
+
+        //Check to not throw exception if email is the same
+        if (!foundAdmin.getEmail().equals(dto.getEmail())) checkIfValid(dto);
 
         foundAdmin.setFirstName(updatedAdmin.getFirstName());
         foundAdmin.setLastName(updatedAdmin.getLastName());
@@ -96,15 +83,11 @@ public class AdminServiceImpl implements AdminService{
     }
 
     @Override
-    public void delete(AdminDto adminDto) {
-        if (adminDto.getAdminId() == null) {
-            throw new IllegalArgumentException("Invalid id for admin");
-        }
+    public boolean delete(String adminId) {
+        repo.delete(converter.dtoToAdmin(findById(adminId)));
 
-        Admin adminToDelete = converter.dtoToAdmin(findById(adminDto.getAdminId()));
-
-        repo.delete(adminToDelete);
-
+        //Returns true if its not present
+        return !repo.findById(adminId).isPresent();
     }
 
     private List<AdminDto> checkIfEmpty(List<AdminDto> adminDtos, String message) {
@@ -113,5 +96,12 @@ public class AdminServiceImpl implements AdminService{
         }
 
         return adminDtos;
+    }
+
+    //Checks with the DB if value already exists
+    private AdminDto checkIfValid(AdminDto dto) {
+        if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
+
+        return dto;
     }
 }

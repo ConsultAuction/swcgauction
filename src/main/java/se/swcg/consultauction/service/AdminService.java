@@ -1,7 +1,6 @@
 package se.swcg.consultauction.service;
 
 import se.swcg.consultauction.dto.AdminDto;
-import se.swcg.consultauction.dto.AdminForm;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,8 +16,8 @@ public interface AdminService {
 
 
     AdminDto create(AdminDto dto);
-    AdminDto update(AdminForm adminForm);
-    void  delete (AdminDto adminDto);
+    AdminDto update(AdminDto dto);
+    boolean  delete (String adminId);
 
 
 }
