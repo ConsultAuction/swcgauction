@@ -10,7 +10,7 @@ import se.swcg.consultauction.repository.PrePopLanguagesRepository;
 import java.util.List;
 
 @Service
-public class PrePopLanguagesServiceImpl implements PrePopLanguagesService {
+public class PrePopLanguagesServiceImpl extends ServiceHelper implements PrePopLanguagesService {
 
     @Autowired
     PrePopLanguagesRepository repo;
@@ -20,13 +20,8 @@ public class PrePopLanguagesServiceImpl implements PrePopLanguagesService {
 
     @Override
     public List<PrePopLanguagesDto> findAll() {
-        List<PrePopLanguages> languages = repo.findAll();
 
-        if (languages.isEmpty()) {
-            throw new ResourceNotFoundException("Could not find any languages.");
-        }
-
-        return converter.prePopLangToDto(languages);
+        return checkIfListIsEmpty(converter.prePopLangToDto(repo.findAll()),"Could not find any languages.");
     }
 
     @Override

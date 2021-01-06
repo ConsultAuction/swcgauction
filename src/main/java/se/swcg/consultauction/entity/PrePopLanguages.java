@@ -30,6 +30,9 @@ public class PrePopLanguages {
         this.language = language;
     }
 
+    public PrePopLanguages() {
+    }
+
     public String getLanguagesId() {
         return languagesId;
     }

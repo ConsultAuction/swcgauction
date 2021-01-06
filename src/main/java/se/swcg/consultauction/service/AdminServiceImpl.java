@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class AdminServiceImpl implements AdminService{
+public class AdminServiceImpl extends ServiceHelper implements AdminService{
 
     @Autowired
     AdminRepository repo;
@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List<AdminDto> findAll() {
-        return checkIfEmpty(converter.adminToDto(repo.findAll()), "Could not find any admins");
+        return checkIfListIsEmpty(converter.adminToDto(repo.findAll()), "Could not find any admins");
     }
 
     @Override
@@ -39,22 +39,22 @@ public class AdminServiceImpl implements AdminService{
 
     @Override
     public List<AdminDto> findByRole(String role) {
-        return checkIfEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role: " + role);
+        return checkIfListIsEmpty(converter.adminToDto(repo.findByRole(role)), "Could not find any admins by role: " + role);
     }
 
     @Override
     public List<AdminDto> findByActive(boolean active) {
-        return checkIfEmpty(converter.adminToDto(repo.findByActive(active)), "Could not find any admins by active");
+        return checkIfListIsEmpty(converter.adminToDto(repo.findByActive(active)), "Could not find any admins by active");
     }
 
     @Override
     public List<AdminDto> findByLastActive(LocalDate lastActive) {
-        return checkIfEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active: " + lastActive);
+        return checkIfListIsEmpty(converter.adminToDto(repo.findByLastActive(lastActive)), "Could not find any admins by last active: " + lastActive);
     }
 
     @Override
     public AdminDto create(AdminDto dto) {
-        checkIfValid(dto);
+        checkIfEmailIsValid(dto);
 
         return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
     }
@@ -69,7 +69,7 @@ public class AdminServiceImpl implements AdminService{
         Admin updatedAdmin = converter.dtoToAdmin(dto);
 
         //Check to not throw exception if email is the same
-        if (!foundAdmin.getEmail().equals(dto.getEmail())) checkIfValid(dto);
+        if (!foundAdmin.getEmail().equals(dto.getEmail())) checkIfEmailIsValid(dto);
 
         foundAdmin.setFirstName(updatedAdmin.getFirstName());
         foundAdmin.setLastName(updatedAdmin.getLastName());
@@ -90,16 +90,8 @@ public class AdminServiceImpl implements AdminService{
         return !repo.findById(adminId).isPresent();
     }
 
-    private List<AdminDto> checkIfEmpty(List<AdminDto> adminDtos, String message) {
-        if(adminDtos.isEmpty()){
-            throw new ResourceNotFoundException(message);
-        }
-
-        return adminDtos;
-    }
-
     //Checks with the DB if value already exists
-    private AdminDto checkIfValid(AdminDto dto) {
+    private AdminDto checkIfEmailIsValid(AdminDto dto) {
         //Maybe add trim and all lowercase
         if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
 
