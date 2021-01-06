@@ -22,7 +22,7 @@ public class AdminServiceImpl implements AdminService{
     public AdminDto findById(String adminId) {
         return converter.adminToDto(
                 repo.findById(adminId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a admin with id: " + adminId)));
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find admin with id: " + adminId)));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AdminServiceImpl implements AdminService{
     public boolean delete(String adminId) {
         repo.delete(converter.dtoToAdmin(findById(adminId)));
 
-        //Returns true if its not present
+        //Returns true if admin is not present
         return !repo.findById(adminId).isPresent();
     }
 
@@ -100,6 +100,7 @@ public class AdminServiceImpl implements AdminService{
 
     //Checks with the DB if value already exists
     private AdminDto checkIfValid(AdminDto dto) {
+        //Maybe add trim and all lowercase
         if (repo.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
 
         return dto;

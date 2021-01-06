@@ -7,5 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PrePopLanguagesRepository extends CrudRepository<PrePopLanguages, String> {
-
+    List<PrePopLanguages> findAll();
+    Optional<PrePopLanguages> findById(String prePopLangId);
 }
