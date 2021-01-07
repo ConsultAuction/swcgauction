@@ -1,36 +1,18 @@
-package se.swcg.consultauction.entity;
+package se.swcg.consultauction.dto;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-@Entity
-public class PrePopLanguages {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+public class ProgrammingLanguagesDto {
+
     private String languagesId;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
     private String language;
 
-    public PrePopLanguages(String languagesId, String language) {
-        this(language);
+    public ProgrammingLanguagesDto(String languagesId, @NotBlank String language) {
         this.languagesId = languagesId;
-    }
-
-    public PrePopLanguages(String language) {
         this.language = language;
-    }
-
-    public PrePopLanguages() {
     }
 
     public String getLanguagesId() {
@@ -49,7 +31,7 @@ public class PrePopLanguages {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PrePopLanguages that = (PrePopLanguages) o;
+        ProgrammingLanguagesDto that = (ProgrammingLanguagesDto) o;
         return Objects.equals(languagesId, that.languagesId) &&
                 Objects.equals(language, that.language);
     }
@@ -61,7 +43,7 @@ public class PrePopLanguages {
 
     @Override
     public String toString() {
-        return "PrePopLanguages{" +
+        return "PrePopLanguagesDto{" +
                 "languagesId='" + languagesId + '\'' +
                 ", language='" + language + '\'' +
                 '}';

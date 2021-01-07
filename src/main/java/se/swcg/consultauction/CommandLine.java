@@ -5,10 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import se.swcg.consultauction.entity.Admin;
-import se.swcg.consultauction.entity.PrePopLanguages;
+import se.swcg.consultauction.entity.ProgrammingLanguages;
 import se.swcg.consultauction.repository.AdminRepository;
-import se.swcg.consultauction.repository.PrePopLanguagesRepository;
-import se.swcg.consultauction.service.PrePopLanguagesService;
+import se.swcg.consultauction.repository.ProgrammingLanguagesRepository;
 
 import java.time.LocalDate;
 
@@ -21,7 +20,7 @@ public class CommandLine implements CommandLineRunner {
     AdminRepository adminRepository;
 
     @Autowired
-    PrePopLanguagesRepository prePopLanguagesRepository;
+    ProgrammingLanguagesRepository programmingLanguagesRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -29,6 +28,6 @@ public class CommandLine implements CommandLineRunner {
 
         adminRepository.save(admin);
 
-        prePopLanguagesRepository.save(new PrePopLanguages("Java"));
+        programmingLanguagesRepository.save(new ProgrammingLanguages("Java"));
     }
 }

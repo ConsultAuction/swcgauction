@@ -2,30 +2,30 @@ package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.swcg.consultauction.dto.PrePopLanguagesDto;
-import se.swcg.consultauction.entity.PrePopLanguages;
+import se.swcg.consultauction.dto.ProgrammingLanguagesDto;
+import se.swcg.consultauction.entity.ProgrammingLanguages;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
-import se.swcg.consultauction.repository.PrePopLanguagesRepository;
+import se.swcg.consultauction.repository.ProgrammingLanguagesRepository;
 
 import java.util.List;
 
 @Service
-public class PrePopLanguagesServiceImpl extends ServiceHelper implements PrePopLanguagesService {
+public class ProgrammingLanguagesServiceImpl extends ServiceHelper implements ProgrammingLanguagesService {
 
     @Autowired
-    PrePopLanguagesRepository repo;
+    ProgrammingLanguagesRepository repo;
 
     @Autowired
-    PrePopLanguagesDtoConversionService converter;
+    ProgrammingLanguagesDtoConversionService converter;
 
     @Override
-    public List<PrePopLanguagesDto> findAll() {
+    public List<ProgrammingLanguagesDto> findAll() {
 
         return checkIfListIsEmpty(converter.prePopLangToDto(repo.findAll()),"Could not find any languages.");
     }
 
     @Override
-    public PrePopLanguagesDto findById(String prePopLangId) {
+    public ProgrammingLanguagesDto findById(String prePopLangId) {
         return converter.prePopLangToDto(
                 repo.findById(prePopLangId)
                 .orElseThrow(() -> new ResourceNotFoundException("Could not find language with id: " + prePopLangId)));
@@ -33,18 +33,18 @@ public class PrePopLanguagesServiceImpl extends ServiceHelper implements PrePopL
     }
 
     @Override
-    public PrePopLanguagesDto create(PrePopLanguagesDto dto) {
+    public ProgrammingLanguagesDto create(ProgrammingLanguagesDto dto) {
         return converter.prePopLangToDto(repo.save(converter.dtoToPrePopLang(dto)));
     }
 
     @Override
-    public PrePopLanguagesDto update(PrePopLanguagesDto dto) {
+    public ProgrammingLanguagesDto update(ProgrammingLanguagesDto dto) {
         if (dto.getLanguagesId() == null) {
             throw new IllegalArgumentException("Invalid id for PrePopLanguages: update");
         }
 
-        PrePopLanguages foundLanguage = converter.dtoToPrePopLang(findById((dto.getLanguagesId())));
-        PrePopLanguages updatedLanguage = converter.dtoToPrePopLang(dto);
+        ProgrammingLanguages foundLanguage = converter.dtoToPrePopLang(findById((dto.getLanguagesId())));
+        ProgrammingLanguages updatedLanguage = converter.dtoToPrePopLang(dto);
 
         foundLanguage.setLanguage(updatedLanguage.getLanguage());
 

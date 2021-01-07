@@ -7,10 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
-import se.swcg.consultauction.dto.PrePopLanguagesDto;
-import se.swcg.consultauction.entity.PrePopLanguages;
+import se.swcg.consultauction.dto.ProgrammingLanguagesDto;
+import se.swcg.consultauction.entity.ProgrammingLanguages;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
-import se.swcg.consultauction.repository.PrePopLanguagesRepository;
+import se.swcg.consultauction.repository.ProgrammingLanguagesRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,40 +23,40 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class PrePopLanguagesServiceImplTest {
+class ProgrammingLanguagesServiceImplTest {
 
     @TestConfiguration
     static class PrePopLanguagesServiceImplTestContextConfiguration {
         @Bean
-        public PrePopLanguagesService prePopLanguagesService() {
-            return new PrePopLanguagesServiceImpl();
+        public ProgrammingLanguagesService prePopLanguagesService() {
+            return new ProgrammingLanguagesServiceImpl();
         }
     }
 
     @Autowired
-    private PrePopLanguagesService prePopLanguagesService;
+    private ProgrammingLanguagesService programmingLanguagesService;
 
     @MockBean
-    private PrePopLanguagesRepository repo;
+    private ProgrammingLanguagesRepository repo;
 
-    PrePopLanguages java;
-    PrePopLanguagesDto javaDto;
+    ProgrammingLanguages java;
+    ProgrammingLanguagesDto javaDto;
 
 
     @BeforeEach
     void setUp() {
-        java = new PrePopLanguages("0","Java");
-        javaDto = new PrePopLanguagesDto("0", "Java");
+        java = new ProgrammingLanguages("0","Java");
+        javaDto = new ProgrammingLanguagesDto("0", "Java");
     }
 
     @Test
     void test_findAll_should_return_list_with_size_of_1() {
-        List<PrePopLanguages> list = new ArrayList<>();
+        List<ProgrammingLanguages> list = new ArrayList<>();
         list.add(java);
 
         when(repo.findAll()).thenReturn(list);
 
-        List<PrePopLanguagesDto> found = prePopLanguagesService.findAll();
+        List<ProgrammingLanguagesDto> found = programmingLanguagesService.findAll();
         int size = 1;
 
         assertEquals(size, found.size());
@@ -65,11 +65,11 @@ class PrePopLanguagesServiceImplTest {
 
     @Test
     void test_findAll_should_return_empty_list_and_throw_exception() {
-        List<PrePopLanguages> emptyList = new ArrayList();
+        List<ProgrammingLanguages> emptyList = new ArrayList();
 
         when(repo.findAll()).thenReturn(emptyList);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.findAll());
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.findAll());
 
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
@@ -81,7 +81,7 @@ class PrePopLanguagesServiceImplTest {
     void test_findById_with_valid_id_should_return_language() {
         when(repo.findById(anyString())).thenReturn(Optional.of(java));
 
-        PrePopLanguagesDto found = prePopLanguagesService.findById(java.getLanguagesId());
+        ProgrammingLanguagesDto found = programmingLanguagesService.findById(java.getLanguagesId());
 
         String expectedLanguage = "Java";
         String actualLanguage = found.getLanguage();
@@ -93,7 +93,7 @@ class PrePopLanguagesServiceImplTest {
     void test_findById_with_inValid_id_should_throw_exception() {
         when(repo.findById(anyString())).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.findById(java.getLanguagesId()));
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.findById(java.getLanguagesId()));
 
 
         String expectedMessage = "Could not find";
@@ -105,28 +105,28 @@ class PrePopLanguagesServiceImplTest {
     @Test
     void test_create_should_return_valid_dto() {
 
-        when(repo.save(any(PrePopLanguages.class))).thenReturn(java);
+        when(repo.save(any(ProgrammingLanguages.class))).thenReturn(java);
 
-        PrePopLanguagesDto found = prePopLanguagesService.create(javaDto);
+        ProgrammingLanguagesDto found = programmingLanguagesService.create(javaDto);
 
         assertThat(javaDto.getLanguage().equals(found.getLanguage()));
     }
 
     @Test
     void test_update_should_return_valid_dto() {
-        when(repo.save(any(PrePopLanguages.class))).thenReturn(java);
+        when(repo.save(any(ProgrammingLanguages.class))).thenReturn(java);
         when(repo.findById(anyString())).thenReturn(Optional.of(java));
 
-        PrePopLanguagesDto found = prePopLanguagesService.update(javaDto);
+        ProgrammingLanguagesDto found = programmingLanguagesService.update(javaDto);
 
         assertThat(found.getLanguage().contains(javaDto.getLanguage()));
     }
 
     @Test
     void test_update_with_inValid_object_should_throw_exception() {
-        when(repo.save(any(PrePopLanguages.class))).thenReturn(java);
+        when(repo.save(any(ProgrammingLanguages.class))).thenReturn(java);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.update(javaDto));
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.update(javaDto));
 
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
@@ -140,7 +140,7 @@ class PrePopLanguagesServiceImplTest {
                 .thenReturn(Optional.of(java))
                 .thenReturn(Optional.empty());
 
-        boolean result = prePopLanguagesService.delete(javaDto.getLanguagesId());
+        boolean result = programmingLanguagesService.delete(javaDto.getLanguagesId());
 
         assertTrue(result);
     }
@@ -150,7 +150,7 @@ class PrePopLanguagesServiceImplTest {
         when(repo.findById(anyString()))
                 .thenReturn(Optional.of(java));
 
-        boolean result = prePopLanguagesService.delete(javaDto.getLanguagesId());
+        boolean result = programmingLanguagesService.delete(javaDto.getLanguagesId());
 
         assertFalse(result);
     }
