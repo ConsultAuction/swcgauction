@@ -47,7 +47,6 @@ class PrePopLanguagesServiceImplTest {
     void setUp() {
         java = new PrePopLanguages("0","Java");
         javaDto = new PrePopLanguagesDto("0", "Java");
-
     }
 
     @Test
@@ -70,9 +69,7 @@ class PrePopLanguagesServiceImplTest {
 
         when(repo.findAll()).thenReturn(emptyList);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            prePopLanguagesService.findAll();
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.findAll());
 
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
@@ -96,9 +93,7 @@ class PrePopLanguagesServiceImplTest {
     void test_findById_with_inValid_id_should_throw_exception() {
         when(repo.findById(anyString())).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            prePopLanguagesService.findById(java.getLanguagesId());
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.findById(java.getLanguagesId()));
 
 
         String expectedMessage = "Could not find";
@@ -114,7 +109,7 @@ class PrePopLanguagesServiceImplTest {
 
         PrePopLanguagesDto found = prePopLanguagesService.create(javaDto);
 
-        assertThat(javaDto.getLanguage().equals(java.getLanguage()));
+        assertThat(javaDto.getLanguage().equals(found.getLanguage()));
     }
 
     @Test
@@ -131,9 +126,7 @@ class PrePopLanguagesServiceImplTest {
     void test_update_with_inValid_object_should_throw_exception() {
         when(repo.save(any(PrePopLanguages.class))).thenReturn(java);
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-            prePopLanguagesService.update(javaDto);
-        });
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> prePopLanguagesService.update(javaDto));
 
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
