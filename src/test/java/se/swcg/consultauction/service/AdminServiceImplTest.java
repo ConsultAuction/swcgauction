@@ -4,72 +4,91 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.entity.*;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.AdminRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
 
-// @ActiveProfiles("test") prevents CommandLine from running during test.
-@ActiveProfiles("test")
 @SpringBootTest
-@Transactional
 class AdminServiceImplTest {
+
+    @TestConfiguration
+    static class AdminServiceImplTestContextConfiguration {
+
+        @Bean
+        public AdminService adminService() {
+            return new AdminServiceImpl();
+        }
+    }
 
     @Autowired
     private AdminService adminService;
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private AdminDtoConversionService converter;
 
-    private Admin admin1;
-    private Admin admin2;
+    @MockBean
+    private AdminRepository repo;
+
+    private Admin admin;
+    private AdminDto adminDto;
+    private List<Admin> adminList;
+    private List<Admin> emptyList;
 
     @BeforeEach
     void setUp() {
-        admin1 = new Admin("firstname", "lastname", "f@l.com",
+        admin = new Admin("0","firstname", "lastname", "f@l.com",
                 "password", "Admin", true,
                 LocalDate.of(2020, 12, 23));
-        admin1 = adminRepository.save(admin1);
 
-        admin2 = new Admin("firstname2", "lastname2", "f@l.com2",
-                "password2", "Admin", true,
-                LocalDate.of(2020, 12, 10));
-        admin2 = adminRepository.save(admin2);
+        adminDto = new AdminDto("1","firstname2", "lastname2", "f@l.com2",
+            "password2", "Admin", true,
+            LocalDate.of(2020, 12, 23));
+
+        adminList = new ArrayList<>();
+        adminList.add(admin);
+
+        emptyList = new ArrayList<>();
     }
-
-    //TODO Test for exceptions
 
     @Test
     void test_findById_should_return_optional_of_findById() {
-        String id =  admin1.getAdminId();
+        when(repo.findById(anyString())).thenReturn(Optional.of(admin));
 
-        AdminDto result = adminService.findById(id);
+        AdminDto found = adminService.findById(admin.getAdminId());
 
-        assertEquals(id, result.getAdminId());
+        String expectedFirstName = "firstname";
+        String actualFirstName = found.getFirstName();
+
+        assertEquals(expectedFirstName, actualFirstName);
     }
 
     @Test
     void test_findById_should_return_exception() {
-        String id = "0";
+        when(repo.findById(anyString())).thenReturn(Optional.empty());
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findById(id));
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.findById(admin.getAdminId()));
 
-        assertThat(e).hasMessageContaining(id);
+        String expectedMessageContains = "not find";
+        String actualMessage = e.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessageContains));
     }
 
     @Test
     void test_findAll_should_return_list_size_of_2() {
-        int size = 2;
+        when(repo.findAll()).thenReturn(adminList);
+        int size = adminList.size();
 
         List<AdminDto> result = adminService.findAll();
 
@@ -78,143 +97,146 @@ class AdminServiceImplTest {
 
     @Test
     void test_findAll_should_return_exception() {
-        adminRepository.delete(admin1);
-        adminRepository.delete(admin2);
+        when(repo.findAll()).thenReturn(emptyList);
 
         ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, adminService::findAll);
 
-        assertThat(e).hasMessageContaining("Could not find any admins");
+        assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_findByEmail_should_return_optional_of_email() {
-        String email = admin1.getEmail();
+        when(repo.findByEmail(anyString())).thenReturn(Optional.of(admin));
 
-        AdminDto result = adminService.findByEmail(email);
+        AdminDto found = adminService.findByEmail(admin.getEmail());
 
-        assertEquals(email, result.getEmail());
+        assertThat(found.getEmail().contains(admin.getEmail()));
     }
 
     @Test
     void test_findByEmail_should_return_exception() {
-        String email = "null";
+        when(repo.findByEmail(anyString())).thenReturn(Optional.empty());
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByEmail(email));
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByEmail(admin.getEmail()));
 
-        assertThat(e).hasMessageContaining(email);
+        assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_findByRole_should_return_list_of_roles() {
-        String role = admin1.getRole();
-        int size = 2;
+        when(repo.findByRole(anyString())).thenReturn(adminList);
+        int size = adminList.size();
 
-        List<AdminDto> result = adminService.findByRole(role);
+        List<AdminDto> result = adminService.findByRole(admin.getRole());
 
         assertEquals(size, result.size());
+        assertTrue(result.get(0).getRole().contains(admin.getRole()));
     }
 
     @Test
     void test_findByRole_should_return_exception() {
-        String role = "null";
+        when(repo.findByRole(anyString())).thenReturn(emptyList);
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByEmail(role));
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByEmail(admin.getRole()));
 
-        assertThat(e).hasMessageContaining(role);
+        assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_findByActive_should_return_list_of_active() {
-        boolean active = true;
-        int size = 2;
+        when(repo.findByActive(anyBoolean())).thenReturn(adminList);
+        int size = adminList.size();
 
-        List<AdminDto> result = adminService.findByActive(active);
+        List<AdminDto> result = adminService.findByActive(admin.isActive());
 
         assertEquals(size, result.size());
+        assertTrue(result.get(0).isActive());
     }
 
     @Test
     void test_findByActive_should_return_exception() {
-        boolean active = false;
+        when(repo.findByActive(anyBoolean())).thenReturn(emptyList);
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByActive(active));
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByActive(admin.isActive()));
 
         assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_findByLastActive_should_return_list_of_lastActive() {
-        LocalDate date = admin1.getLastActive();
-        int size = 1;
+        when(repo.findByLastActive(any(LocalDate.class))).thenReturn(adminList);
+        int size = adminList.size();
 
-        List<AdminDto> result = adminService.findByLastActive(date);
+        List<AdminDto> result = adminService.findByLastActive(admin.getLastActive());
 
         assertEquals(size, result.size());
+        assertEquals(result.get(0).getLastActive(), admin.getLastActive());
     }
 
     @Test
     void test_findByLastActive_should_return_exception() {
-        LocalDate date = LocalDate.of(2019, 7, 20);
+        when(repo.findByLastActive(any(LocalDate.class))).thenReturn(emptyList);
 
-        ResourceNotFoundException e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByLastActive(date));
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.findByLastActive(admin.getLastActive()));
 
-        assertThat(e).hasMessageContaining(date.toString());
+        assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_create_successfully() {
-        int size = adminService.findAll().size() + 1;
+        when(repo.save(any(Admin.class))).thenReturn(admin);
 
-        AdminDto toCreate = new AdminDto(null, "firstname3", "lastname3", "f@l.com3",
-                "password3", "Admin", true,
-                LocalDate.of(2020, 12, 1));
+        AdminDto created = adminService.create(adminDto);
 
-        AdminDto dto = adminService.create(toCreate);
-
-        assertNotNull(dto.getAdminId());
-        assertEquals(size, adminService.findAll().size());
+        assertThat(created.getFirstName().equals(adminDto.getFirstName()));
     }
 
     @Test
     void test_update_successfully() {
-        String oldName = admin1.getFirstName();
-        String newFirstName = "NameFirst";
+        when(repo.save(any(Admin.class))).thenReturn(admin);
+        when(repo.findById(anyString())).thenReturn(Optional.of(admin));
 
-        AdminDto toUpdate = new AdminDto(admin1.getAdminId(), newFirstName, admin1.getLastName(), admin1.getEmail(),
-                admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
+        AdminDto found = adminService.update(adminDto);
 
-        AdminDto updatedAdmin = adminService.update(toUpdate);
+        assertThat(found.getFirstName().contains(adminDto.getFirstName()));
+    }
 
-        assertEquals(newFirstName, updatedAdmin.getFirstName());
-        assertNotEquals(oldName, updatedAdmin.getFirstName());
+    @Test
+    void test_update_with_invalid_object_should_throw_exception() {
+        when(repo.save(any(Admin.class))).thenReturn(admin);
+
+        Exception e = assertThrows(ResourceNotFoundException.class, () -> adminService.update(adminDto));
+
+        assertThat(e).hasMessageContaining("Could not find");
     }
 
     @Test
     void test_update_without_id_should_return_exception() {
-        AdminDto toUpdate = new AdminDto(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
-                admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
+        AdminDto toUpdate = new AdminDto(null, admin.getFirstName(), admin.getLastName(), admin.getEmail(),
+                admin.getPassword(), admin.getRole(), admin.isActive(), admin.getLastActive());
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> adminService.update(toUpdate));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> adminService.update(toUpdate));
 
         assertThat(e).hasMessageContaining("Invalid id");
     }
 
     @Test
     void test_delete_successfully() {
-        int size = adminService.findAll().size() - 1;
+        when(repo.findById(anyString()))
+                .thenReturn(Optional.of(admin))
+                .thenReturn(Optional.empty());
 
-        adminService.delete(admin1.getAdminId());
+        boolean result = adminService.delete(admin.getAdminId());
 
-        assertEquals(size, adminService.findAll().size());
+        assertTrue(result);
     }
 
     @Test
     void test_delete_should_return_exception() {
-        AdminDto toDelete = new AdminDto(null, admin1.getFirstName(), admin1.getLastName(), admin1.getEmail(),
-                admin1.getPassword(), admin1.getRole(), admin1.isActive(), admin1.getLastActive());
+        when(repo.findById(anyString())).thenReturn(Optional.of(admin));
 
-        InvalidDataAccessApiUsageException e = assertThrows(InvalidDataAccessApiUsageException.class, () -> adminService.delete(toDelete.getAdminId()));
+        boolean result = adminService.delete(adminDto.getAdminId());
 
-        assertThat(e).hasMessageContaining("The given id must not be null");
+        assertFalse(result);
     }
 }

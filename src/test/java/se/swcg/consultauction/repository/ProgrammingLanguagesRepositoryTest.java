@@ -27,13 +27,11 @@ class ProgrammingLanguagesRepositoryTest {
     @BeforeEach
     void setUp() {
         languages = new ProgrammingLanguages("Java");
+        entityManager.persistAndFlush(languages);
     }
 
     @Test
     void findAll() {
-        entityManager.persist(languages);
-        entityManager.flush();
-
         List<ProgrammingLanguages> list = repo.findAll();
         int size = 1;
 
@@ -42,11 +40,9 @@ class ProgrammingLanguagesRepositoryTest {
 
     @Test
     void findById() {
-        entityManager.persist(languages);
-        entityManager.flush();
-
         Optional<ProgrammingLanguages> found = repo.findById(languages.getLanguagesId());
 
+        assertTrue(found.isPresent());
         assertThat(found.get().getLanguagesId().equals(languages.getLanguagesId()));
     }
 }

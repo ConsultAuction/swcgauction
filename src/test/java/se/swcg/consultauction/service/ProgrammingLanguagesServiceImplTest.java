@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,9 +26,10 @@ import static org.mockito.Mockito.when;
 class ProgrammingLanguagesServiceImplTest {
 
     @TestConfiguration
-    static class PrePopLanguagesServiceImplTestContextConfiguration {
+    static class ProgrammingLanguagesServiceImplTestContextConfiguration {
+
         @Bean
-        public ProgrammingLanguagesService prePopLanguagesService() {
+        public ProgrammingLanguagesService programmingLanguagesService() {
             return new ProgrammingLanguagesServiceImpl();
         }
     }
@@ -95,7 +96,6 @@ class ProgrammingLanguagesServiceImplTest {
 
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.findById(java.getLanguagesId()));
 
-
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
 
@@ -104,7 +104,6 @@ class ProgrammingLanguagesServiceImplTest {
 
     @Test
     void test_create_should_return_valid_dto() {
-
         when(repo.save(any(ProgrammingLanguages.class))).thenReturn(java);
 
         ProgrammingLanguagesDto found = programmingLanguagesService.create(javaDto);
@@ -129,6 +128,18 @@ class ProgrammingLanguagesServiceImplTest {
         Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.update(javaDto));
 
         String expectedMessage = "Could not find";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    @Test
+    void test_update_without_id_should_throw_exception() {
+        ProgrammingLanguagesDto languagesDto = new ProgrammingLanguagesDto(null, "Java");
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> programmingLanguagesService.update(languagesDto));
+
+        String expectedMessage = "Invalid";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
