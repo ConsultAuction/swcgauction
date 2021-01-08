@@ -18,9 +18,9 @@ public interface ClientService {
 
     ClientDto findByEmail(String email);
 
-    ClientDto createByForm(ClientForm clientForm);
+    ClientDto create(ClientDto clientDto);
 
-    ClientDto update(ClientForm clientForm);
+    ClientDto update(ClientDto clientDto);
 
-    void delete(Client  client);
+    boolean delete(String id);
 }
