@@ -16,14 +16,14 @@ public class ProgrammingLanguages {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    private String languagesId;
+    private String languageId;
 
     @Column(nullable = false, unique = true)
     private String language;
 
-    public ProgrammingLanguages(String languagesId, String language) {
+    public ProgrammingLanguages(String languageId, String language) {
         this(language);
-        this.languagesId = languagesId;
+        this.languageId = languageId;
     }
 
     public ProgrammingLanguages(String language) {
@@ -33,8 +33,8 @@ public class ProgrammingLanguages {
     public ProgrammingLanguages() {
     }
 
-    public String getLanguagesId() {
-        return languagesId;
+    public String getLanguageId() {
+        return languageId;
     }
 
     public String getLanguage() {
@@ -50,19 +50,19 @@ public class ProgrammingLanguages {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgrammingLanguages that = (ProgrammingLanguages) o;
-        return Objects.equals(languagesId, that.languagesId) &&
+        return Objects.equals(languageId, that.languageId) &&
                 Objects.equals(language, that.language);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(languagesId, language);
+        return Objects.hash(languageId, language);
     }
 
     @Override
     public String toString() {
         return "PrePopLanguages{" +
-                "languagesId='" + languagesId + '\'' +
+                "languagesId='" + languageId + '\'' +
                 ", language='" + language + '\'' +
                 '}';
     }

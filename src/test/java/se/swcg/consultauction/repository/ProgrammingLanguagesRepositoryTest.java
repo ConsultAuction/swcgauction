@@ -40,9 +40,9 @@ class ProgrammingLanguagesRepositoryTest {
 
     @Test
     void findById() {
-        Optional<ProgrammingLanguages> found = repo.findById(languages.getLanguagesId());
+        Optional<ProgrammingLanguages> found = repo.findById(languages.getLanguageId());
 
         assertTrue(found.isPresent());
-        assertThat(found.get().getLanguagesId().equals(languages.getLanguagesId()));
+        assertThat(found.get().getLanguageId().equals(languages.getLanguageId()));
     }
 }

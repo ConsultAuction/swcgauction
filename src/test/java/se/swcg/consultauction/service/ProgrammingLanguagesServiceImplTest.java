@@ -82,7 +82,7 @@ class ProgrammingLanguagesServiceImplTest {
     void test_findById_with_valid_id_should_return_language() {
         when(repo.findById(anyString())).thenReturn(Optional.of(java));
 
-        ProgrammingLanguagesDto found = programmingLanguagesService.findById(java.getLanguagesId());
+        ProgrammingLanguagesDto found = programmingLanguagesService.findById(java.getLanguageId());
 
         String expectedLanguage = "Java";
         String actualLanguage = found.getLanguage();
@@ -94,7 +94,7 @@ class ProgrammingLanguagesServiceImplTest {
     void test_findById_with_inValid_id_should_throw_exception() {
         when(repo.findById(anyString())).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.findById(java.getLanguagesId()));
+        Exception exception = assertThrows(ResourceNotFoundException.class, () -> programmingLanguagesService.findById(java.getLanguageId()));
 
         String expectedMessage = "Could not find";
         String actualMessage = exception.getMessage();
@@ -151,7 +151,7 @@ class ProgrammingLanguagesServiceImplTest {
                 .thenReturn(Optional.of(java))
                 .thenReturn(Optional.empty());
 
-        boolean result = programmingLanguagesService.delete(javaDto.getLanguagesId());
+        boolean result = programmingLanguagesService.delete(javaDto.getLanguageId());
 
         assertTrue(result);
     }
@@ -161,7 +161,7 @@ class ProgrammingLanguagesServiceImplTest {
         when(repo.findById(anyString()))
                 .thenReturn(Optional.of(java));
 
-        boolean result = programmingLanguagesService.delete(javaDto.getLanguagesId());
+        boolean result = programmingLanguagesService.delete(javaDto.getLanguageId());
 
         assertFalse(result);
     }

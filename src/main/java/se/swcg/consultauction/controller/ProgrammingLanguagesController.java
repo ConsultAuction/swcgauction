@@ -34,7 +34,7 @@ public class ProgrammingLanguagesController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProgrammingLanguagesDto> update(@PathVariable String id, @RequestBody ProgrammingLanguagesDto updated) {
-        if (!updated.getLanguagesId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+        if (!updated.getLanguageId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
         return ResponseEntity.ok(programmingLanguagesService.update(updated));
     }

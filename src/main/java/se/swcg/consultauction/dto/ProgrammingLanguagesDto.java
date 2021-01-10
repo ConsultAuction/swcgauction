@@ -1,22 +1,24 @@
 package se.swcg.consultauction.dto;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class ProgrammingLanguagesDto {
 
-    private String languagesId;
+    private String languageId;
 
-    @NotBlank
+    @NotBlank(message = "You need to enter a language")
+    @Size(min = 2, max = 30)
     private String language;
 
-    public ProgrammingLanguagesDto(String languagesId, @NotBlank String language) {
-        this.languagesId = languagesId;
+    public ProgrammingLanguagesDto(String languageId, String language) {
+        this.languageId = languageId;
         this.language = language;
     }
 
-    public String getLanguagesId() {
-        return languagesId;
+    public String getLanguageId() {
+        return languageId;
     }
 
     public String getLanguage() {
@@ -32,19 +34,19 @@ public class ProgrammingLanguagesDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProgrammingLanguagesDto that = (ProgrammingLanguagesDto) o;
-        return Objects.equals(languagesId, that.languagesId) &&
+        return Objects.equals(languageId, that.languageId) &&
                 Objects.equals(language, that.language);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(languagesId, language);
+        return Objects.hash(languageId, language);
     }
 
     @Override
     public String toString() {
         return "PrePopLanguagesDto{" +
-                "languagesId='" + languagesId + '\'' +
+                "languagesId='" + languageId + '\'' +
                 ", language='" + language + '\'' +
                 '}';
     }

@@ -13,12 +13,12 @@ import java.util.List;
 public class ProgrammingLanguagesDtoConversionServiceImpl implements ProgrammingLanguagesDtoConversionService {
     @Override
     public ProgrammingLanguages dtoToPrePopLang(ProgrammingLanguagesDto dto) {
-        return new ProgrammingLanguages(dto.getLanguagesId(), dto.getLanguage());
+        return new ProgrammingLanguages(dto.getLanguageId(), dto.getLanguage());
     }
 
     @Override
     public ProgrammingLanguagesDto prePopLangToDto(ProgrammingLanguages programmingLanguages) {
-        return new ProgrammingLanguagesDto(programmingLanguages.getLanguagesId(), programmingLanguages.getLanguage());
+        return new ProgrammingLanguagesDto(programmingLanguages.getLanguageId(), programmingLanguages.getLanguage());
     }
 
     @Override

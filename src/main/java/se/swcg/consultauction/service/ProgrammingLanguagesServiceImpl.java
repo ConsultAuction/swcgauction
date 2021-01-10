@@ -39,11 +39,11 @@ public class ProgrammingLanguagesServiceImpl extends ServiceHelper implements Pr
 
     @Override
     public ProgrammingLanguagesDto update(ProgrammingLanguagesDto dto) {
-        if (dto.getLanguagesId() == null) {
+        if (dto.getLanguageId() == null) {
             throw new IllegalArgumentException("Invalid id for PrePopLanguages: update");
         }
 
-        ProgrammingLanguages foundLanguage = converter.dtoToPrePopLang(findById((dto.getLanguagesId())));
+        ProgrammingLanguages foundLanguage = converter.dtoToPrePopLang(findById((dto.getLanguageId())));
         ProgrammingLanguages updatedLanguage = converter.dtoToPrePopLang(dto);
 
         foundLanguage.setLanguage(updatedLanguage.getLanguage());
