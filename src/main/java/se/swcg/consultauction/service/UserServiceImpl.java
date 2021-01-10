@@ -14,7 +14,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository repo;
-    UserDtoConversionServiceImpl converter;
+    UserDtoConversionService converter;
 
     @Autowired
     public UserServiceImpl(UserRepository repo, UserDtoConversionServiceImpl converter) {
@@ -116,7 +116,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
-        repo.delete(user);
+    public boolean delete(String id) {
+
+        repo.delete(converter.dtoToUser(findById(id)));
+        return  !repo.findById(id).isPresent();
     }
 }

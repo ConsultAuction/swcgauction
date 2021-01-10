@@ -25,7 +25,8 @@ public class UserDto {
     private LocalDate lastActive;
     private boolean available;
     @NotBlank
-    @Pattern(regexp = "^\\(?=.*[a-z]?=.*[A-Z](?=.*\\d)[a-zA-Z\\d]{8,}$")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,32}$",
+            message = "At least one digit, one lower case, one upper case, one special character(!@#$%^&+=)")
     private String password;
     private String role;
     @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
@@ -35,8 +36,6 @@ public class UserDto {
     private int minPrice;
     private Address address;
     private Qualifications qualifications;
-
-
 
     public UserDto(String userId, String firstName, String lastName,String email, boolean active,
                    LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password,

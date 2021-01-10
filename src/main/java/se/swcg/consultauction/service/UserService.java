@@ -1,7 +1,6 @@
 package se.swcg.consultauction.service;
 
 import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.entity.User;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +15,6 @@ public interface UserService {
     List<UserDto> findAllByActive(boolean active);
     List<UserDto> findByAvailable(boolean available);
     UserDto update(UserDto userDto);
-    void delete(User user);
+    boolean delete(String id);
 
 }
