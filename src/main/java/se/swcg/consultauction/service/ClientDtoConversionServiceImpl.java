@@ -45,6 +45,13 @@ public class ClientDtoConversionServiceImpl implements ClientDtoConversionServic
     }
 
     @Override
+    public ClientForm DtoToClientForm(ClientDto dto) {
+        return new ClientForm(dto.getClientId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),
+                dto.getEmail(), dto.isActive(), dto.getDateForSignUp(),dto.getLastActive(),
+                dto.getPhoneNumber(),dto.getPassword(),dto.getRole(),dto.getImage(),dto.getAddress());
+    }
+
+    @Override
     public Client clientFormToClient(ClientForm dto) {
 
         return new Client(dto.getClientId(),dto.getCompanyName(),dto.getFirstName(),dto.getLastName(),

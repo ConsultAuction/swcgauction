@@ -2,28 +2,27 @@ package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
+import se.swcg.consultauction.entity.Address;
+import se.swcg.consultauction.entity.Admin;
 import se.swcg.consultauction.entity.Client;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.ClientRepository;
 
+import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class ClientServiceImpl implements ClientService {
 
-
-   private ClientRepository clientRepository;
-
-   private ClientDtoConversionService converter;
-
-
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository, ClientDtoConversionService converter) {
-        this.clientRepository = clientRepository;
-        this.converter = converter;
-    }
+    ClientRepository clientRepository;
+    @Autowired
+    ClientDtoConversionService converter;
+
 
 
     @Override
@@ -44,46 +43,60 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto findByEmail(String email) {
-        return converter.clientToDto(clientRepository.findByEmail(email));
+        return converter.clientToDto(
+                clientRepository.findByEmail(email)
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a admin with email: " + email)));
     }
 
     @Override
-    public ClientDto createByForm(ClientForm clientForm) {
+    public ClientDto create(ClientDto dto) {
+        checkIfValid(dto);
 
-        if (clientForm.getClientId() != null){
-            throw new IllegalArgumentException("Invalid Client ID: ID should be specified at creation.");
+        return converter.clientToDto(clientRepository.save(converter.dtoToClient(dto)));
+
+    }
+
+    @Override
+    public ClientDto update(ClientDto dto) {
+        if (dto.getClientId() == null) {
+            throw new IllegalArgumentException("Invalid id for admin: update");
         }
 
-        return converter.clientToDto(clientRepository.save(converter.clientFormToClient(clientForm)));
-    }
+        Client foundClient = converter.dtoToClient(findById(dto.getClientId()));
+        Client updatedClient = converter.dtoToClient(dto);
 
-    @Override
-    public ClientDto update(ClientForm clientForm) {
-        if (clientForm.getClientId() == null){
-            throw new IllegalArgumentException("Client had a Invalid ID: ");
-        }
-        Client client = clientRepository.findById(clientForm.getClientId()).orElseThrow(() -> new ResourceNotFoundException(
-                "Could not find Client with ID: " + clientForm.getClientId()));
+        //Check to not throw exception if email is the same
+        if (!foundClient.getEmail().equals(dto.getEmail())) checkIfValid(dto);
 
-        Client updated = converter.clientFormToClient(clientForm);
+        foundClient.setCompanyName(updatedClient.getCompanyName());
+        foundClient.setFirstName(updatedClient.getFirstName());
+        foundClient.setLastName(updatedClient.getLastName());
+        foundClient.setEmail(updatedClient.getEmail());
+        foundClient.setActive(updatedClient.isActive());
+        foundClient.setDateForSignUp(updatedClient.getDateForSignUp());
+        foundClient.setLastActive(updatedClient.getLastActive());
+        foundClient.setPhoneNumber(updatedClient.getPhoneNumber());
+        foundClient.setPassword(updatedClient.getPassword());
+        foundClient.setRole(updatedClient.getRole());
+        foundClient.setImage(updatedClient.getImage());
+        foundClient.setAddress(updatedClient.getAddress());
 
-        client.setCompanyName(updated.getCompanyName());
-        client.setFirstName(updated.getFirstName());
-        client.setLastName(updated.getLastName());
-        client.setEmail(updated.getEmail());
-        client.setActive(updated.isActive());
-        client.setLastActive(updated.getLastActive());
-        client.setPhoneNumber(updated.getPhoneNumber());
-        client.setImage(updated.getImage());
 
-        return converter.clientToDto(clientRepository.save(client));
+        return converter.clientToDto(clientRepository.save(foundClient));
 
 
     }
 
     @Override
-    public void delete(Client client) {
-        clientRepository.delete(client);
+    public boolean delete(String  id) {
+         clientRepository.delete(converter.dtoToClient(findById(id)));
+
+         return !clientRepository.findById(id).isPresent();
+    }
+    private ClientDto checkIfValid(ClientDto dto) {
+        if (clientRepository.findByEmail(dto.getEmail()).isPresent()) throw new IllegalArgumentException("Email already exists :" + dto.getEmail());
+
+        return dto;
     }
 
 
