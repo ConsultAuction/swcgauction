@@ -2,71 +2,64 @@ package se.swcg.consultauction.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
+import se.swcg.consultauction.entity.Client;
+import se.swcg.consultauction.service.AdminService;
 import se.swcg.consultauction.service.ClientService;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.Collection;
+import java.util.List;
 
-@CrossOrigin(origins = "*")
+
 @RestController
 @RequestMapping(path = "/api/client")
 public class ClientController {
 
-    public static final String ALL = "ALL";
-    public static final String ID = "ID";
-
-    private ClientService service;
-
     @Autowired
-    public ClientController(ClientService service){
-        this.service = service;
+    private ClientService  clientService;
+
+    @GetMapping
+    public ResponseEntity<List<ClientDto>> findAll() {
+        return ResponseEntity.ok(clientService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDto> findById(@PathVariable String id){
-
-        return ResponseEntity.ok(service.findById(id));
-
+    public ResponseEntity<ClientDto> findById(@PathVariable String id) {
+        return ResponseEntity.ok(clientService.findById(id));
     }
 
-
-    @GetMapping
-    public ResponseEntity<?> find(
-            @RequestParam(name = "type", defaultValue = ALL) final String type,
-            @RequestParam(name = "value",defaultValue = ALL) final String value
-    ){
-        switch (type.toUpperCase().trim()) {
-
-
-            case ID:
-                return ResponseEntity.ok(service.findById(value));
-
-            case ALL:
-                Collection<ClientDto> found = service.findAll();
-                return found.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(found);
-
-            default:
-                return ResponseEntity.badRequest().body("Not a valid type: " + type);
-
-        }
-
+    @GetMapping("/email/{email}")
+    public ResponseEntity<ClientDto> findByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(clientService.findByEmail(email));
     }
+
 
     @PostMapping
-    public ResponseEntity<ClientDto> createByForm(@RequestBody ClientForm dto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createByForm(dto));
+    public ResponseEntity<ClientDto> create(@Valid @RequestBody ClientDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDto> updateByForm(@PathVariable String id, @RequestBody ClientForm updated){
-        if (!id.equals(updated.getClientId())){
-            throw new IllegalArgumentException("ID's need to match");
-        }
-        return ResponseEntity.ok(service.update(updated));
+    public ResponseEntity<ClientDto> update(@PathVariable String id, @RequestBody ClientDto updated) {
+        if (!updated.getClientId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+
+        return ResponseEntity.ok(clientService.update(updated));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") String id) {
+        boolean isRemoved = clientService.delete(id);
+        if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete admin with id: " + id);
+
+        return new ResponseEntity<>("Admin with id: " + id + " was successfully removed.", HttpStatus.OK);
     }
 
 }
