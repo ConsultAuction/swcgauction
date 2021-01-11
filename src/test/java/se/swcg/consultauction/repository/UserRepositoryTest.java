@@ -37,10 +37,10 @@ class UserRepositoryTest {
         testAddress = new Address("addressId1", "road 1", "sweden" , "stockholm" , "08");
         testQualifications = new Qualifications("qId2", false , true , experienceList , languages);
         */
-        testObject = new User("Robin" , "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234Adve" , "user",
+        testObject = new User("Robin" , "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234Adve!" , "user",
                 "0147852369", "/image.jpg", 25, null, null);
         testObject = repo.save(testObject);
-        testObject2 = new User("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Abcd" , "user",
+        testObject2 = new User("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Abcd!" , "user",
                 "0147852369", "/image.jpg", 25, null, null);
         testObject2 = repo.save(testObject2);
 

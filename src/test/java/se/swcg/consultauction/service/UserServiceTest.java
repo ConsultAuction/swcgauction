@@ -8,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.dto.UserForm;
 import se.swcg.consultauction.entity.*;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.UserRepository;
@@ -31,7 +30,7 @@ class UserServiceTest {
     @Autowired
     UserRepository repo;
     @Autowired
-    UserDtoConversionServiceImpl converter;
+    UserDtoConversionService converter;
 
     User user1;
     User user2;
@@ -48,10 +47,10 @@ class UserServiceTest {
         languages2.add(new Languages("Ruby"));
         Address address1 = new Address("Road 1", "sweden" , "Stockholm" , "08");
         Address address2 = new Address("Road 2", "sweden" , "malmö" , "047714");
-        user1 = new User("Robin", "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234abcD" , "user",
+        user1 = new User("Robin", "sandberg", "robin@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "1234abcD!" , "user",
                 "0704729300", "/image.jpg", 25, address1, new Qualifications(true, false, experiences1, languages1));
         user1 = repo.save(user1);
-        user2 = new User("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Dcsa" , "user",
+        user2 = new User("Sten" , "Stensson", "sten@hotmail.com" , false, LocalDate.now(), LocalDate.now(), false, "1234Dcsa!" , "user",
                 "0704139500", "/image.jpg", 25, address2, new Qualifications(false, true, experiences2, languages2));
         user2 = repo.save(user2);
 
@@ -140,7 +139,7 @@ class UserServiceTest {
         Address address3 = new Address("Road 3", "sweden" , "göteborg" , "21546");
         UserDto user;
         //Act
-        testObject.create(new UserForm("Kent", "Malmberg", "kent@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "Dstr1289" , "user",
+        testObject.create(new UserDto(null,"Kent", "Malmberg", "kent@hotmail.com" , true, LocalDate.now(), LocalDate.now(), true, "Dstr1289!" , "user",
                 "0704729432", "/image.jpg", 25, address3, new Qualifications(true, true, experiences, languages)));
         List<UserDto> result = testObject.findAll();
         //Assert
@@ -154,7 +153,7 @@ class UserServiceTest {
     @Test
     void updateAddressTest(){
         //Arrange
-        UserForm updatedUser = converter.dtoToForm(converter.userToDto(user1));
+        UserDto updatedUser = converter.userToDto(user1);
         updatedUser.getAddress().setCity("Växjö");
         //Act
         user1 = converter.dtoToUser(testObject.update(updatedUser));
@@ -166,7 +165,7 @@ class UserServiceTest {
     void updateAddLanguageTest(){
         //Arrange
         int expected = 2;
-        UserForm updatedUser = converter.dtoToForm(converter.userToDto(user1));
+        UserDto updatedUser = converter.userToDto(user1);
         updatedUser.getQualifications().addLanguage(new Languages(".Net"));
         //Act
         user1 = converter.dtoToUser(testObject.update(updatedUser));
@@ -181,7 +180,7 @@ class UserServiceTest {
         int expected = 1;
 
         //Act
-        testObject.delete(user2);
+        testObject.delete(user2.getUserId());
         List<UserDto> result = testObject.findAll();
         //Assert
         assertEquals(expected, result.size());

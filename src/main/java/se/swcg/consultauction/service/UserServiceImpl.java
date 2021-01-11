@@ -3,7 +3,6 @@ package se.swcg.consultauction.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.dto.UserForm;
 import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.UserRepository;
@@ -15,7 +14,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     UserRepository repo;
-    UserDtoConversionServiceImpl converter;
+    UserDtoConversionService converter;
 
     @Autowired
     public UserServiceImpl(UserRepository repo, UserDtoConversionServiceImpl converter) {
@@ -24,10 +23,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto create(UserForm userForm) {
-        //return converter.userToDto(repo.save(converter.userFormToUser(userForm)));
-        UserDto dto = converter.userToDto(converter.userFormToUser(userForm));
-        return converter.userToDto(repo.save(converter.dtoToUser(dto)));
+    public UserDto create(UserDto userDto) {
+        return converter.userToDto(repo.save(converter.dtoToUser(userDto)));
     }
 
     @Override
@@ -91,14 +88,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto update(UserForm userForm) {
-       if (userForm.getUserId() == null){
+    public UserDto update(UserDto userDto) {
+       if (userDto.getUserId() == null){
             throw new IllegalArgumentException("User had a Invalid ID: ");
         }
 
-        User foundUser = converter.dtoToUser(findById(userForm.getUserId()));
+        User foundUser = converter.dtoToUser(findById(userDto.getUserId()));
 
-        User updatedUser = converter.userFormToUser(userForm);
+        User updatedUser = converter.dtoToUser(userDto);
 
         foundUser.setFirstName(updatedUser.getFirstName());
         foundUser.setLastName(updatedUser.getLastName());
@@ -119,7 +116,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
-        repo.delete(user);
+    public boolean delete(String id) {
+
+        repo.delete(converter.dtoToUser(findById(id)));
+        return  !repo.findById(id).isPresent();
     }
 }
