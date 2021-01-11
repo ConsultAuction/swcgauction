@@ -76,6 +76,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
                 ex, apiError, headers, apiError.getStatus(), request);
     }
 
+    // MissingServletRequestParameterException: This exception is thrown when request missing parameter
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(
             MissingServletRequestParameterException ex, HttpHeaders headers,
@@ -88,6 +89,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    // ConstrainViolationException: This exception reports the result of constraint violations:
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleConstraintViolation(
             ConstraintViolationException ex, WebRequest request) {
@@ -103,6 +105,7 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    // MethodArgumentTypeMismatchException: This exception is thrown when method argument is not the expected type:
     @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -115,6 +118,16 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler {
                 apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    // Maybe need to add this
+    /*<servlet>
+        <servlet-name>api</servlet-name>
+        <servlet-class>
+        org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>throwExceptionIfNoHandlerFound</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </servlet>*/
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
