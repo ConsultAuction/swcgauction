@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") String id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         boolean isRemoved = adminService.delete(id);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete admin with id: " + id);
 

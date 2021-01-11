@@ -215,7 +215,6 @@ class AdminControllerTest {
 
     @Test
     void test_create_should_return_unsupported_media_type() throws Exception {
-
         mvc.perform(post("/api/admin")
                 .contentType(MediaType.APPLICATION_ATOM_XML)
                 .content(jacksonTester.write(adminDto).getJson()))
@@ -256,7 +255,8 @@ class AdminControllerTest {
     void test_delete_should_return_json_with_confirmation() throws Exception {
         when(service.delete(anyString())).thenReturn(true);
 
-        mvc.perform(delete("/api/admin/" + adminDto.getAdminId()).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(delete("/api/admin/" + adminDto.getAdminId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("Admin with id: 0 was successfully removed."));
@@ -267,7 +267,8 @@ class AdminControllerTest {
     void test_delete_should_return_json_with_illegalArgument() throws Exception {
         when(service.delete(anyString())).thenReturn(false);
 
-        mvc.perform(delete("/api/admin/" + adminDto.getAdminId()).contentType(MediaType.APPLICATION_JSON))
+        mvc.perform(delete("/api/admin/" + adminDto.getAdminId())
+                .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message", containsString("Something went wrong")));
