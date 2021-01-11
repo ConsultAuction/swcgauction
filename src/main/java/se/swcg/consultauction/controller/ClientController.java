@@ -14,8 +14,6 @@ import se.swcg.consultauction.service.AdminService;
 import se.swcg.consultauction.service.ClientService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -57,9 +55,9 @@ public class ClientController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         boolean isRemoved = clientService.delete(id);
-        if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete admin with id: " + id);
+        if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete client with id: " + id);
 
-        return new ResponseEntity<>("Admin with id: " + id + " was successfully removed.", HttpStatus.OK);
+        return new ResponseEntity<>("Client with id: " + id + " was successfully removed.", HttpStatus.OK);
     }
 
 }
