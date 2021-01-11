@@ -7,12 +7,13 @@ import se.swcg.consultauction.entity.Client;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends CrudRepository<Client, String > {
 
             List<Client> findByCompanyNameIgnoreCase(String companyName);
             List<Client> findAll();
-            Client findByEmail(String email);
+            Optional<Client> findByEmail(String email);
 
 }
