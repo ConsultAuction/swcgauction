@@ -87,6 +87,8 @@ public class ClientServiceImpl implements ClientService {
 
     }
 
+
+
     @Override
     public boolean delete(String  id) {
          clientRepository.delete(converter.dtoToClient(findById(id)));
@@ -98,6 +100,4 @@ public class ClientServiceImpl implements ClientService {
 
         return dto;
     }
-
-
 }

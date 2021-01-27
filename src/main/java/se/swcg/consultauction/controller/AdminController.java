@@ -6,7 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.AdminDto;
+import se.swcg.consultauction.entity.Admin;
+import se.swcg.consultauction.security.SecurityAdmin;
 import se.swcg.consultauction.service.AdminService;
+import se.swcg.consultauction.service.AdminServiceImpl;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -17,7 +20,7 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     @GetMapping
     public ResponseEntity<List<AdminDto>> findAll() {

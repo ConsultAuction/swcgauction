@@ -18,6 +18,8 @@ public class User {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+
+    //TODO change to correct @Column(nullable = false, unique = true)... etc
     private String userId;
     @NotBlank
     @Size(max = 50)
