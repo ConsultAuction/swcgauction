@@ -1,6 +1,6 @@
 package se.swcg.consultauction.model;
 
-public class AdminLoginRequestModel {
+public class UserLoginRequest {
     private String email;
     private String password;
 

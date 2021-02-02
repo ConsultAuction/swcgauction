@@ -1,3 +1,4 @@
+/*
 package se.swcg.consultauction.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.entity.Admin;
-import se.swcg.consultauction.security.SecurityAdmin;
-import se.swcg.consultauction.service.AdminService;
 import se.swcg.consultauction.service.AdminServiceImpl;
 
 import javax.validation.Valid;
@@ -73,3 +72,4 @@ public class AdminController {
     }
 
 }
+*/

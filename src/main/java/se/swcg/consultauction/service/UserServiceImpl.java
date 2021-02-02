@@ -1,118 +1,161 @@
 package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.entity.Contact;
 import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
+import se.swcg.consultauction.model.CreateClientRequest;
+import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.repository.UserRepository;
+import se.swcg.consultauction.security.SecurityConstants;
+import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
+
 @Service
 public class UserServiceImpl implements UserService {
 
-    UserRepository repo;
-    UserDtoConversionService converter;
-
     @Autowired
-    public UserServiceImpl(UserRepository repo, UserDtoConversionServiceImpl converter) {
+    UserRepository repo;
+    @Autowired
+    DtoConversionService converter;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    /*//Constructor not working with test right now.
+    @Autowired
+    public UserServiceImpl(UserRepository repo, DtoConversionService converter, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repo = repo;
         this.converter = converter;
-    }
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }*/
+
+
 
     @Override
-    public UserDto create(UserDto userDto) {
-        return converter.userToDto(repo.save(converter.dtoToUser(userDto)));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return new SecurityUser(
+                repo.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
     @Override
     public UserDto findById(String userId) {
-        return converter.userToDto(repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
+        return converter.userToDto(
+                repo.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
     }
 
     @Override
     public List<UserDto> findAll() {
-        List<UserDto> foundUsers = converter.userToDto(repo.findAll());
-
-        // depending if we want to send back empty list or not
-        if(foundUsers.isEmpty()){
-            throw new ResourceNotFoundException("Could not find any users");
-        }
-        return foundUsers;
+        return checkIfListIsEmpty(converter.userToDto(repo.findAll()), "Could not find any users");
     }
 
     @Override
     public List<UserDto> findByLanguage(String language) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageLanguageIgnoreCase(language));
+        /*List<UserDto> foundUsers = converter.userToDto(repo.findByQualificationsLanguageLanguageIgnoreCase(language));
 
         // depending if we want to send back empty list or not
         if(foundUsers.isEmpty()){
             throw new ResourceNotFoundException("Could not find any users with language: " + language);
         }
-        return foundUsers;
+        return foundUsers;*/
+        return null;
+    }
+
+
+    @Override
+    public UserDto findByEmail(String email) {
+        return converter.userToDto(
+                repo.findByEmail(email)
+                    .orElseThrow(() -> new ResourceNotFoundException("Could not find a admin with email: " + email)));
+    }
+
+    @Override
+    public List<User> findByRole(String role) {
+        return null;
     }
 
     @Override
     public List<UserDto> findByLastActive(LocalDate lastActive) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findByLastActive(lastActive));
-
-        // depending if we want to send back empty list or not
-        if(foundUsers.isEmpty()){
-            throw new ResourceNotFoundException("Could not find any users with last active date: " + lastActive);
-        }
-        return foundUsers;
+        return checkIfListIsEmpty(
+                converter.userToDto(
+                        repo.findByLastActive(lastActive)), "Could not find any users with last active date: " + lastActive);
     }
 
     @Override
-    public List<UserDto> findAllByActive(boolean active) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findAllByActive(active));
-
-        // depending if we want to send back empty list or not
-        if(foundUsers.isEmpty()){
-            throw new ResourceNotFoundException("Could not find any users with active status: " + active);
-        }
-        return foundUsers;
+    public List<UserDto> findByActive(boolean active) {
+        return checkIfListIsEmpty(
+                converter.userToDto(
+                        repo.findByActive(active)), "Could not find any users with active status: " + active);
     }
 
     @Override
     public List<UserDto> findByAvailable(boolean available) {
-        List<UserDto> foundUsers = converter.userToDto(repo.findByAvailable(available));
+        return checkIfListIsEmpty(
+                converter.userToDto(
+                        repo.findByAvailableForHire(available)), "Could not find any users with available status: " + available);
+    }
 
-        // depending if we want to send back empty list or not
-        if(foundUsers.isEmpty()){
-            throw new ResourceNotFoundException("Could not find any users with available status: " + available);
-        }
-        return foundUsers;
+
+    @Override
+    public UserDto createClient(CreateClientRequest clientRequest) {
+        LocalDate todayDate = LocalDate.now();
+
+        if (repo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + clientRequest.getEmail());
+
+        User newClient = new User(
+                clientRequest.getCompanyName(),
+                clientRequest.getFirstName(),
+                clientRequest.getLastName(),
+                clientRequest.getEmail(),
+                bCryptPasswordEncoder.encode(clientRequest.getPassword()),
+                SecurityConstants.ROLE_CLIENT,
+                todayDate,
+                todayDate,
+                SecurityConstants.DEFAULT_ACTIVE,
+                SecurityConstants.DEFAULT_AVAILABLE_FOR_HIRE,
+                clientRequest.getImage(),
+                new Contact(
+                        clientRequest.getAddress(),
+                        clientRequest.getZipCode(),
+                        clientRequest.getCity(),
+                        clientRequest.getCountry(),
+                        clientRequest.getPhoneNumber()
+                )
+        );
+
+        return converter.userToDto(
+                repo.save(newClient));
     }
 
     @Override
-    public UserDto update(UserDto userDto) {
-       if (userDto.getUserId() == null){
-            throw new IllegalArgumentException("User had a Invalid ID: ");
-        }
+    public UserDto createConsultant(CreateConsultantRequest createConsultantRequest) {
+        /*private String role;
+    private LocalDate dateOfSignUp;
+    private LocalDate lastActive;
+    private boolean active;
+    // Maybe set default for false?
+    private boolean availableForHire;*/
+        return null;
+    }
 
-        User foundUser = converter.dtoToUser(findById(userDto.getUserId()));
+    @Override
+    public UserDto updateClient(CreateClientRequest createClientRequest) {
+        return null;
+    }
 
-        User updatedUser = converter.dtoToUser(userDto);
-
-        foundUser.setFirstName(updatedUser.getFirstName());
-        foundUser.setLastName(updatedUser.getLastName());
-        foundUser.setEmail(updatedUser.getEmail());
-        foundUser.setActive(updatedUser.isActive());
-        foundUser.setDateOfSignUp(updatedUser.getDateOfSignUp());
-        foundUser.setLastActive(updatedUser.getLastActive());
-        foundUser.setAvailable(updatedUser.isAvailable());
-        foundUser.setPassword(updatedUser.getPassword());
-        foundUser.setRole(updatedUser.getRole());
-        foundUser.setPhoneNumber(updatedUser.getPhoneNumber());
-        foundUser.setImage(updatedUser.getImage());
-        foundUser.setMinPrice(updatedUser.getMinPrice());
-        foundUser.setAddress(updatedUser.getAddress());
-        foundUser.setQualifications(updatedUser.getQualifications());
-
-        return converter.userToDto(repo.save(foundUser));
+    @Override
+    public UserDto updateConsultant(CreateConsultantRequest createConsultantRequest) {
+        return null;
     }
 
     @Override

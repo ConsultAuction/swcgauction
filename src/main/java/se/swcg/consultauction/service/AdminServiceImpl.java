@@ -1,3 +1,4 @@
+/*
 package se.swcg.consultauction.service;
 
 import org.springframework.beans.BeanUtils;
@@ -9,8 +10,7 @@ import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.entity.Admin;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
-import se.swcg.consultauction.repository.AdminRepository;
-import se.swcg.consultauction.security.SecurityAdmin;
+import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -27,16 +27,29 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    */
+/*//*
+/Constructor not working with test right now.
+    @Autowired
+    public AdminServiceImpl(AdminRepository repo, AdminDtoConversionService converter, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.repo = repo;
+        this.converter = converter;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }*//*
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return new SecurityAdmin(
+        return new SecurityUser(
                 repo.findByEmail(email)
                         .orElseThrow(() -> new UsernameNotFoundException("Could not find admin with email: " + email))
         );
-        /*
+        */
+/*
         Optional<Admin> admin = repo.findByEmail(email);
         if (!admin.isPresent()) throw new UsernameNotFoundException("Could not find admin with email: " + email);
-        return new User(admin.get().getEmail(), admin.get().getPassword(), new ArrayList<>());*/
+        return new User(admin.get().getEmail(), admin.get().getPassword(), new ArrayList<>());*//*
+
     }
 
     @Override
@@ -127,3 +140,4 @@ public class AdminServiceImpl implements AdminService {
         return dto;
     }
 }
+*/

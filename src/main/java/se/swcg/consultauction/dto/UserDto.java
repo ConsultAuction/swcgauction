@@ -1,65 +1,89 @@
 package se.swcg.consultauction.dto;
 
-import se.swcg.consultauction.entity.Address;
-import se.swcg.consultauction.entity.Qualifications;
+import se.swcg.consultauction.entity.Contact;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class UserDto {
 
     private String userId;
+    private String companyName;
+
     @NotBlank
     private String firstName;
+
     @NotBlank
     private String lastName;
+
     @NotBlank
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
-    private boolean active;
-    private LocalDate dateOfSignUp;
-    private LocalDate lastActive;
-    private boolean available;
+
     @NotBlank
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,32}$",
             message = "At least one digit, one lower case, one upper case, one special character(!@#$%^&+=)")
     private String password;
     private String role;
-    @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
-    private String phoneNumber;
+    private LocalDate dateOfSignUp;
+    private LocalDate lastActive;
+    private boolean active;
+    private boolean availableForHire;
     private String image;
-    @NotNull
-    private int minPrice;
-    private Address address;
-    private Qualifications qualifications;
+    private Contact contact;
 
-    public UserDto(String userId, String firstName, String lastName,String email, boolean active,
-                   LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password,
-                   String role, String phoneNumber, String image, int minPrice, Address address,
-                   Qualifications qualifications) {
+    public UserDto(String userId, String companyName, String firstName, String lastName, String email,  String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
         this.userId = userId;
+        this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.active = active;
-        this.dateOfSignUp = dateOfSignUp;
-        this.lastActive = lastActive;
-        this.available = available;
         this.password = password;
         this.role = role;
-        this.phoneNumber = phoneNumber;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.active = active;
+        this.availableForHire = availableForHire;
         this.image = image;
-        this.minPrice = minPrice;
-        this.address = address;
-        this.qualifications = qualifications;
+        this.contact = contact;
+    }
+
+    public UserDto(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
+        this.companyName = companyName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.active = active;
+        this.availableForHire = availableForHire;
+        this.image = image;
+        this.contact = contact;
+    }
+
+    public UserDto() {
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getFirstName() {
@@ -86,12 +110,20 @@ public class UserDto {
         this.email = email;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getPassword() {
+        return password;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDate getDateOfSignUp() {
@@ -110,36 +142,20 @@ public class UserDto {
         this.lastActive = lastActive;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isAvailableForHire() {
+        return availableForHire;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setAvailableForHire(boolean availableForHire) {
+        this.availableForHire = availableForHire;
     }
 
     public String getImage() {
@@ -150,27 +166,55 @@ public class UserDto {
         this.image = image;
     }
 
-    public int getMinPrice() {
-        return minPrice;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setMinPrice(int minPrice) {
-        this.minPrice = minPrice;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
-    public Address getAddress() {
-        return address;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return active == userDto.active &&
+                availableForHire == userDto.availableForHire &&
+                Objects.equals(userId, userDto.userId) &&
+                Objects.equals(companyName, userDto.companyName) &&
+                Objects.equals(firstName, userDto.firstName) &&
+                Objects.equals(lastName, userDto.lastName) &&
+                Objects.equals(email, userDto.email) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(role, userDto.role) &&
+                Objects.equals(dateOfSignUp, userDto.dateOfSignUp) &&
+                Objects.equals(lastActive, userDto.lastActive) &&
+                Objects.equals(image, userDto.image) &&
+                Objects.equals(contact, userDto.contact);
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, availableForHire, image, contact);
     }
 
-    public Qualifications getQualifications() {
-        return qualifications;
-    }
-
-    public void setQualifications(Qualifications qualifications) {
-        this.qualifications = qualifications;
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userId='" + userId + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", dateOfSignUp=" + dateOfSignUp +
+                ", lastActive=" + lastActive +
+                ", active=" + active +
+                ", availableForHire=" + availableForHire +
+                ", image='" + image + '\'' +
+                ", address=" + contact +
+                '}';
     }
 }

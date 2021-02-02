@@ -14,9 +14,15 @@ public class ProgrammingLanguagesServiceImpl extends ServiceHelper implements Pr
 
     @Autowired
     ProgrammingLanguagesRepository repo;
-
     @Autowired
-    ProgrammingLanguagesDtoConversionService converter;
+    DtoConversionService converter;
+
+    /*// Problem with test
+    @Autowired
+    public ProgrammingLanguagesServiceImpl(ProgrammingLanguagesRepository repo, DtoConversionService converter) {
+        this.repo = repo;
+        this.converter = converter;
+    }*/
 
     @Override
     public List<ProgrammingLanguagesDto> findAll() {

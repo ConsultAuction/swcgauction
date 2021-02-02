@@ -16,8 +16,13 @@ public class Qualifications {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private String qualificationsId;
+
     private boolean frontend;
     private boolean backend;
+    private int minPrice;
+
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private User user;
 
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Experience> experience;
@@ -25,14 +30,21 @@ public class Qualifications {
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Languages> language;
 
-    public Qualifications(String qualificationsId, boolean frontend, boolean backend, List<Experience> experience, List<Languages> language) {
-        this(frontend, backend, experience, language);
+    public Qualifications(String qualificationsId, boolean frontend, boolean backend, int minPrice, User user, List<Experience> experience, List<Languages> language) {
         this.qualificationsId = qualificationsId;
-    }
-
-    public Qualifications(boolean frontend, boolean backend, List<Experience> experience, List<Languages> language) {
         this.frontend = frontend;
         this.backend = backend;
+        this.minPrice = minPrice;
+        this.user = user;
+        this.experience = experience;
+        this.language = language;
+    }
+
+    public Qualifications(boolean frontend, boolean backend, int minPrice, User user, List<Experience> experience, List<Languages> language) {
+        this.frontend = frontend;
+        this.backend = backend;
+        this.minPrice = minPrice;
+        this.user = user;
         this.experience = experience;
         this.language = language;
     }
@@ -65,8 +77,32 @@ public class Qualifications {
         return frontend;
     }
 
+    public void setFrontend(boolean frontend) {
+        this.frontend = frontend;
+    }
+
     public boolean isBackend() {
         return backend;
+    }
+
+    public void setBackend(boolean backend) {
+        this.backend = backend;
+    }
+
+    public int getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(int minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<Experience> getExperience() {
@@ -77,22 +113,6 @@ public class Qualifications {
         return language;
     }
 
-    public void setFrontend(boolean frontend) {
-        this.frontend = frontend;
-    }
-
-    public void setBackend(boolean backend) {
-        this.backend = backend;
-    }
-
-    /*public void setExperience(List<Experience> experience) {
-        this.experience = experience;
-    }
-
-    public void setLanguage(List<Languages> language) {
-        this.language = language;
-    }*/
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,14 +120,16 @@ public class Qualifications {
         Qualifications that = (Qualifications) o;
         return frontend == that.frontend &&
                 backend == that.backend &&
+                minPrice == that.minPrice &&
                 Objects.equals(qualificationsId, that.qualificationsId) &&
+                Objects.equals(user, that.user) &&
                 Objects.equals(experience, that.experience) &&
                 Objects.equals(language, that.language);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualificationsId, frontend, backend, experience, language);
+        return Objects.hash(qualificationsId, frontend, backend, minPrice, user, experience, language);
     }
 
     @Override
@@ -116,6 +138,8 @@ public class Qualifications {
                 "qualificationsId='" + qualificationsId + '\'' +
                 ", frontend=" + frontend +
                 ", backend=" + backend +
+                ", minPrice=" + minPrice +
+                ", user=" + user +
                 ", experience=" + experience +
                 ", language=" + language +
                 '}';

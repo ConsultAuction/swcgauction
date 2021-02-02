@@ -3,34 +3,34 @@ package se.swcg.consultauction.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import se.swcg.consultauction.entity.Admin;
+import se.swcg.consultauction.entity.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class SecurityAdmin implements UserDetails {
-    private final Admin admin;
+public class SecurityUser implements UserDetails {
+    private final User user;
 
-    public SecurityAdmin(Admin admin) {
-        this.admin = admin;
+    public SecurityUser(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(admin.getRole()));
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return admin.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return admin.getEmail();
+        return user.getEmail();
     }
 
     @Override
