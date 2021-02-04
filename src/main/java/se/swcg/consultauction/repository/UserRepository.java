@@ -18,7 +18,7 @@ public interface UserRepository extends CrudRepository<User, String> {
     List<User> findByRole(String role);
     List<User> findByLastActive(LocalDate lastActive);
     List<User> findByActive(boolean active);
-    List<User> findByAvailableForHire(boolean available);
+    //List<User> findByAvailableForHire(boolean available);
 
 
 

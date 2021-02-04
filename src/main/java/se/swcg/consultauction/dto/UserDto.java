@@ -32,11 +32,10 @@ public class UserDto {
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean active;
-    private boolean availableForHire;
     private String image;
     private Contact contact;
 
-    public UserDto(String userId, String companyName, String firstName, String lastName, String email,  String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
+    public UserDto(String userId, String companyName, String firstName, String lastName, String email,  String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
         this.userId = userId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -47,12 +46,11 @@ public class UserDto {
         this.dateOfSignUp = dateOfSignUp;
         this.lastActive = lastActive;
         this.active = active;
-        this.availableForHire = availableForHire;
         this.image = image;
         this.contact = contact;
     }
 
-    public UserDto(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
+    public UserDto(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +60,6 @@ public class UserDto {
         this.dateOfSignUp = dateOfSignUp;
         this.lastActive = lastActive;
         this.active = active;
-        this.availableForHire = availableForHire;
         this.image = image;
         this.contact = contact;
     }
@@ -150,14 +147,6 @@ public class UserDto {
         this.active = active;
     }
 
-    public boolean isAvailableForHire() {
-        return availableForHire;
-    }
-
-    public void setAvailableForHire(boolean availableForHire) {
-        this.availableForHire = availableForHire;
-    }
-
     public String getImage() {
         return image;
     }
@@ -180,7 +169,6 @@ public class UserDto {
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
         return active == userDto.active &&
-                availableForHire == userDto.availableForHire &&
                 Objects.equals(userId, userDto.userId) &&
                 Objects.equals(companyName, userDto.companyName) &&
                 Objects.equals(firstName, userDto.firstName) &&
@@ -196,7 +184,7 @@ public class UserDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, availableForHire, image, contact);
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact);
     }
 
     @Override
@@ -212,7 +200,6 @@ public class UserDto {
                 ", dateOfSignUp=" + dateOfSignUp +
                 ", lastActive=" + lastActive +
                 ", active=" + active +
-                ", availableForHire=" + availableForHire +
                 ", image='" + image + '\'' +
                 ", address=" + contact +
                 '}';

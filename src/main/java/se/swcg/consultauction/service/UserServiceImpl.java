@@ -100,9 +100,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findByAvailable(boolean available) {
-        return checkIfListIsEmpty(
+        /*return checkIfListIsEmpty(
                 converter.userToDto(
-                        repo.findByAvailableForHire(available)), "Could not find any users with available status: " + available);
+                        repo.findByAvailableForHire(available)), "Could not find any users with available status: " + available);*/
+        return null;
     }
 
 
@@ -122,7 +123,6 @@ public class UserServiceImpl implements UserService {
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
-                SecurityConstants.DEFAULT_AVAILABLE_FOR_HIRE,
                 clientRequest.getImage(),
                 new Contact(
                         clientRequest.getAddress(),

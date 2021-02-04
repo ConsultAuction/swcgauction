@@ -7,7 +7,10 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import se.swcg.consultauction.service.UserService;
 
 @EnableWebSecurity
@@ -31,7 +34,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().addFilter(getAuthenticationFilter())
-                .addFilter(new AuthorizationFilter(authenticationManager()));
+                .addFilter(new AuthorizationFilter(authenticationManager()))
+                //Stateless means that we dont store info about logged in users in memory
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().logout().logoutUrl("/user/logout").logoutSuccessUrl("/user/login");
     }
 
     @Override

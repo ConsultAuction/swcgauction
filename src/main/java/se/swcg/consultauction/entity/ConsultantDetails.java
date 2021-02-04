@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class Qualifications {
+public class ConsultantDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -19,6 +19,7 @@ public class Qualifications {
 
     private boolean frontend;
     private boolean backend;
+    private boolean availableForHire;
     private int minPrice;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
@@ -30,26 +31,28 @@ public class Qualifications {
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Languages> language;
 
-    public Qualifications(String qualificationsId, boolean frontend, boolean backend, int minPrice, User user, List<Experience> experience, List<Languages> language) {
+    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire, int minPrice, User user, List<Experience> experience, List<Languages> language) {
         this.qualificationsId = qualificationsId;
         this.frontend = frontend;
         this.backend = backend;
+        this.availableForHire = availableForHire;
         this.minPrice = minPrice;
         this.user = user;
         this.experience = experience;
         this.language = language;
     }
 
-    public Qualifications(boolean frontend, boolean backend, int minPrice, User user, List<Experience> experience, List<Languages> language) {
+    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire, int minPrice, User user, List<Experience> experience, List<Languages> language) {
         this.frontend = frontend;
         this.backend = backend;
+        this.availableForHire = availableForHire;
         this.minPrice = minPrice;
         this.user = user;
         this.experience = experience;
         this.language = language;
     }
 
-    public Qualifications() {
+    public ConsultantDetails() {
     }
 
     // TODO add validation for all add/remove methods
@@ -89,6 +92,14 @@ public class Qualifications {
         this.backend = backend;
     }
 
+    public boolean isAvailableForHire() {
+        return availableForHire;
+    }
+
+    public void setAvailableForHire(boolean availableForHire) {
+        this.availableForHire = availableForHire;
+    }
+
     public int getMinPrice() {
         return minPrice;
     }
@@ -109,17 +120,26 @@ public class Qualifications {
         return experience;
     }
 
+    public void setExperience(List<Experience> experience) {
+        this.experience = experience;
+    }
+
     public List<Languages> getLanguage() {
         return language;
+    }
+
+    public void setLanguage(List<Languages> language) {
+        this.language = language;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Qualifications that = (Qualifications) o;
+        ConsultantDetails that = (ConsultantDetails) o;
         return frontend == that.frontend &&
                 backend == that.backend &&
+                availableForHire == that.availableForHire &&
                 minPrice == that.minPrice &&
                 Objects.equals(qualificationsId, that.qualificationsId) &&
                 Objects.equals(user, that.user) &&
@@ -129,15 +149,16 @@ public class Qualifications {
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualificationsId, frontend, backend, minPrice, user, experience, language);
+        return Objects.hash(qualificationsId, frontend, backend, availableForHire, minPrice, user, experience, language);
     }
 
     @Override
     public String toString() {
-        return "Qualifications{" +
+        return "ConsultantDetails{" +
                 "qualificationsId='" + qualificationsId + '\'' +
                 ", frontend=" + frontend +
                 ", backend=" + backend +
+                ", availableForHire=" + availableForHire +
                 ", minPrice=" + minPrice +
                 ", user=" + user +
                 ", experience=" + experience +

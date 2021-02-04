@@ -26,13 +26,12 @@ public class User {
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
     private boolean active;
-    private boolean availableForHire;
     private String image;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Contact contact;
 
-    public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
+    public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
         this.userId = userId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -43,12 +42,11 @@ public class User {
         this.dateOfSignUp = dateOfSignUp;
         this.lastActive = lastActive;
         this.active = active;
-        this.availableForHire = availableForHire;
         this.image = image;
         this.contact = contact;
     }
 
-    public User(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, boolean availableForHire, String image, Contact contact) {
+    public User(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -58,7 +56,6 @@ public class User {
         this.dateOfSignUp = dateOfSignUp;
         this.lastActive = lastActive;
         this.active = active;
-        this.availableForHire = availableForHire;
         this.image = image;
         this.contact = contact;
     }
@@ -142,14 +139,6 @@ public class User {
         this.active = active;
     }
 
-    public boolean isAvailableForHire() {
-        return availableForHire;
-    }
-
-    public void setAvailableForHire(boolean availableForHire) {
-        this.availableForHire = availableForHire;
-    }
-
     public String getImage() {
         return image;
     }
@@ -162,8 +151,8 @@ public class User {
         return contact;
     }
 
-    public void setContact(Contact address) {
-        this.contact = address;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override
@@ -172,7 +161,6 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return active == user.active &&
-                availableForHire == user.availableForHire &&
                 Objects.equals(userId, user.userId) &&
                 Objects.equals(companyName, user.companyName) &&
                 Objects.equals(firstName, user.firstName) &&
@@ -188,7 +176,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, availableForHire, image, contact);
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact);
     }
 
     @Override
@@ -204,9 +192,8 @@ public class User {
                 ", dateOfSignUp=" + dateOfSignUp +
                 ", lastActive=" + lastActive +
                 ", active=" + active +
-                ", availableForHire=" + availableForHire +
                 ", image='" + image + '\'' +
-                ", address=" + contact +
+                ", contact=" + contact +
                 '}';
     }
 }
