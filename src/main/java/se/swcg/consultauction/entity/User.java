@@ -3,9 +3,6 @@ package se.swcg.consultauction.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -19,74 +16,63 @@ public class User {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private String userId;
-    @NotBlank
-    @Size(max = 50)
+    private String companyName;
     private String firstName;
-    @NotBlank
-    @Size(max = 50)
     private String lastName;
-    @NotBlank
     @Column(unique = true)
-    @Size(max = 100)
     private String email;
-    private boolean active;
+    private String password;
+    private String role;
     private LocalDate dateOfSignUp;
     private LocalDate lastActive;
-    private boolean available;
-    @Size(max = 50)
-    private String password;
-    @Size(max = 10)
-    private String role;
-    @Size(max = 10)
-    private String phoneNumber;
-    @Size(max = 200)
+    private boolean active;
     private String image;
-    @NotNull
-    private int minPrice;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private Address address;
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private Qualifications qualifications;
 
-    public User() {}
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Contact contact;
 
-    public User(String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
+    public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+        this.userId = userId;
+        this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.active = active;
-        this.dateOfSignUp = dateOfSignUp;
-        this.lastActive = lastActive;
-        this.available = available;
         this.password = password;
         this.role = role;
-        this.phoneNumber = phoneNumber;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.active = active;
         this.image = image;
-        this.minPrice = minPrice;
-        this.address = address;
-        this.qualifications = qualifications;
+        this.contact = contact;
     }
 
-    public User(String userId, String firstName, String lastName, String email, boolean active, LocalDate dateOfSignUp, LocalDate lastActive, boolean available, String password, String role, String phoneNumber, String image, int minPrice, Address address, Qualifications qualifications) {
-        this.userId = userId;
+    public User(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+        this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.active = active;
-        this.dateOfSignUp = dateOfSignUp;
-        this.lastActive = lastActive;
-        this.available = available;
         this.password = password;
         this.role = role;
-        this.phoneNumber = phoneNumber;
+        this.dateOfSignUp = dateOfSignUp;
+        this.lastActive = lastActive;
+        this.active = active;
         this.image = image;
-        this.minPrice = minPrice;
-        this.address = address;
-        this.qualifications = qualifications;
+        this.contact = contact;
+    }
+
+    public User() {
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getFirstName() {
@@ -113,12 +99,20 @@ public class User {
         this.email = email;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getPassword() {
+        return password;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public LocalDate getDateOfSignUp() {
@@ -137,36 +131,12 @@ public class User {
         this.lastActive = lastActive;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getImage() {
@@ -177,28 +147,12 @@ public class User {
         this.image = image;
     }
 
-    public int getMinPrice() {
-        return minPrice;
+    public Contact getContact() {
+        return contact;
     }
 
-    public void setMinPrice(int minPrice) {
-        this.minPrice = minPrice;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Qualifications getQualifications() {
-        return qualifications;
-    }
-
-    public void setQualifications(Qualifications qualifications) {
-        this.qualifications = qualifications;
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 
     @Override
@@ -207,45 +161,39 @@ public class User {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return active == user.active &&
-                available == user.available &&
-                minPrice == user.minPrice &&
                 Objects.equals(userId, user.userId) &&
+                Objects.equals(companyName, user.companyName) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName) &&
                 Objects.equals(email, user.email) &&
-                Objects.equals(dateOfSignUp, user.dateOfSignUp) &&
-                Objects.equals(lastActive, user.lastActive) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(role, user.role) &&
-                Objects.equals(phoneNumber, user.phoneNumber) &&
+                Objects.equals(dateOfSignUp, user.dateOfSignUp) &&
+                Objects.equals(lastActive, user.lastActive) &&
                 Objects.equals(image, user.image) &&
-                Objects.equals(address, user.address) &&
-                Objects.equals(qualifications, user.qualifications);
+                Objects.equals(contact, user.contact);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, firstName, lastName, email, active, dateOfSignUp, lastActive, available, password, role, phoneNumber, image, minPrice, address, qualifications);
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId='" + userId + '\'' +
+                ", companyName='" + companyName + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", active=" + active +
-                ", dateOfSignUp=" + dateOfSignUp +
-                ", lastActive=" + lastActive +
-                ", available=" + available +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", dateOfSignUp=" + dateOfSignUp +
+                ", lastActive=" + lastActive +
+                ", active=" + active +
                 ", image='" + image + '\'' +
-                ", minPrice=" + minPrice +
-                ", address=" + address +
-                ", qualifications=" + qualifications +
+                ", contact=" + contact +
                 '}';
     }
 }

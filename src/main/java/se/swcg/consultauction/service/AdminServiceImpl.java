@@ -1,22 +1,56 @@
+/*
 package se.swcg.consultauction.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.entity.Admin;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
-import se.swcg.consultauction.repository.AdminRepository;
+import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
+
 @Service
-public class AdminServiceImpl extends ServiceHelper implements AdminService{
+public class AdminServiceImpl implements AdminService {
 
     @Autowired
     AdminRepository repo;
     @Autowired
     AdminDtoConversionService converter;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    */
+/*//*
+/Constructor not working with test right now.
+    @Autowired
+    public AdminServiceImpl(AdminRepository repo, AdminDtoConversionService converter, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.repo = repo;
+        this.converter = converter;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }*//*
+
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return new SecurityUser(
+                repo.findByEmail(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("Could not find admin with email: " + email))
+        );
+        */
+/*
+        Optional<Admin> admin = repo.findByEmail(email);
+        if (!admin.isPresent()) throw new UsernameNotFoundException("Could not find admin with email: " + email);
+        return new User(admin.get().getEmail(), admin.get().getPassword(), new ArrayList<>());*//*
+
+    }
 
     @Override
     public AdminDto findById(String adminId) {
@@ -35,6 +69,7 @@ public class AdminServiceImpl extends ServiceHelper implements AdminService{
         return converter.adminToDto(
                 repo.findByEmail(email)
                         .orElseThrow(() -> new ResourceNotFoundException("Could not find a admin with email: " + email)));
+
     }
 
     @Override
@@ -56,7 +91,14 @@ public class AdminServiceImpl extends ServiceHelper implements AdminService{
     public AdminDto create(AdminDto dto) {
         checkIfEmailIsValid(dto);
 
-        return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
+        Admin newAdmin = new Admin();
+
+        BeanUtils.copyProperties(dto, newAdmin);
+        newAdmin.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+
+
+        return converter.adminToDto(repo.save(newAdmin));
+        //        return converter.adminToDto(repo.save(converter.dtoToAdmin(dto)));
     }
 
     @Override
@@ -98,3 +140,4 @@ public class AdminServiceImpl extends ServiceHelper implements AdminService{
         return dto;
     }
 }
+*/
