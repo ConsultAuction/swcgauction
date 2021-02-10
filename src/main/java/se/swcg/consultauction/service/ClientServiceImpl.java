@@ -2,6 +2,7 @@ package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.AdminDto;
 import se.swcg.consultauction.dto.ClientDto;
 import se.swcg.consultauction.dto.ClientForm;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ClientServiceImpl implements ClientService {
 
     @Autowired

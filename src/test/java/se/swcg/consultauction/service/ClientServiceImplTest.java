@@ -117,7 +117,7 @@ import java.util.*;
     }
 
     // geting weired error
-    /*@Test
+    @Test
     void update(){
         String oldEmail = tobias.getEmail();
         String newEmail = "tosdfg324@gmail.com";
@@ -131,7 +131,7 @@ import java.util.*;
         assertEquals(newEmail,updatedClient.getEmail());
         assertNotEquals(oldEmail, updatedClient.getEmail());
 
-    }*/
+    }
 
     @Test
     void delete() {

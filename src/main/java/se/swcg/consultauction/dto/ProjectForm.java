@@ -1,52 +1,31 @@
-package se.swcg.consultauction.entity;
-import org.hibernate.annotations.GenericGenerator;
+package se.swcg.consultauction.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import se.swcg.consultauction.entity.Client;
+
+
 import java.time.LocalDate;
-import java.util.Objects;
+
+public class ProjectForm {
 
 
-@Entity
-public class Project {
-
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
     private String projectId;
-
-    @NotBlank
     private String projectName;
     private LocalDate startDate;
     private LocalDate endDate;
     private int workLoad;
-
-    @NotBlank
     private String description;
-
-    @NotBlank
     private String located;
     private boolean distanceWork;
     private boolean companyHardware;
-
-    @NotBlank
     private String contactName;
-
-    @Column(unique = true)
     private String contactEmail;
-
-    @NotBlank
     private String contactPhoneNumber;
-
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Client client;
 
-    public Project(String projectId, String projectName, LocalDate startDate, LocalDate endDate, int workLoad,
-                   String description, String located, boolean distanceWork, boolean companyHardware,
-                   String contactName, String contactEmail, String contactPhoneNumber, Client client) {
+    public ProjectForm(String projectId, String projectName, LocalDate startDate,
+                       LocalDate endDate, int workLoad, String description,
+                       String located, boolean distanceWork, boolean companyHardware,
+                       String contactName, String contactEmail, String contactPhoneNumber, Client client) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.startDate = startDate;
@@ -62,9 +41,10 @@ public class Project {
         this.client = client;
     }
 
-    public Project(String projectName, LocalDate startDate, LocalDate endDate, int workLoad,
-                   String description, String located, boolean distanceWork, boolean companyHardware,
-                   String contactName, String contactEmail, String contactPhoneNumber, Client client) {
+    public ProjectForm(String projectName, LocalDate startDate, LocalDate endDate,
+                       int workLoad, String description, String located,
+                       boolean distanceWork, boolean companyHardware, String contactName,
+                       String contactEmail, String contactPhoneNumber, Client client) {
         this.projectName = projectName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -77,9 +57,6 @@ public class Project {
         this.contactEmail = contactEmail;
         this.contactPhoneNumber = contactPhoneNumber;
         this.client = client;
-    }
-
-    public Project() {
     }
 
     public String getProjectId() {
@@ -180,50 +157,5 @@ public class Project {
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return workLoad == project.workLoad && distanceWork == project.distanceWork &&
-                companyHardware == project.companyHardware &&
-                Objects.equals(projectId, project.projectId) &&
-                Objects.equals(projectName, project.projectName) &&
-                Objects.equals(startDate, project.startDate) &&
-                Objects.equals(endDate, project.endDate) &&
-                Objects.equals(description, project.description) &&
-                Objects.equals(located, project.located) &&
-                Objects.equals(contactName, project.contactName) &&
-                Objects.equals(contactEmail, project.contactEmail) &&
-                Objects.equals(contactPhoneNumber, project.contactPhoneNumber) &&
-                Objects.equals(client, project.client);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(projectId, projectName, startDate, endDate, workLoad,
-                description, located, distanceWork, companyHardware,
-                contactName, contactEmail, contactPhoneNumber, client);
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "projectId='" + projectId + '\'' +
-                ", projectName='" + projectName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", workLoad=" + workLoad +
-                ", description='" + description + '\'' +
-                ", located='" + located + '\'' +
-                ", distanceWork=" + distanceWork +
-                ", companyHardware=" + companyHardware +
-                ", contactName='" + contactName + '\'' +
-                ", contactEmail='" + contactEmail + '\'' +
-                ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
-                ", client=" + client +
-                '}';
     }
 }

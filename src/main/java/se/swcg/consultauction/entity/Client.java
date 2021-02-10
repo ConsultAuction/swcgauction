@@ -23,18 +23,14 @@ public class Client {
     @NotBlank
     private String companyName;
 
-
     @NotBlank
     private String firstName;
-
 
     @NotBlank
     private String lastName;
 
-
     @Column(unique = true)
     private String email;
-
 
     private boolean active;
 
@@ -42,9 +38,7 @@ public class Client {
 
     private Date lastActive;
 
-
     private String phoneNumber;
-
 
     private String password;
 
@@ -54,7 +48,7 @@ public class Client {
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Address address;
 
-    /*private Projects projects;*/
+    /*private Project projects;*/
 
 
 

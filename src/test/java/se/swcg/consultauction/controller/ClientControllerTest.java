@@ -184,7 +184,7 @@ import static org.mockito.BDDMockito.any;
         mvc.perform(delete("/api/client/" + clientDto.getClientId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("Admin with id: 0 was successfully removed."));
+                .andExpect(content().string("Client with id: 0 was successfully removed."));
 
     }
 
