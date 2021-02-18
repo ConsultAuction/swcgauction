@@ -2,10 +2,8 @@ package se.swcg.consultauction.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.swcg.consultauction.dto.ProgrammingLanguagesDto;
-import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.entity.ProgrammingLanguages;
-import se.swcg.consultauction.entity.User;
+import se.swcg.consultauction.dto.*;
+import se.swcg.consultauction.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,5 +68,112 @@ public class DtoConversionServiceImpl implements DtoConversionService {
         }
 
         return languagesDtos;
+    }
+
+    @Override
+    public Skills dtoToSkills(SkillsDto dto) {
+        return new Skills(dto.getSkillsId(), dto.getSkillName());
+    }
+
+    @Override
+    public SkillsDto SkillsToDto(Skills skills) {
+        return new SkillsDto(skills.getSkillsId(),skills.getSkillName());
+    }
+
+    @Override
+    public List<SkillsDto> SkillsToDto(List<Skills> skills) {
+        if (skills == null) {
+            skills = new ArrayList<>();
+        }
+
+        List<SkillsDto> skillsDtos = new ArrayList<>();
+
+        for (Skills s: skills) {
+            skillsDtos.add(SkillsToDto(s));
+        }
+
+        return skillsDtos;
+    }
+
+
+    @Override
+    public ProjectOffer dtoToProjectOffer(ProjectOfferDto dto) {
+        return new ProjectOffer(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
+                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
+    }
+
+    @Override
+    public ProjectOfferDto projectOfferToDto(ProjectOffer projectOffer) {
+        return new ProjectOfferDto(projectOffer.getProjectOfferId(),projectOffer.getUser(),projectOffer.getProject(),
+                projectOffer.isAccepted(),projectOffer.isRejected(),projectOffer.getStartTime(),
+                projectOffer.isSelected(),projectOffer.getBids());
+    }
+
+    @Override
+    public List<ProjectOfferDto> projectOfferToDto(List<ProjectOffer> projectOffers) {
+        if (projectOffers == null) {
+            projectOffers = new ArrayList<>();
+        }
+
+        List<ProjectOfferDto> projectOfferDtos = new ArrayList<>();
+
+        for (ProjectOffer p: projectOffers) {
+            projectOfferDtos.add(projectOfferToDto(p));
+        }
+
+        return projectOfferDtos;
+    }
+
+    @Override
+    public ProjectOfferForm DtoToProjectOfferForm(ProjectOfferDto dto) {
+        return new ProjectOfferForm(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
+                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
+    }
+
+    @Override
+    public ProjectOffer ProjectOfferFormToProjectOffer(ProjectOfferForm dto) {
+        return new ProjectOffer(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
+                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
+    }
+
+    @Override
+    public Project dtoToProject(ProjectDto dto) {
+        return new Project(dto.getProjectId(),dto.getProjectName(),dto.getStartDate(),dto.getEndDate(),
+                dto.getWorkLoad(),dto.getDescription(),dto.getLocated(), dto.isDistanceWork(), dto.isCompanyHardware(),
+                dto.getContactName(),dto.getContactEmail(),dto.getContactPhoneNumber(),dto.getUser());
+    }
+
+    @Override
+    public ProjectDto projectToDto(Project project) {
+        return null;
+    }
+
+    @Override
+    public List<ProjectDto> projectToDto(List<Project> project) {
+        if (project == null) {
+            project = new ArrayList<>();
+        }
+
+        List<ProjectDto> projectDtos = new ArrayList<>();
+
+        for (Project p: project) {
+            projectDtos.add(projectToDto(p));
+        }
+
+        return projectDtos;
+    }
+
+    @Override
+    public ProjectForm DtoToProjectForm(ProjectDto dto) {
+        return new ProjectForm(dto.getProjectId(),dto.getProjectName(),dto.getStartDate(),dto.getEndDate(),
+                dto.getWorkLoad(),dto.getDescription(),dto.getLocated(),dto.isDistanceWork(),dto.isCompanyHardware(),
+                dto.getContactName(),dto.getContactEmail(),dto.getContactPhoneNumber(), dto.getUser());
+    }
+
+    @Override
+    public Project ProjectFormToProject(ProjectForm dto) {
+        return new Project(dto.getProjectName(),dto.getStartDate(),dto.getEndDate(),
+                dto.getWorkLoad(),dto.getDescription(),dto.getLocated(),dto.isDistanceWork(),dto.isCompanyHardware(),
+                dto.getContactName(),dto.getContactEmail(),dto.getContactEmail(),dto.getUser());
     }
 }

@@ -31,7 +31,12 @@ public class ConsultantDetails {
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Languages> language;
 
-    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire, int minPrice, User user, List<Experience> experience, List<Languages> language) {
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private List<Skills> skills;
+
+    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire,
+                             int minPrice, User user, List<Experience> experience, List<Languages> language,
+                             List<Skills> skills) {
         this.qualificationsId = qualificationsId;
         this.frontend = frontend;
         this.backend = backend;
@@ -40,9 +45,12 @@ public class ConsultantDetails {
         this.user = user;
         this.experience = experience;
         this.language = language;
+        this.skills = skills;
     }
 
-    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire, int minPrice, User user, List<Experience> experience, List<Languages> language) {
+    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire,
+                             int minPrice, User user, List<Experience> experience, List<Languages> language,
+                             List<Skills> skills) {
         this.frontend = frontend;
         this.backend = backend;
         this.availableForHire = availableForHire;
@@ -50,6 +58,7 @@ public class ConsultantDetails {
         this.user = user;
         this.experience = experience;
         this.language = language;
+        this.skills = skills;
     }
 
     public ConsultantDetails() {
@@ -130,6 +139,14 @@ public class ConsultantDetails {
 
     public void setLanguage(List<Languages> language) {
         this.language = language;
+    }
+
+    public List<Skills> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
     }
 
     @Override
