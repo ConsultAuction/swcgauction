@@ -46,7 +46,10 @@ public class User {
         this.contact = contact;
     }
 
-    public User(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+    public User(String companyName, String firstName,
+                String lastName, String email, String password,
+                String role, LocalDate dateOfSignUp,
+                LocalDate lastActive, boolean active, String image, Contact contact) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;

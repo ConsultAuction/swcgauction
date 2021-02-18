@@ -9,6 +9,8 @@ public interface ProjectRepository extends CrudRepository <Project, String > {
 
         List<Project> findAll();
 
+        List<Project> findAllByContactEmail(String email);
+
 
 
 

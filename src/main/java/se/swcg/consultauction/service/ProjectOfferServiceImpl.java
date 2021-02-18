@@ -16,20 +16,20 @@ import java.util.List;
 public class ProjectOfferServiceImpl implements ProjectOfferService {
 
     @Autowired
-     ProjectOfferRepository pRepository;
+     ProjectOfferRepository repository;
 
     @Autowired
-    ProjectOfferDtoConversion pConverter;
+    DtoConversionService converter;
 
 
     @Override
     public List<ProjectOfferDto> findAll() {
-        return pConverter.projectOfferToDto(pRepository.findAll());
+        return converter.projectOfferToDto(repository.findAll());
     }
 
     @Override
     public ProjectOfferDto findById(String projectOfferId) {
-        return pConverter.projectOfferToDto(pRepository.findById(projectOfferId).orElseThrow(() ->
+        return converter.projectOfferToDto(repository.findById(projectOfferId).orElseThrow(() ->
                 new ResourceNotFoundException("Could not find ProjectOffer with Id: " +projectOfferId)));
     }
 

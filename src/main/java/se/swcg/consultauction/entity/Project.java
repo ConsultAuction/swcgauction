@@ -42,11 +42,11 @@ public class Project {
     private String contactPhoneNumber;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private Client client;
+    private User user;
 
     public Project(String projectId, String projectName, LocalDate startDate, LocalDate endDate, int workLoad,
                    String description, String located, boolean distanceWork, boolean companyHardware,
-                   String contactName, String contactEmail, String contactPhoneNumber, Client client) {
+                   String contactName, String contactEmail, String contactPhoneNumber, User user) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.startDate = startDate;
@@ -59,12 +59,12 @@ public class Project {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactPhoneNumber = contactPhoneNumber;
-        this.client = client;
+        this.user = user;
     }
 
     public Project(String projectName, LocalDate startDate, LocalDate endDate, int workLoad,
                    String description, String located, boolean distanceWork, boolean companyHardware,
-                   String contactName, String contactEmail, String contactPhoneNumber, Client client) {
+                   String contactName, String contactEmail, String contactPhoneNumber, User user) {
         this.projectName = projectName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -76,7 +76,7 @@ public class Project {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactPhoneNumber = contactPhoneNumber;
-        this.client = client;
+        this.user = user;
     }
 
     public Project() {
@@ -174,12 +174,12 @@ public class Project {
         this.contactPhoneNumber = contactPhoneNumber;
     }
 
-    public Client getClient() {
-        return client;
+    public User getUser() {
+        return user;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClient(User user) {
+        this.user = user;
     }
 
     @Override
@@ -198,14 +198,14 @@ public class Project {
                 Objects.equals(contactName, project.contactName) &&
                 Objects.equals(contactEmail, project.contactEmail) &&
                 Objects.equals(contactPhoneNumber, project.contactPhoneNumber) &&
-                Objects.equals(client, project.client);
+                Objects.equals(user, project.user);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(projectId, projectName, startDate, endDate, workLoad,
                 description, located, distanceWork, companyHardware,
-                contactName, contactEmail, contactPhoneNumber, client);
+                contactName, contactEmail, contactPhoneNumber, user);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class Project {
                 ", contactName='" + contactName + '\'' +
                 ", contactEmail='" + contactEmail + '\'' +
                 ", contactPhoneNumber='" + contactPhoneNumber + '\'' +
-                ", client=" + client +
+                ", user=" + user +
                 '}';
     }
 }

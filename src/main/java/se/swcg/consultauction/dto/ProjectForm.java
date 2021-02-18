@@ -1,6 +1,5 @@
 package se.swcg.consultauction.dto;
-
-import se.swcg.consultauction.entity.Client;
+import se.swcg.consultauction.entity.User;
 
 
 import java.time.LocalDate;
@@ -20,12 +19,12 @@ public class ProjectForm {
     private String contactName;
     private String contactEmail;
     private String contactPhoneNumber;
-    private Client client;
+    private User user;
 
     public ProjectForm(String projectId, String projectName, LocalDate startDate,
                        LocalDate endDate, int workLoad, String description,
                        String located, boolean distanceWork, boolean companyHardware,
-                       String contactName, String contactEmail, String contactPhoneNumber, Client client) {
+                       String contactName, String contactEmail, String contactPhoneNumber, User client) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.startDate = startDate;
@@ -38,13 +37,13 @@ public class ProjectForm {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactPhoneNumber = contactPhoneNumber;
-        this.client = client;
+        this.user = client;
     }
 
     public ProjectForm(String projectName, LocalDate startDate, LocalDate endDate,
                        int workLoad, String description, String located,
                        boolean distanceWork, boolean companyHardware, String contactName,
-                       String contactEmail, String contactPhoneNumber, Client client) {
+                       String contactEmail, String contactPhoneNumber, User client) {
         this.projectName = projectName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -56,7 +55,7 @@ public class ProjectForm {
         this.contactName = contactName;
         this.contactEmail = contactEmail;
         this.contactPhoneNumber = contactPhoneNumber;
-        this.client = client;
+        this.user = client;
     }
 
     public String getProjectId() {
@@ -151,11 +150,11 @@ public class ProjectForm {
         this.contactPhoneNumber = contactPhoneNumber;
     }
 
-    public Client getClient() {
-        return client;
+    public User getUser() {
+        return user;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
