@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.model.CreateClientRequest;
+import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.service.UserService;
 
 import javax.validation.Valid;
@@ -29,13 +31,18 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable String id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("/language/{language}")
     public ResponseEntity<List<UserDto>> findByLanguage(@PathVariable String language) {
         return ResponseEntity.ok(service.findByLanguage(language));
+    }
+
+    @GetMapping("/email/{id}")
+    public ResponseEntity<UserDto> findByEmail(@PathVariable String id) {
+        return ResponseEntity.ok(service.findByEmail(id));
     }
 
     @GetMapping("/lastActive/{date}")
@@ -45,7 +52,7 @@ public class UserController {
 
     @GetMapping("/active/{active}")
     public ResponseEntity<List<UserDto>> findAllByActive(@PathVariable boolean active) {
-        return ResponseEntity.ok(service.findAllByActive(active));
+        return ResponseEntity.ok(service.findByActive(active));
     }
 
     @GetMapping("/available/{available}")
@@ -53,31 +60,31 @@ public class UserController {
         return ResponseEntity.ok(service.findByAvailable(available));
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto dto){
-       /* return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));*/
-        UserDto newUser =  new UserDto(null, dto.getFirstName(), dto.getLastName(), dto.getEmail(),
-                true, LocalDate.now(), LocalDate.now(),
-                false, dto.getPassword(), "USER", dto.getPhoneNumber(),
-                dto.getImage(), dto.getMinPrice(), dto.getAddress(), dto.getQualifications());
-        dto = service.create(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
+    @PostMapping("/client")
+    public ResponseEntity<UserDto> createClient(@Valid @RequestBody CreateClientRequest clientRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createClient(clientRequest));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable String id, @RequestBody UserDto updatedDto) {
-        if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+    @PutMapping("/client/{id}")
+    public ResponseEntity<UserDto> updateClient(@PathVariable String id,@Valid @RequestBody CreateClientRequest clientRequest) {
+        //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
-        return ResponseEntity.ok(service.update(updatedDto));
+        return ResponseEntity.ok(service.updateClient(id, clientRequest));
+    }
+
+    @PostMapping("/consultant")
+    public ResponseEntity<?> createConsultant(@Valid @RequestBody CreateConsultantRequest consultantRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createConsultant(consultantRequest));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
-        boolean isRemoved = service.delete(id);
+        /*boolean isRemoved = service.delete(id);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete user with id: " + id);
 
         return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);
-       /* service.delete(id);
+       *//* service.delete(id);
         return ResponseEntity.noContent().build();*/
+        return null;
     }
 }
