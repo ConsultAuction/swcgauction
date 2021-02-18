@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    <T> Object findById(String userId);
+    Object findById(String userId);
     List<UserDto> findAll();
     List<UserDto> findByLanguage(String language);
     UserDto findByEmail(String email);

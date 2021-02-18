@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
-    @Override
-    public <T> Class<T> findById(String userId) {
+    //@Override
+    public Object findById(String userId) {
         /*return converter.userToDto(
                 userRepo.findById(userId)
                         .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));*/
@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
                                         .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
 
         if (foundUser.getRole().equals(SecurityConstants.ROLE_CONSULTANT)) {
-            ConsultantDetails foundDetails = consultantDetailsRepository.findByUserUserId(foundUser.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + foundUser.getUserId()));
 
-            return foundDetails;
+            return consultantDetailsRepository.findByUserUserId(foundUser.getUserId())
+                                                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + foundUser.getUserId()));
         }
 
         return foundUser;
@@ -188,7 +188,8 @@ public class UserServiceImpl implements UserService {
                 consultantRequest.getMinPrice(),
                 newClient,
                 consultantRequest.getExperience(),
-                consultantRequest.getLanguage()
+                consultantRequest.getLanguage(),
+                consultantRequest.getSkills()
         );
 
 
@@ -197,7 +198,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateClient(String id, CreateClientRequest clientRequest) {
-        User foundUser = converter.dtoToUser(findById(id));
+        User foundUser = converter.dtoToUser((UserDto) findById(id));
 
         if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
 
@@ -225,7 +226,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean delete(String id) {
 
-        userRepo.delete(converter.dtoToUser(findById(id)));
+        userRepo.delete(converter.dtoToUser((UserDto) findById(id)));
         return  !userRepo.findById(id).isPresent();
     }
 }

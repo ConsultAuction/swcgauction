@@ -2,6 +2,7 @@ package se.swcg.consultauction.model;
 
 import se.swcg.consultauction.entity.Experience;
 import se.swcg.consultauction.entity.Languages;
+import se.swcg.consultauction.entity.Skills;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -51,6 +52,7 @@ public class CreateConsultantRequest {
 
     private List<Experience> experience;
     private List<Languages> language;
+    private List<Skills> skills;
 
     public String getFirstName() {
         return firstName;
@@ -178,5 +180,13 @@ public class CreateConsultantRequest {
 
     public void setLanguage(List<Languages> language) {
         this.language = language;
+    }
+
+    public List<Skills> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skills> skills) {
+        this.skills = skills;
     }
 }

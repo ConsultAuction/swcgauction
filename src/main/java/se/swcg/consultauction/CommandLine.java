@@ -61,7 +61,8 @@ public class CommandLine implements CommandLineRunner {
                                 new Contact("KalmarGatan 12", "333 57", "Kalmar", "Sweden", "0701234456")
                                 ),
                         experience,
-                        languages
+                        languages,
+                        null
                         )
         );
 
