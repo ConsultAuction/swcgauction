@@ -2,6 +2,7 @@ package se.swcg.consultauction.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    UserDto findById(String userId);
+    <T> Object findById(String userId);
     List<UserDto> findAll();
     List<UserDto> findByLanguage(String language);
     UserDto findByEmail(String email);
@@ -21,10 +22,10 @@ public interface UserService extends UserDetailsService {
     List<UserDto> findByAvailable(boolean available);
 
     UserDto createClient(CreateClientRequest createClientRequest);
-    UserDto createConsultant(CreateConsultantRequest createConsultantRequest);
+    ConsultantDetails createConsultant(CreateConsultantRequest createConsultantRequest);
 
-    UserDto updateClient(CreateClientRequest createClientRequest);
-    UserDto updateConsultant(CreateConsultantRequest createConsultantRequest);
+    UserDto updateClient(String id, CreateClientRequest createClientRequest);
+    UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
 
     boolean delete(String id);
 

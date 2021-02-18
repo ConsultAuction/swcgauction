@@ -6,11 +6,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.entity.Contact;
 import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.repository.ConsultantDetailsRepository;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
 import se.swcg.consultauction.security.SecurityUser;
@@ -24,7 +26,9 @@ import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository repo;
+    UserRepository userRepo;
+    @Autowired
+    ConsultantDetailsRepository consultantDetailsRepository;
     @Autowired
     DtoConversionService converter;
     @Autowired
@@ -43,20 +47,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return new SecurityUser(
-                repo.findByEmail(email)
+                userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
     @Override
-    public UserDto findById(String userId) {
-        return converter.userToDto(
-                repo.findById(userId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
+    public <T> Class<T> findById(String userId) {
+        /*return converter.userToDto(
+                userRepo.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));*/
+
+        UserDto foundUser = converter.userToDto(
+                                userRepo.findById(userId)
+                                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
+
+        if (foundUser.getRole().equals(SecurityConstants.ROLE_CONSULTANT)) {
+            ConsultantDetails foundDetails = consultantDetailsRepository.findByUserUserId(foundUser.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + foundUser.getUserId()));
+
+            return foundDetails;
+        }
+
+        return foundUser;
     }
 
     @Override
     public List<UserDto> findAll() {
-        return checkIfListIsEmpty(converter.userToDto(repo.findAll()), "Could not find any users");
+        return checkIfListIsEmpty(converter.userToDto(userRepo.findAll()), "Could not find any users");
     }
 
     @Override
@@ -75,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByEmail(String email) {
         return converter.userToDto(
-                repo.findByEmail(email)
+                userRepo.findByEmail(email)
                     .orElseThrow(() -> new ResourceNotFoundException("Could not find a admin with email: " + email)));
     }
 
@@ -88,14 +104,14 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findByLastActive(LocalDate lastActive) {
         return checkIfListIsEmpty(
                 converter.userToDto(
-                        repo.findByLastActive(lastActive)), "Could not find any users with last active date: " + lastActive);
+                        userRepo.findByLastActive(lastActive)), "Could not find any users with last active date: " + lastActive);
     }
 
     @Override
     public List<UserDto> findByActive(boolean active) {
         return checkIfListIsEmpty(
                 converter.userToDto(
-                        repo.findByActive(active)), "Could not find any users with active status: " + active);
+                        userRepo.findByActive(active)), "Could not find any users with active status: " + active);
     }
 
     @Override
@@ -111,7 +127,7 @@ public class UserServiceImpl implements UserService {
     public UserDto createClient(CreateClientRequest clientRequest) {
         LocalDate todayDate = LocalDate.now();
 
-        if (repo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + clientRequest.getEmail());
+        if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + clientRequest.getEmail());
 
         User newClient = new User(
                 clientRequest.getCompanyName(),
@@ -134,34 +150,82 @@ public class UserServiceImpl implements UserService {
         );
 
         return converter.userToDto(
-                repo.save(newClient));
+                userRepo.save(newClient));
     }
 
     @Override
-    public UserDto createConsultant(CreateConsultantRequest createConsultantRequest) {
-        /*private String role;
-    private LocalDate dateOfSignUp;
-    private LocalDate lastActive;
-    private boolean active;
-    // Maybe set default for false?
-    private boolean availableForHire;*/
-        return null;
+    public ConsultantDetails createConsultant(CreateConsultantRequest consultantRequest) {
+        LocalDate todayDate = LocalDate.now();
+
+        if (userRepo.findByEmail(consultantRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + consultantRequest.getEmail());
+
+        User newClient = new User(
+                null,
+                consultantRequest.getFirstName(),
+                consultantRequest.getLastName(),
+                consultantRequest.getEmail(),
+                bCryptPasswordEncoder.encode(consultantRequest.getPassword()),
+                SecurityConstants.ROLE_CONSULTANT,
+                todayDate,
+                todayDate,
+                SecurityConstants.DEFAULT_ACTIVE,
+                consultantRequest.getImage(),
+                new Contact(
+                        consultantRequest.getAddress(),
+                        consultantRequest.getZipCode(),
+                        consultantRequest.getCity(),
+                        consultantRequest.getCountry(),
+                        consultantRequest.getPhoneNumber()
+                )
+        );
+
+        //newClient = userRepo.save(newClient);
+
+        ConsultantDetails newDetails = new ConsultantDetails(
+                consultantRequest.isFrontend(),
+                consultantRequest.isBackend(),
+                consultantRequest.isAvailableForHire(),
+                consultantRequest.getMinPrice(),
+                newClient,
+                consultantRequest.getExperience(),
+                consultantRequest.getLanguage()
+        );
+
+
+        return consultantDetailsRepository.save(newDetails);
     }
 
     @Override
-    public UserDto updateClient(CreateClientRequest createClientRequest) {
-        return null;
+    public UserDto updateClient(String id, CreateClientRequest clientRequest) {
+        User foundUser = converter.dtoToUser(findById(id));
+
+        if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
+
+        foundUser.setCompanyName(clientRequest.getCompanyName());
+        foundUser.setFirstName(clientRequest.getFirstName());
+        foundUser.setLastName(clientRequest.getLastName());
+        foundUser.setEmail(clientRequest.getEmail());
+        foundUser.setPassword(bCryptPasswordEncoder.encode(clientRequest.getPassword()));
+        foundUser.setImage(clientRequest.getImage());
+
+        foundUser.getContact().setAddress(clientRequest.getAddress());
+        foundUser.getContact().setZipCode(clientRequest.getZipCode());
+        foundUser.getContact().setCity(clientRequest.getCity());
+        foundUser.getContact().setCountry(clientRequest.getCountry());
+        foundUser.getContact().setPhoneNumber(clientRequest.getPhoneNumber());
+
+        return converter.userToDto(userRepo.save(foundUser));
     }
 
     @Override
-    public UserDto updateConsultant(CreateConsultantRequest createConsultantRequest) {
+    public UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest) {
         return null;
     }
 
     @Override
     public boolean delete(String id) {
 
-        repo.delete(converter.dtoToUser(findById(id)));
-        return  !repo.findById(id).isPresent();
+        userRepo.delete(converter.dtoToUser(findById(id)));
+        return  !userRepo.findById(id).isPresent();
     }
 }
