@@ -26,6 +26,8 @@ public class AdminDto {
             message="Not a valid email address")
     private String email;
 
+
+
     @NotBlank
     /*
     *^                 # start-of-string
