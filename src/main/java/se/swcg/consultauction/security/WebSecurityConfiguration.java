@@ -9,8 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import se.swcg.consultauction.service.UserService;
 
 @EnableWebSecurity
@@ -30,7 +28,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL).permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL_CLIENT).permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL_CONSULTANT).permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().addFilter(getAuthenticationFilter())

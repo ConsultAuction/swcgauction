@@ -77,6 +77,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createConsultant(consultantRequest));
     }
 
+    @PutMapping("/consultant/{id}")
+    public ResponseEntity<?> updateConsultant(@PathVariable String id,@Valid @RequestBody CreateConsultantRequest consultantRequest) {
+        //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+
+        return ResponseEntity.ok(service.updateConsultant(id, consultantRequest));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") String id) {
         /*boolean isRemoved = service.delete(id);

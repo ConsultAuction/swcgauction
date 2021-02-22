@@ -25,7 +25,7 @@ public interface UserService extends UserDetailsService {
     ConsultantDetails createConsultant(CreateConsultantRequest createConsultantRequest);
 
     UserDto updateClient(String id, CreateClientRequest createClientRequest);
-    UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
+    ConsultantDetails updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
 
     boolean delete(String id);
 
