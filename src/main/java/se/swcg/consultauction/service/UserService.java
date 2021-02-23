@@ -12,8 +12,9 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
-    Object findById(String userId);
+    UserDto findById(String userId);
     List<UserDto> findAll();
+    ConsultantDetails findConsultantDetailsByUserId(String userId);
     List<UserDto> findByLanguage(String language);
     UserDto findByEmail(String email);
     List<User> findByRole(String role);

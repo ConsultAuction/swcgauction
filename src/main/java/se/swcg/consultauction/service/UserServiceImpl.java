@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
     @Autowired
-    ConsultantDetailsRepository consultantDetailsRepository;
+    ConsultantDetailsRepository consultantRepo;
     @Autowired
     DtoConversionService converter;
     @Autowired
@@ -51,28 +51,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
-    //@Override
-    public Object findById(String userId) {
-        /*return converter.userToDto(
+    @Override
+    public UserDto findById(String userId) {
+        return converter.userToDto(
                 userRepo.findById(userId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));*/
-
-        UserDto foundUser = converter.userToDto(
-                                userRepo.findById(userId)
-                                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
-
-        if (foundUser.getRole().equals(SecurityConstants.ROLE_CONSULTANT)) {
-
-            return consultantDetailsRepository.findByUserUserId(foundUser.getUserId())
-                                                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + foundUser.getUserId()));
-        }
-
-        return foundUser;
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
     }
 
     @Override
     public List<UserDto> findAll() {
         return checkIfListIsEmpty(converter.userToDto(userRepo.findAll()), "Could not find any users");
+    }
+
+    @Override
+    public ConsultantDetails findConsultantDetailsByUserId(String userId) {
+        return consultantRepo.findByUserUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + userId));
     }
 
     @Override
@@ -189,12 +183,12 @@ public class UserServiceImpl implements UserService {
         );
 
 
-        return consultantDetailsRepository.save(newDetails);
+        return consultantRepo.save(newDetails);
     }
 
     @Override
     public UserDto updateClient(String id, CreateClientRequest clientRequest) {
-        User foundUser = converter.dtoToUser((UserDto) findById(id));
+        User foundUser = converter.dtoToUser(findById(id));
 
         //if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
 
@@ -216,7 +210,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ConsultantDetails updateConsultant(String id, CreateConsultantRequest consultantRequest) {
-        ConsultantDetails foundUser = (ConsultantDetails) findById(id);
+        ConsultantDetails foundUser = findConsultantDetailsByUserId(id);
 
 
         foundUser.setFrontend(consultantRequest.isFrontend());
@@ -241,13 +235,13 @@ public class UserServiceImpl implements UserService {
         foundUser.setSkills(consultantRequest.getSkills());
 
 
-        return consultantDetailsRepository.save(foundUser);
+        return consultantRepo.save(foundUser);
     }
 
     @Override
     public boolean delete(String id) {
 
-        userRepo.delete(converter.dtoToUser((UserDto) findById(id)));
+        userRepo.delete(converter.dtoToUser(findById(id)));
         return  !userRepo.findById(id).isPresent();
     }
 }
