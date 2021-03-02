@@ -123,6 +123,13 @@ const Register = () => {
             required
           />
         </div>
+        <div className='form-group mt-4'>
+          <input
+            className='btn-lg btn-block btn-primary'
+            type='submit'
+            value='Submit'
+          />
+        </div>
       </form>
     </div>
   );
