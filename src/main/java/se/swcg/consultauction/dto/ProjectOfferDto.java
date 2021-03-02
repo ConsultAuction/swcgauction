@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 public class ProjectOfferDto {
 
-
     private String projectOfferId;
 
     private User user;

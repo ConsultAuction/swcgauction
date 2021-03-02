@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.service.UserService;
@@ -21,18 +22,19 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    public UserController(UserService service) {
-        this.service = service;
-    }
-
     @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable String id) {
+    public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
+    }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<ConsultantDetails> findConsulDetailsByUserId(@PathVariable String id) {
+        return ResponseEntity.ok(service.findConsultantDetailsByUserId(id));
     }
 
     @GetMapping("/language/{language}")
@@ -75,6 +77,13 @@ public class UserController {
     @PostMapping("/consultant")
     public ResponseEntity<?> createConsultant(@Valid @RequestBody CreateConsultantRequest consultantRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createConsultant(consultantRequest));
+    }
+
+    @PutMapping("/consultant/{id}")
+    public ResponseEntity<?> updateConsultant(@PathVariable String id,@Valid @RequestBody CreateConsultantRequest consultantRequest) {
+        //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+
+        return ResponseEntity.ok(service.updateConsultant(id, consultantRequest));
     }
 
     @DeleteMapping("/{id}")

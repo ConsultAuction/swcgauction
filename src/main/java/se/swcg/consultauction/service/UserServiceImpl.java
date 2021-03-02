@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
     @Autowired
-    ConsultantDetailsRepository consultantDetailsRepository;
+    ConsultantDetailsRepository consultantRepo;
     @Autowired
     DtoConversionService converter;
     @Autowired
@@ -51,28 +51,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
-    //@Override
-    public Object findById(String userId) {
-        /*return converter.userToDto(
+    @Override
+    public UserDto findById(String userId) {
+        return converter.userToDto(
                 userRepo.findById(userId)
-                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));*/
-
-        UserDto foundUser = converter.userToDto(
-                                userRepo.findById(userId)
-                                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
-
-        if (foundUser.getRole().equals(SecurityConstants.ROLE_CONSULTANT)) {
-
-            return consultantDetailsRepository.findByUserUserId(foundUser.getUserId())
-                                                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + foundUser.getUserId()));
-        }
-
-        return foundUser;
+                        .orElseThrow(() -> new ResourceNotFoundException("Could not find a user with id: " + userId)));
     }
 
     @Override
     public List<UserDto> findAll() {
         return checkIfListIsEmpty(converter.userToDto(userRepo.findAll()), "Could not find any users");
+    }
+
+    @Override
+    public ConsultantDetails findConsultantDetailsByUserId(String userId) {
+        return consultantRepo.findByUserUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + userId));
     }
 
     @Override
@@ -159,48 +153,44 @@ public class UserServiceImpl implements UserService {
 
         if (userRepo.findByEmail(consultantRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + consultantRequest.getEmail());
 
-        User newClient = new User(
-                null,
-                consultantRequest.getFirstName(),
-                consultantRequest.getLastName(),
-                consultantRequest.getEmail(),
-                bCryptPasswordEncoder.encode(consultantRequest.getPassword()),
-                SecurityConstants.ROLE_CONSULTANT,
-                todayDate,
-                todayDate,
-                SecurityConstants.DEFAULT_ACTIVE,
-                consultantRequest.getImage(),
-                new Contact(
-                        consultantRequest.getAddress(),
-                        consultantRequest.getZipCode(),
-                        consultantRequest.getCity(),
-                        consultantRequest.getCountry(),
-                        consultantRequest.getPhoneNumber()
-                )
-        );
-
-        //newClient = userRepo.save(newClient);
-
         ConsultantDetails newDetails = new ConsultantDetails(
                 consultantRequest.isFrontend(),
                 consultantRequest.isBackend(),
                 consultantRequest.isAvailableForHire(),
                 consultantRequest.getMinPrice(),
-                newClient,
+                new User(
+                        null,
+                        consultantRequest.getFirstName(),
+                        consultantRequest.getLastName(),
+                        consultantRequest.getEmail(),
+                        bCryptPasswordEncoder.encode(consultantRequest.getPassword()),
+                        SecurityConstants.ROLE_CONSULTANT,
+                        todayDate,
+                        todayDate,
+                        SecurityConstants.DEFAULT_ACTIVE,
+                        consultantRequest.getImage(),
+                        new Contact(
+                                consultantRequest.getAddress(),
+                                consultantRequest.getZipCode(),
+                                consultantRequest.getCity(),
+                                consultantRequest.getCountry(),
+                                consultantRequest.getPhoneNumber()
+                        )
+                ),
                 consultantRequest.getExperience(),
                 consultantRequest.getLanguage(),
                 consultantRequest.getSkills()
         );
 
 
-        return consultantDetailsRepository.save(newDetails);
+        return consultantRepo.save(newDetails);
     }
 
     @Override
     public UserDto updateClient(String id, CreateClientRequest clientRequest) {
-        User foundUser = converter.dtoToUser((UserDto) findById(id));
+        User foundUser = converter.dtoToUser(findById(id));
 
-        if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
+        //if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
 
         foundUser.setCompanyName(clientRequest.getCompanyName());
         foundUser.setFirstName(clientRequest.getFirstName());
@@ -219,14 +209,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest) {
-        return null;
+    public ConsultantDetails updateConsultant(String id, CreateConsultantRequest consultantRequest) {
+        ConsultantDetails foundUser = findConsultantDetailsByUserId(id);
+
+
+        foundUser.setFrontend(consultantRequest.isFrontend());
+        foundUser.setBackend(consultantRequest.isBackend());
+        foundUser.setAvailableForHire(consultantRequest.isAvailableForHire());
+        foundUser.setMinPrice(consultantRequest.getMinPrice());
+        foundUser.getUser().setFirstName(consultantRequest.getFirstName());
+
+        foundUser.getUser().setLastName(consultantRequest.getLastName());
+        foundUser.getUser().setEmail(consultantRequest.getEmail());
+        foundUser.getUser().setPassword(bCryptPasswordEncoder.encode(consultantRequest.getPassword()));
+        foundUser.getUser().setImage(consultantRequest.getImage());
+
+        foundUser.getUser().getContact().setAddress(consultantRequest.getAddress());
+        foundUser.getUser().getContact().setZipCode(consultantRequest.getZipCode());
+        foundUser.getUser().getContact().setCity(consultantRequest.getCity());
+        foundUser.getUser().getContact().setCountry(consultantRequest.getCountry());
+        foundUser.getUser().getContact().setPhoneNumber(consultantRequest.getPhoneNumber());
+
+        foundUser.setExperience(consultantRequest.getExperience());
+        foundUser.setLanguage(consultantRequest.getLanguage());
+        foundUser.setSkills(consultantRequest.getSkills());
+
+
+        return consultantRepo.save(foundUser);
     }
 
     @Override
     public boolean delete(String id) {
 
-        userRepo.delete(converter.dtoToUser((UserDto) findById(id)));
+        userRepo.delete(converter.dtoToUser(findById(id)));
         return  !userRepo.findById(id).isPresent();
     }
 }
