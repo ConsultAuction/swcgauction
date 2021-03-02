@@ -7,10 +7,10 @@ const Navbar = () => {
     const guestLinks = (
         <Fragment>
         <li className="nav-item pr-2">
-            <Link to='/register'>Sign Up</Link>
+            <Link className="btn btn-primary" to='/register'>Sign Up</Link>
         </li>
         <li className="nav-item">
-            <Link to='/login'>Login</Link>
+            <Link className="btn btn-primary" to='/login'>Login</Link>
         </li>
         </Fragment>
     )
