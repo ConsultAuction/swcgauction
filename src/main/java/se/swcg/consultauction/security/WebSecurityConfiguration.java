@@ -37,7 +37,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 //Stateless means that we dont store info about logged in users in memory
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().logout().logoutUrl("/user/logout").logoutSuccessUrl("/user/login");
+                .and().logout().logoutUrl("/user/logout").permitAll();
     }
 
     @Override

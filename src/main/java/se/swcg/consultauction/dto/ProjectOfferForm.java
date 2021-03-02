@@ -7,6 +7,7 @@ import se.swcg.consultauction.entity.User;
 import java.time.LocalDateTime;
 
 public class ProjectOfferForm {
+
     private String projectOfferId;
 
     private User user;
