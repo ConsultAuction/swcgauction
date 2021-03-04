@@ -15,7 +15,6 @@ import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.repository.ConsultantDetailsRepository;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
-import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,8 +30,8 @@ public class UserServiceImpl implements UserService {
     ConsultantDetailsRepository consultantRepo;
     @Autowired
     DtoConversionService converter;
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+   /* @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
     /*//Constructor not working with test right now.
     @Autowired
@@ -46,9 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return new SecurityUser(
-                userRepo.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
+        return null;
     }
 
     @Override
@@ -128,7 +125,7 @@ public class UserServiceImpl implements UserService {
                 clientRequest.getFirstName(),
                 clientRequest.getLastName(),
                 clientRequest.getEmail(),
-                bCryptPasswordEncoder.encode(clientRequest.getPassword()),
+                clientRequest.getPassword(),
                 SecurityConstants.ROLE_CLIENT,
                 todayDate,
                 todayDate,
@@ -163,7 +160,7 @@ public class UserServiceImpl implements UserService {
                         consultantRequest.getFirstName(),
                         consultantRequest.getLastName(),
                         consultantRequest.getEmail(),
-                        bCryptPasswordEncoder.encode(consultantRequest.getPassword()),
+                        consultantRequest.getPassword(),
                         SecurityConstants.ROLE_CONSULTANT,
                         todayDate,
                         todayDate,
@@ -196,7 +193,7 @@ public class UserServiceImpl implements UserService {
         foundUser.setFirstName(clientRequest.getFirstName());
         foundUser.setLastName(clientRequest.getLastName());
         foundUser.setEmail(clientRequest.getEmail());
-        foundUser.setPassword(bCryptPasswordEncoder.encode(clientRequest.getPassword()));
+        foundUser.setPassword(clientRequest.getPassword());
         foundUser.setImage(clientRequest.getImage());
 
         foundUser.getContact().setAddress(clientRequest.getAddress());
@@ -221,7 +218,7 @@ public class UserServiceImpl implements UserService {
 
         foundUser.getUser().setLastName(consultantRequest.getLastName());
         foundUser.getUser().setEmail(consultantRequest.getEmail());
-        foundUser.getUser().setPassword(bCryptPasswordEncoder.encode(consultantRequest.getPassword()));
+        foundUser.getUser().setPassword(consultantRequest.getPassword());
         foundUser.getUser().setImage(consultantRequest.getImage());
 
         foundUser.getUser().getContact().setAddress(consultantRequest.getAddress());

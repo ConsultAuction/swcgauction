@@ -27,13 +27,13 @@ public class CommandLine implements CommandLineRunner {
     @Autowired
     ProgrammingLanguagesRepository programmingLanguagesRepository;
 
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    /*@Autowired
+    BCryptPasswordEncoder passwordEncoder;*/
 
     @Override
     public void run(String... args) throws Exception {
 
-        System.out.println(Keys.secretKeyFor(SignatureAlgorithm.HS512).getFormat());
+        /*System.out.println(Keys.secretKeyFor(SignatureAlgorithm.HS512).getFormat());
 
         List<Experience> experience = new ArrayList<>();
         experience.add(new Experience("Lexicon"));
@@ -82,6 +82,6 @@ public class CommandLine implements CommandLineRunner {
         programmingLanguagesRepository.save(new ProgrammingLanguages("Java"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C#"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C++"));
-        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));
+        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));*/
     }
 }
