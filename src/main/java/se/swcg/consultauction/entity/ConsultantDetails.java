@@ -22,9 +22,6 @@ public class ConsultantDetails {
     private boolean availableForHire;
     private int minPrice;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private User user;
-
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Experience> experience;
 
@@ -34,51 +31,28 @@ public class ConsultantDetails {
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<Skills> skills;
 
-    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire,
-                             int minPrice, User user, List<Experience> experience, List<Languages> language,
-                             List<Skills> skills) {
+    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire, int minPrice, List<Experience> experience, List<Languages> language, List<Skills> skills) {
         this.qualificationsId = qualificationsId;
         this.frontend = frontend;
         this.backend = backend;
         this.availableForHire = availableForHire;
         this.minPrice = minPrice;
-        this.user = user;
         this.experience = experience;
         this.language = language;
         this.skills = skills;
     }
 
-    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire,
-                             int minPrice, User user, List<Experience> experience, List<Languages> language,
-                             List<Skills> skills) {
+    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire, int minPrice, List<Experience> experience, List<Languages> language, List<Skills> skills) {
         this.frontend = frontend;
         this.backend = backend;
         this.availableForHire = availableForHire;
         this.minPrice = minPrice;
-        this.user = user;
         this.experience = experience;
         this.language = language;
         this.skills = skills;
     }
 
     public ConsultantDetails() {
-    }
-
-    // TODO add validation for all add/remove methods
-    public void addExperience(Experience experienceToAdd) {
-        experience.add(experienceToAdd);
-    }
-
-    public void removeExperience(Experience experienceToRemove) {
-        experience.remove(experienceToRemove);
-    }
-
-    public void addLanguage(Languages languageToAdd) {
-        language.add(languageToAdd);
-    }
-
-    public void removeLanguage(Languages languageToRemove) {
-        language.remove(languageToRemove);
     }
 
     public String getQualificationsId() {
@@ -117,14 +91,6 @@ public class ConsultantDetails {
         this.minPrice = minPrice;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Experience> getExperience() {
         return experience;
     }
@@ -159,14 +125,14 @@ public class ConsultantDetails {
                 availableForHire == that.availableForHire &&
                 minPrice == that.minPrice &&
                 Objects.equals(qualificationsId, that.qualificationsId) &&
-                Objects.equals(user, that.user) &&
                 Objects.equals(experience, that.experience) &&
-                Objects.equals(language, that.language);
+                Objects.equals(language, that.language) &&
+                Objects.equals(skills, that.skills);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualificationsId, frontend, backend, availableForHire, minPrice, user, experience, language);
+        return Objects.hash(qualificationsId, frontend, backend, availableForHire, minPrice, experience, language, skills);
     }
 
     @Override
@@ -177,9 +143,9 @@ public class ConsultantDetails {
                 ", backend=" + backend +
                 ", availableForHire=" + availableForHire +
                 ", minPrice=" + minPrice +
-                ", user=" + user +
                 ", experience=" + experience +
                 ", language=" + language +
+                ", skills=" + skills +
                 '}';
     }
 }

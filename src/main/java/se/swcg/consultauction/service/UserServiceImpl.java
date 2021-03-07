@@ -2,8 +2,9 @@ package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.entity.ConsultantDetails;
@@ -12,9 +13,9 @@ import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
-import se.swcg.consultauction.repository.ConsultantDetailsRepository;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
+import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,30 +23,24 @@ import java.util.List;
 import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
+
+    private final UserRepository userRepo;
+    private final DtoConversionService converter;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserRepository userRepo;
-    @Autowired
-    ConsultantDetailsRepository consultantRepo;
-    @Autowired
-    DtoConversionService converter;
-   /* @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;*/
-
-    /*//Constructor not working with test right now.
-    @Autowired
-    public UserServiceImpl(UserRepository repo, DtoConversionService converter, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.repo = repo;
+    public UserServiceImpl(UserRepository userRepo, DtoConversionService converter, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
         this.converter = converter;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }*/
-
-
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return null;
+        return new SecurityUser(
+                userRepo.findByEmail(email)
+                        .orElseThrow(() -> new UsernameNotFoundException("Could not find user with email: " + email)));
     }
 
     @Override
@@ -58,12 +53,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findAll() {
         return checkIfListIsEmpty(converter.userToDto(userRepo.findAll()), "Could not find any users");
-    }
-
-    @Override
-    public ConsultantDetails findConsultantDetailsByUserId(String userId) {
-        return consultantRepo.findByUserUserId(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Could not find a details with id: " + userId));
     }
 
     @Override
@@ -124,7 +113,7 @@ public class UserServiceImpl implements UserService {
                 clientRequest.getCompanyName(),
                 clientRequest.getFirstName(),
                 clientRequest.getLastName(),
-                clientRequest.getEmail(),
+                passwordEncoder.encode(clientRequest.getEmail()),
                 clientRequest.getPassword(),
                 SecurityConstants.ROLE_CLIENT,
                 todayDate,
@@ -137,7 +126,8 @@ public class UserServiceImpl implements UserService {
                         clientRequest.getCity(),
                         clientRequest.getCountry(),
                         clientRequest.getPhoneNumber()
-                )
+                ),
+                null
         );
 
         return converter.userToDto(
@@ -145,42 +135,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ConsultantDetails createConsultant(CreateConsultantRequest consultantRequest) {
+    public UserDto createConsultant(CreateConsultantRequest consultantRequest) {
         LocalDate todayDate = LocalDate.now();
 
         if (userRepo.findByEmail(consultantRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + consultantRequest.getEmail());
 
-        ConsultantDetails newDetails = new ConsultantDetails(
-                consultantRequest.isFrontend(),
-                consultantRequest.isBackend(),
-                consultantRequest.isAvailableForHire(),
-                consultantRequest.getMinPrice(),
-                new User(
-                        null,
-                        consultantRequest.getFirstName(),
-                        consultantRequest.getLastName(),
-                        consultantRequest.getEmail(),
-                        consultantRequest.getPassword(),
-                        SecurityConstants.ROLE_CONSULTANT,
-                        todayDate,
-                        todayDate,
-                        SecurityConstants.DEFAULT_ACTIVE,
-                        consultantRequest.getImage(),
-                        new Contact(
-                                consultantRequest.getAddress(),
-                                consultantRequest.getZipCode(),
-                                consultantRequest.getCity(),
-                                consultantRequest.getCountry(),
-                                consultantRequest.getPhoneNumber()
-                        )
+        User newConsultant = new User(
+                null,
+                consultantRequest.getFirstName(),
+                consultantRequest.getLastName(),
+                consultantRequest.getEmail(),
+                passwordEncoder.encode(consultantRequest.getPassword()),
+                SecurityConstants.ROLE_CONSULTANT,
+                todayDate,
+                todayDate,
+                SecurityConstants.DEFAULT_ACTIVE,
+                consultantRequest.getImage(),
+                new Contact(
+                        consultantRequest.getAddress(),
+                        consultantRequest.getZipCode(),
+                        consultantRequest.getCity(),
+                        consultantRequest.getCountry(),
+                        consultantRequest.getPhoneNumber()
                 ),
-                consultantRequest.getExperience(),
-                consultantRequest.getLanguage(),
-                consultantRequest.getSkills()
+                new ConsultantDetails(
+                        consultantRequest.isFrontend(),
+                        consultantRequest.isBackend(),
+                        consultantRequest.isAvailableForHire(),
+                        consultantRequest.getMinPrice(),
+                        consultantRequest.getExperience(),
+                        consultantRequest.getLanguage(),
+                        consultantRequest.getSkills()
+                )
         );
 
 
-        return consultantRepo.save(newDetails);
+
+
+        return converter.userToDto(userRepo.save(newConsultant));
     }
 
     @Override
@@ -193,7 +185,7 @@ public class UserServiceImpl implements UserService {
         foundUser.setFirstName(clientRequest.getFirstName());
         foundUser.setLastName(clientRequest.getLastName());
         foundUser.setEmail(clientRequest.getEmail());
-        foundUser.setPassword(clientRequest.getPassword());
+        foundUser.setPassword(passwordEncoder.encode(clientRequest.getPassword()));
         foundUser.setImage(clientRequest.getImage());
 
         foundUser.getContact().setAddress(clientRequest.getAddress());
@@ -206,33 +198,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ConsultantDetails updateConsultant(String id, CreateConsultantRequest consultantRequest) {
-        ConsultantDetails foundUser = findConsultantDetailsByUserId(id);
+    public UserDto updateConsultant(String id, CreateConsultantRequest consultantRequest) {
+
+        User foundUser = converter.dtoToUser(findById(id));
+
+        foundUser.setFirstName(consultantRequest.getFirstName());
+
+        foundUser.setLastName(consultantRequest.getLastName());
+        foundUser.setEmail(consultantRequest.getEmail());
+        foundUser.setPassword(passwordEncoder.encode(consultantRequest.getPassword()));
+        foundUser.setImage(consultantRequest.getImage());
+
+        foundUser.getContact().setAddress(consultantRequest.getAddress());
+        foundUser.getContact().setZipCode(consultantRequest.getZipCode());
+        foundUser.getContact().setCity(consultantRequest.getCity());
+        foundUser.getContact().setCountry(consultantRequest.getCountry());
+        foundUser.getContact().setPhoneNumber(consultantRequest.getPhoneNumber());
+
+        foundUser.getConsultantDetails().setFrontend(consultantRequest.isFrontend());
+        foundUser.getConsultantDetails().setBackend(consultantRequest.isBackend());
+        foundUser.getConsultantDetails().setAvailableForHire(consultantRequest.isAvailableForHire());
+        foundUser.getConsultantDetails().setMinPrice(consultantRequest.getMinPrice());
+        foundUser.getConsultantDetails().setExperience(consultantRequest.getExperience());
+        foundUser.getConsultantDetails().setLanguage(consultantRequest.getLanguage());
+        foundUser.getConsultantDetails().setSkills(consultantRequest.getSkills());
 
 
-        foundUser.setFrontend(consultantRequest.isFrontend());
-        foundUser.setBackend(consultantRequest.isBackend());
-        foundUser.setAvailableForHire(consultantRequest.isAvailableForHire());
-        foundUser.setMinPrice(consultantRequest.getMinPrice());
-        foundUser.getUser().setFirstName(consultantRequest.getFirstName());
-
-        foundUser.getUser().setLastName(consultantRequest.getLastName());
-        foundUser.getUser().setEmail(consultantRequest.getEmail());
-        foundUser.getUser().setPassword(consultantRequest.getPassword());
-        foundUser.getUser().setImage(consultantRequest.getImage());
-
-        foundUser.getUser().getContact().setAddress(consultantRequest.getAddress());
-        foundUser.getUser().getContact().setZipCode(consultantRequest.getZipCode());
-        foundUser.getUser().getContact().setCity(consultantRequest.getCity());
-        foundUser.getUser().getContact().setCountry(consultantRequest.getCountry());
-        foundUser.getUser().getContact().setPhoneNumber(consultantRequest.getPhoneNumber());
-
-        foundUser.setExperience(consultantRequest.getExperience());
-        foundUser.setLanguage(consultantRequest.getLanguage());
-        foundUser.setSkills(consultantRequest.getSkills());
-
-
-        return consultantRepo.save(foundUser);
+        return converter.userToDto(userRepo.save(foundUser));
     }
 
     @Override

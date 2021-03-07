@@ -18,13 +18,13 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     @Override
     public User dtoToUser(UserDto dto) {
         return new User(dto.getUserId(), dto.getCompanyName(), dto.getFirstName(), dto.getLastName(), dto.getEmail(), dto.getPassword(),
-                dto.getRole(), dto.getDateOfSignUp(), dto.getLastActive(), dto.isActive(), dto.getImage(), dto.getContact());
+                dto.getRole(), dto.getDateOfSignUp(), dto.getLastActive(), dto.isActive(), dto.getImage(), dto.getContact(), dto.getConsultantDetails());
     }
 
     @Override
     public UserDto userToDto(User user) {
         return new UserDto(user.getUserId(), user.getCompanyName(), user.getFirstName(), user.getLastName(), user.getEmail(), user.getPassword(),
-                user.getRole(), user.getDateOfSignUp(), user.getLastActive(), user.isActive(), user.getImage(), user.getContact());
+                user.getRole(), user.getDateOfSignUp(), user.getLastActive(), user.isActive(), user.getImage(), user.getContact(), user.getConsultantDetails());
     }
 
     @Override
