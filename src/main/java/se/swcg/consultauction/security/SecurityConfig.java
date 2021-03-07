@@ -1,16 +1,29 @@
 package se.swcg.consultauction.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.omg.CORBA.Object;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationConverter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import se.swcg.consultauction.exception.RestAuthEntryPoint;
+import se.swcg.consultauction.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -18,12 +31,14 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
+    private final UserService userDetailsService;
+    private final RestAuthEntryPoint restAuthEntryPoint;
 
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
+    public SecurityConfig(PasswordEncoder passwordEncoder, UserService userDetailsService, RestAuthEntryPoint restAuthEntryPoint) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
+        this.restAuthEntryPoint = restAuthEntryPoint;
     }
 
     @Override
@@ -38,10 +53,67 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()*/
                 .csrf().disable()
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL_CLIENT).permitAll()
+                .antMatchers( "/api/user/login", "/login").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint).and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/api/user/login");
+
+
+
+
+
+
+                //.addFilter(getAuthenticationFilter());
+
+
+
+
+
+
+
+        /*
+                .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint).and()
+                .formLogin().permitAll()
+                .loginProcessingUrl("/api/login")
+                .successHandler(this::loginSuccessHandler)
+                .failureHandler(this::loginFailureHandler)*/
+
     }
+
+    /*public AuthenticationFilter getAuthenticationFilter() throws Exception {
+        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), userService);
+        filter.setFilterProcessesUrl("/api/user/login");
+        return filter;
+    }*/
+
+    /*private void loginSuccessHandler(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication) throws IOException {
+
+        response.setStatus(HttpStatus.OK.value());
+        objectMapper.writeValue(response.getWriter(), "Yayy you logged in!");
+    }
+
+    private void loginFailureHandler(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            AuthenticationException e) throws IOException {
+
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        objectMapper.writeValue(response.getWriter(), "Nopity nop!");
+    }
+
+    private void logoutSuccessHandler(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Authentication authentication) throws IOException {
+
+        response.setStatus(HttpStatus.OK.value());
+        objectMapper.writeValue(response.getWriter(), "Bye!");
+    }*/
 }

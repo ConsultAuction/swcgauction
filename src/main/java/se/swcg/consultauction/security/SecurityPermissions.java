@@ -1,9 +1,5 @@
 package se.swcg.consultauction.security;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-import java.util.Set;
-
 public enum SecurityPermissions {
     USER_READ("user:read"),
     USER_WRITE("user:write"),

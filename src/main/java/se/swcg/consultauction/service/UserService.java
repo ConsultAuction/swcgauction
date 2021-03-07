@@ -10,7 +10,7 @@ import se.swcg.consultauction.model.CreateConsultantRequest;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface UserService {
+public interface UserService extends UserDetailsService{
 
     UserDto findById(String userId);
     List<UserDto> findAll();
