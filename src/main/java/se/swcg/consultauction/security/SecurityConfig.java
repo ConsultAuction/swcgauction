@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -54,11 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 /*.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()*/
-                    .csrf().disable()
-                    .authorizeRequests()
-                    //.antMatchers( "/**").permitAll()
-                    .anyRequest()
-                    .authenticated()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL_CLIENT).permitAll()
+                .antMatchers(HttpMethod.POST, SecurityConstants.SING_UP_URL_CONSULTANT).permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                     .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint)
                 .and()

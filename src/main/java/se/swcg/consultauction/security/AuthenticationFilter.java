@@ -66,7 +66,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         SecurityContextHolder.getContext().setAuthentication(authResult);
 
         chain.doFilter(request, response);
-    }*/
+    }
 
     /*@Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
