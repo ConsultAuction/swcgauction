@@ -9,9 +9,9 @@ import AuthState from './context/auth/AuthState';
 import setAuthToken from './utils/setAuthToken';
 import './App.css';
 
-/* if (token) {
+if (token) {
   setAuthToken(token);
-} */
+}
 
 const App = () => {
   return (

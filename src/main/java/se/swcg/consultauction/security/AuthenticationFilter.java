@@ -3,24 +3,19 @@ package se.swcg.consultauction.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.util.UrlPathHelper;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.UserLoginRequest;
 import se.swcg.consultauction.service.UserService;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -43,12 +38,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                     .readValue(request.getInputStream(), UserLoginRequest.class);
 
             UsernamePasswordAuthenticationToken token
-                    = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+                    = new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword());
 
             // Allow subclasses to set the "details" property
             setDetails(request, token);
 
-            UserDto userDto = service.findByEmail(loginRequest.getUsername());
+            UserDto userDto = service.findByEmail(loginRequest.getEmail());
             System.out.println(userDto.toString());
             response.addHeader("UserId", userDto.getUserId());
 
