@@ -10,11 +10,10 @@ import se.swcg.consultauction.model.CreateConsultantRequest;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService extends UserDetailsService{
 
     UserDto findById(String userId);
     List<UserDto> findAll();
-    ConsultantDetails findConsultantDetailsByUserId(String userId);
     List<UserDto> findByLanguage(String language);
     UserDto findByEmail(String email);
     List<User> findByRole(String role);
@@ -23,10 +22,10 @@ public interface UserService extends UserDetailsService {
     List<UserDto> findByAvailable(boolean available);
 
     UserDto createClient(CreateClientRequest createClientRequest);
-    ConsultantDetails createConsultant(CreateConsultantRequest createConsultantRequest);
+    UserDto createConsultant(CreateConsultantRequest createConsultantRequest);
 
     UserDto updateClient(String id, CreateClientRequest createClientRequest);
-    ConsultantDetails updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
+    UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
 
     boolean delete(String id);
 

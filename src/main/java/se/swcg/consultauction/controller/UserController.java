@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.entity.ConsultantDetails;
@@ -23,18 +24,15 @@ public class UserController {
     private UserService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
-    }
-
-    @GetMapping("/details/{id}")
-    public ResponseEntity<ConsultantDetails> findConsulDetailsByUserId(@PathVariable String id) {
-        return ResponseEntity.ok(service.findConsultantDetailsByUserId(id));
     }
 
     @GetMapping("/language/{language}")
