@@ -7,6 +7,7 @@ import se.swcg.consultauction.entity.Skills;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Set;
 
 public class CreateConsultantRequest {
 
@@ -50,9 +51,9 @@ public class CreateConsultantRequest {
     private boolean availableForHire;
     private int minPrice;
 
-    private List<Experience> experience;
-    private List<Languages> language;
-    private List<Skills> skills;
+    private Set<Experience> experience;
+    private Set<Languages> language;
+    private Set<Skills> skills;
 
     public String getFirstName() {
         return firstName;
@@ -166,27 +167,27 @@ public class CreateConsultantRequest {
         this.minPrice = minPrice;
     }
 
-    public List<Experience> getExperience() {
+    public Set<Experience> getExperience() {
         return experience;
     }
 
-    public void setExperience(List<Experience> experience) {
+    public void setExperience(Set<Experience> experience) {
         this.experience = experience;
     }
 
-    public List<Languages> getLanguage() {
+    public Set<Languages> getLanguage() {
         return language;
     }
 
-    public void setLanguage(List<Languages> language) {
+    public void setLanguage(Set<Languages> language) {
         this.language = language;
     }
 
-    public List<Skills> getSkills() {
+    public Set<Skills> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<Skills> skills) {
+    public void setSkills(Set<Skills> skills) {
         this.skills = skills;
     }
 }
