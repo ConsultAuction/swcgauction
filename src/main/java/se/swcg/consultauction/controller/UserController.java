@@ -24,13 +24,13 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    //@PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    //@PreAuthorize("hasAuthority('user:read')")
+    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
     }

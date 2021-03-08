@@ -28,10 +28,10 @@ public class User {
     private boolean active;
     private String image;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Contact contact;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private ConsultantDetails consultantDetails;
 
     public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact, ConsultantDetails consultantDetails) {
