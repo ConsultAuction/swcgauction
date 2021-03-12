@@ -30,9 +30,7 @@ public class CommandLine implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        System.out.println(Keys.secretKeyFor(SignatureAlgorithm.HS512).getFormat());
-
+        
         Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));

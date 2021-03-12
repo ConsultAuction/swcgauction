@@ -16,6 +16,7 @@ import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
+import se.swcg.consultauction.security.SecurityRoles;
 import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
@@ -117,7 +118,7 @@ public class UserServiceImpl implements UserService {
                 clientRequest.getLastName(),
                 passwordEncoder.encode(clientRequest.getEmail()),
                 clientRequest.getPassword(),
-                SecurityConstants.ROLE_CLIENT,
+                SecurityRoles.CLIENT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
@@ -148,7 +149,7 @@ public class UserServiceImpl implements UserService {
                 consultantRequest.getLastName(),
                 consultantRequest.getEmail(),
                 passwordEncoder.encode(consultantRequest.getPassword()),
-                SecurityConstants.ROLE_CONSULTANT,
+                SecurityRoles.CONSULTANT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,

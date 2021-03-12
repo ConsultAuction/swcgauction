@@ -65,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint)
                 .and()
                     .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    //.addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    //.addFilter(getAuthenticationFilter())
                 .logout()
                     .logoutUrl("/api/user/logout")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/logout", "GET"))
@@ -86,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
     }
+
     /*public AuthenticationFilter getAuthenticationFilter() throws Exception {
         final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), userService);
         filter.setFilterProcessesUrl("/api/user/login");

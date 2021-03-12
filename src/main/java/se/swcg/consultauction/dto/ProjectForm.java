@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 public class ProjectForm {
 
-
     private String projectId;
     private String projectName;
     private LocalDate startDate;

@@ -13,26 +13,22 @@ import {
 
 const AuthState = (props) => {
   const initialState = {
-    token: localStorage.getItem('token'),
-    isAuthenticated: null,
+    isAuthenticated: localStorage.getItem('isAuthenticated'),
     loading: true,
-    user: null,
-    userid: localStorage.getItem('id'),
+    user: JSON.parse(localStorage.getItem('user')),
+    userId: localStorage.getItem('userId'),
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { userid, token } = initialState;
+  const { userId, token } = initialState;
 
   // Load User
   const loadUser = () => {
-    if (token) {
-      console.log(localStorage.getItem('token'));
-      setAuthToken(localStorage.getItem('token'));
-    }
+    console.log(userId);
 
     try {
-      axios.get('/api/user/' + `${userid}`).then((res) => {
+      axios.get('/api/user/' + `${userId}`).then((res) => {
         console.log(res);
         dispatch({
           type: USER_LOADED,
@@ -50,15 +46,15 @@ const AuthState = (props) => {
   // Register User
 
   // Login User
-  const login = (formData) => {
+  const login = async (formData) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-
+    localStorage.clear();
     try {
-      axios.post('/api/user/login', formData, config).then((res) => {
+      await axios.post('/api/user/login', formData, config).then((res) => {
         console.log(res.headers.authorization);
         dispatch({
           type: LOGIN_SUCCESS,
@@ -78,7 +74,7 @@ const AuthState = (props) => {
   const logout = () => dispatch({ type: LOGOUT });
 
   // Clear Errors
-
+  console.log(state)
   return (
     <AuthContext.Provider
       value={{
@@ -86,7 +82,7 @@ const AuthState = (props) => {
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        uderid: state.userid,
+        userId: state.userId,
         loadUser,
         login,
         logout,
