@@ -13,14 +13,13 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      console.log(action.payload.authorization);
-      localStorage.setItem('token', action.payload.authorization);
-      console.log(action.payload.userid);
-      localStorage.setItem('id', action.payload.userid);
+      console.log(action.payload);
+
+      localStorage.setItem('userid', action.payload);
+
       return {
         ...state,
-        token: action.payload.authorization,
-        userid: action.payload.userid,
+        ...action.payload,
         isAuthenticated: true,
         loading: false,
       };
@@ -28,16 +27,17 @@ const authReducer = (state, action) => {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      localStorage.removeItem('token');
+      localStorage.clear();
       return {
         ...state,
-        token: null,
         isAuthenticated: false,
         loading: false,
         user: null,
         userid: null,
       };
     case USER_LOADED:
+      console.log(action.payload);
+      localStorage.setItem('user', action.payload);
       return {
         ...state,
         isAuthenticated: true,
