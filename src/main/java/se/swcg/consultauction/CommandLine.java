@@ -54,6 +54,7 @@ public class CommandLine implements CommandLineRunner {
                         null)
         );
 
+
         userRepository.save(
                 new User(null,
                 "Marcus",
