@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.entity.ConsultantDetails;
@@ -17,12 +18,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/user")
+@PreAuthorize("hasAuthority('user:read')")
 public class UserController {
 
     @Autowired
     private UserService service;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('client:read')")
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
@@ -30,11 +33,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
-    }
-
-    @GetMapping("/details/{id}")
-    public ResponseEntity<ConsultantDetails> findConsulDetailsByUserId(@PathVariable String id) {
-        return ResponseEntity.ok(service.findConsultantDetailsByUserId(id));
     }
 
     @GetMapping("/language/{language}")
@@ -91,8 +89,9 @@ public class UserController {
         /*boolean isRemoved = service.delete(id);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete user with id: " + id);
 
-        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);
-       *//* service.delete(id);
+        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);*/
+
+        /* service.delete(id);
         return ResponseEntity.noContent().build();*/
         return null;
     }

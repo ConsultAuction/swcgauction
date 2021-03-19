@@ -11,15 +11,4 @@ public class ConsultauctionApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ConsultauctionApplication.class, args);
 	}
-
-	@Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    /*@Bean
-	public SpringApplicationContext springApplicationContext() {
-		return new SpringApplicationContext();
-	}*/
-
 }

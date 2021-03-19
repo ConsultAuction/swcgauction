@@ -28,10 +28,13 @@ public class User {
     private boolean active;
     private String image;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Contact contact;
 
-    public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private ConsultantDetails consultantDetails;
+
+    public User(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact, ConsultantDetails consultantDetails) {
         this.userId = userId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -44,12 +47,10 @@ public class User {
         this.active = active;
         this.image = image;
         this.contact = contact;
+        this.consultantDetails = consultantDetails;
     }
 
-    public User(String companyName, String firstName,
-                String lastName, String email, String password,
-                String role, LocalDate dateOfSignUp,
-                LocalDate lastActive, boolean active, String image, Contact contact) {
+    public User(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact, ConsultantDetails consultantDetails) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,6 +62,7 @@ public class User {
         this.active = active;
         this.image = image;
         this.contact = contact;
+        this.consultantDetails = consultantDetails;
     }
 
     public User() {
@@ -158,6 +160,14 @@ public class User {
         this.contact = contact;
     }
 
+    public ConsultantDetails getConsultantDetails() {
+        return consultantDetails;
+    }
+
+    public void setConsultantDetails(ConsultantDetails consultantDetails) {
+        this.consultantDetails = consultantDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -174,12 +184,13 @@ public class User {
                 Objects.equals(dateOfSignUp, user.dateOfSignUp) &&
                 Objects.equals(lastActive, user.lastActive) &&
                 Objects.equals(image, user.image) &&
-                Objects.equals(contact, user.contact);
+                Objects.equals(contact, user.contact) &&
+                Objects.equals(consultantDetails, user.consultantDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact);
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact, consultantDetails);
     }
 
     @Override
@@ -197,6 +208,7 @@ public class User {
                 ", active=" + active +
                 ", image='" + image + '\'' +
                 ", contact=" + contact +
+                ", consultantDetails=" + consultantDetails +
                 '}';
     }
 }

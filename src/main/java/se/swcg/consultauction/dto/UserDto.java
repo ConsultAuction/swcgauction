@@ -1,5 +1,6 @@
 package se.swcg.consultauction.dto;
 
+import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.entity.Contact;
 
 import javax.validation.constraints.NotBlank;
@@ -34,8 +35,9 @@ public class UserDto {
     private boolean active;
     private String image;
     private Contact contact;
+    private ConsultantDetails consultantDetails;
 
-    public UserDto(String userId, String companyName, String firstName, String lastName, String email,  String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+    public UserDto(String userId, String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact, ConsultantDetails consultantDetails) {
         this.userId = userId;
         this.companyName = companyName;
         this.firstName = firstName;
@@ -48,9 +50,10 @@ public class UserDto {
         this.active = active;
         this.image = image;
         this.contact = contact;
+        this.consultantDetails = consultantDetails;
     }
 
-    public UserDto(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact) {
+    public UserDto(String companyName, String firstName, String lastName, String email, String password, String role, LocalDate dateOfSignUp, LocalDate lastActive, boolean active, String image, Contact contact, ConsultantDetails consultantDetails) {
         this.companyName = companyName;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,6 +65,7 @@ public class UserDto {
         this.active = active;
         this.image = image;
         this.contact = contact;
+        this.consultantDetails = consultantDetails;
     }
 
     public UserDto() {
@@ -69,10 +73,6 @@ public class UserDto {
 
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getCompanyName() {
@@ -163,6 +163,14 @@ public class UserDto {
         this.contact = contact;
     }
 
+    public ConsultantDetails getConsultantDetails() {
+        return consultantDetails;
+    }
+
+    public void setConsultantDetails(ConsultantDetails consultantDetails) {
+        this.consultantDetails = consultantDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -179,12 +187,13 @@ public class UserDto {
                 Objects.equals(dateOfSignUp, userDto.dateOfSignUp) &&
                 Objects.equals(lastActive, userDto.lastActive) &&
                 Objects.equals(image, userDto.image) &&
-                Objects.equals(contact, userDto.contact);
+                Objects.equals(contact, userDto.contact) &&
+                Objects.equals(consultantDetails, userDto.consultantDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact);
+        return Objects.hash(userId, companyName, firstName, lastName, email, password, role, dateOfSignUp, lastActive, active, image, contact, consultantDetails);
     }
 
     @Override
@@ -201,7 +210,8 @@ public class UserDto {
                 ", lastActive=" + lastActive +
                 ", active=" + active +
                 ", image='" + image + '\'' +
-                ", address=" + contact +
+                ", contact=" + contact +
+                ", consultantDetails=" + consultantDetails +
                 '}';
     }
 }
