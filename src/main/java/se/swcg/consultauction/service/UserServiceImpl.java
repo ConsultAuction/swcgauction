@@ -232,7 +232,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean delete(String id) {
-
         userRepo.delete(converter.dtoToUser(findById(id)));
         return  !userRepo.findById(id).isPresent();
     }

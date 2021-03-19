@@ -18,19 +18,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/user")
+@PreAuthorize("hasAuthority('user:read')")
 public class UserController {
 
     @Autowired
     private UserService service;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('client:read')")
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
     }
@@ -89,8 +89,9 @@ public class UserController {
         /*boolean isRemoved = service.delete(id);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete user with id: " + id);
 
-        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);
-       *//* service.delete(id);
+        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);*/
+
+        /* service.delete(id);
         return ResponseEntity.noContent().build();*/
         return null;
     }

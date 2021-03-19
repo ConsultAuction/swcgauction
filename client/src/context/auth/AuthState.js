@@ -13,19 +13,19 @@ import {
 
 const AuthState = (props) => {
   const initialState = {
-    isAuthenticated: localStorage.getItem('isAuthenticated'),
+    isAuthenticated: null,
     loading: true,
-    user: JSON.parse(localStorage.getItem('user')),
-    userId: localStorage.getItem('userId'),
+    user: null,
+    userId: localStorage.getItem('userId')
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { userId, token } = initialState;
 
   // Load User
   const loadUser = () => {
-    console.log(userId);
+
+    console.log(localStorage.getItem("userId"));
 
     try {
       axios.get('/api/user/' + `${userId}`).then((res) => {
@@ -46,21 +46,23 @@ const AuthState = (props) => {
   // Register User
 
   // Login User
-  const login = async (formData) => {
+  const login = (formData) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    localStorage.clear();
+
     try {
-      await axios.post('/api/user/login', formData, config).then((res) => {
+      axios.post('/api/user/login', formData, config).then((res) => {
         console.log(res.headers.authorization);
         dispatch({
           type: LOGIN_SUCCESS,
           payload: res.headers,
         });
+
         loadUser();
+
       });
     } catch (error) {
       console.log(error);
@@ -78,7 +80,6 @@ const AuthState = (props) => {
   return (
     <AuthContext.Provider
       value={{
-        token: state.token,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,

@@ -15,7 +15,6 @@ const authReducer = (state, action) => {
     case LOGIN_SUCCESS:
       console.log(action.payload.userid);
       localStorage.setItem('userId', action.payload.userid);
-      localStorage.setItem('isAuthenticated', true);
       return {
         ...state,
         userId: action.payload.userid,
@@ -35,7 +34,6 @@ const authReducer = (state, action) => {
         userId: null,
       };
     case USER_LOADED:
-      localStorage.setItem('user', JSON.stringify(action.payload));
       return {
         ...state,
         isAuthenticated: true,
