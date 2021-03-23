@@ -6,7 +6,7 @@ import AuthContext from '../../context/auth/authContext';
 const Navbar = () => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, logout, user } = authContext;
+  const { logout, user } = authContext;
 
   const onLogout = () => {
     logout();
@@ -45,7 +45,7 @@ const Navbar = () => {
       </Link>
       <h1>Konsultauktion</h1>
       <ul className='nav navbar-nav ml-auto'>
-        {isAuthenticated ? authLinks : guestLinks}
+        {localStorage.isAuthenticated ? authLinks : guestLinks}
       </ul>
     </nav>
   );
