@@ -37,7 +37,6 @@ const AuthState = (props) => {
         '/api/user/' + localStorage.getItem('userid'),
         config
       );
-      console.log(res);
 
       dispatch({
         type: USER_LOADED,
@@ -63,7 +62,6 @@ const AuthState = (props) => {
 
     try {
       const res = await axios.post('/api/user/login', formData, config);
-      console.log(res);
       localStorage.clear();
       localStorage.setItem('userid', res.headers.userid);
 
@@ -90,7 +88,6 @@ const AuthState = (props) => {
     };
     try {
       const res = await axios.get('/api/user/logout', config);
-      console.log(res);
       dispatch({ type: LOGOUT });
     } catch (error) {
       console.log(error);

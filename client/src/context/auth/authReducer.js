@@ -13,8 +13,6 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      console.log(action.payload);
-
       localStorage.setItem('userid', action.payload);
 
       return {
@@ -36,8 +34,8 @@ const authReducer = (state, action) => {
         userid: null,
       };
     case USER_LOADED:
-      console.log(action.payload);
       localStorage.setItem('user', action.payload);
+
       return {
         ...state,
         isAuthenticated: true,
