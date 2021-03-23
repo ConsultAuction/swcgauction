@@ -6,15 +6,10 @@ import AuthContext from '../../context/auth/authContext';
 const Navbar = () => {
   const authContext = useContext(AuthContext);
 
-  const { isAuthenticated, loadUser, logout, user } = authContext;
+  const { logout, user } = authContext;
 
   const onLogout = () => {
     logout();
-  };
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    loadUser();
   };
 
   const authLinks = (
@@ -50,12 +45,7 @@ const Navbar = () => {
       </Link>
       <h1>Konsultauktion</h1>
       <ul className='nav navbar-nav ml-auto'>
-        <li>
-          <button onClick={onSubmit}>
-            Load user
-          </button>
-        </li>
-        {isAuthenticated ? authLinks : guestLinks}
+        {localStorage.isAuthenticated ? authLinks : guestLinks}
       </ul>
     </nav>
   );

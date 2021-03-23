@@ -2,7 +2,6 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
-import setAuthToken from '../../utils/setAuthToken';
 import {
   USER_LOADED,
   AUTH_ERROR,
@@ -14,27 +13,34 @@ import {
 const AuthState = (props) => {
   
   const initialState = {
-    isAuthenticated: null,
+    isAuthenticated: false,
     loading: true,
     user: null,
-    userId: localStorage.getItem('userId')
+    userid: null,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
+  const { userid } = initialState;
 
   // Load User
-  const loadUser = () => {
-
-    console.log(localStorage.getItem("userId"));
+  const loadUser = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    console.log(userid);
 
     try {
-      axios.get('/api/user/' + `${userId}`).then((res) => {
-        console.log(res);
-        dispatch({
-          type: USER_LOADED,
-          payload: res.data,
-        });
+      const res = await axios.get(
+        '/api/user/' + localStorage.getItem('userid'),
+        config
+      );
+
+      dispatch({
+        type: USER_LOADED,
+        payload: res.data,
       });
     } catch (error) {
       console.log(error);
@@ -47,7 +53,7 @@ const AuthState = (props) => {
   // Register User
 
   // Login User
-  const login = (formData) => {
+  const login = async (formData) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -55,16 +61,16 @@ const AuthState = (props) => {
     };
 
     try {
-      axios.post('/api/user/login', formData, config).then((res) => {
-        console.log(res.headers.authorization);
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: res.headers,
-        });
+      const res = await axios.post('/api/user/login', formData, config);
+      localStorage.clear();
+      localStorage.setItem('userid', res.headers.userid);
 
-        loadUser();
-
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: res.headers.userid,
       });
+      localStorage.setItem('isAuthenticated', true);
+      loadUser();
     } catch (error) {
       console.log(error);
       dispatch({
@@ -74,17 +80,29 @@ const AuthState = (props) => {
   };
 
   // Logout
-  const logout = () => dispatch({ type: LOGOUT });
+  const logout = async () => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const res = await axios.get('/api/user/logout', config);
+      dispatch({ type: LOGOUT });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Clear Errors
-  console.log(state)
+
   return (
     <AuthContext.Provider
       value={{
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        userId: state.userId,
+        userid: state.userid,
         loadUser,
         login,
         logout,
