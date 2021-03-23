@@ -98,15 +98,52 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public ProjectOffer dtoToProjectOffer(ProjectOfferDto dto) {
-        return new ProjectOffer(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
-                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
+        return new ProjectOffer(
+                dto.getProjectOfferId(),
+                dto.getConsultant(),
+                dto.isAccepted(),
+                dto.isRejected(),
+                dto.getStartTime(),
+                dto.isSelected(),
+                dto.getBids(),
+                dto.getProjectName(),
+                dto.getStartDate(),
+                dto.getEndDate(),
+                dto.getWorkLoad(),
+                dto.getDescription(),
+                dto.getLocated(),
+                dto.isDistanceWork(),
+                dto.isCompanyHardware(),
+                dto.getContactName(),
+                dto.getContactEmail(),
+                dto.getContactPhoneNumber(),
+                dto.getClientId()
+        );
     }
 
     @Override
     public ProjectOfferDto projectOfferToDto(ProjectOffer projectOffer) {
-        return new ProjectOfferDto(projectOffer.getProjectOfferId(),projectOffer.getUser(),projectOffer.getProject(),
-                projectOffer.isAccepted(),projectOffer.isRejected(),projectOffer.getStartTime(),
-                projectOffer.isSelected(),projectOffer.getBids());
+        return new ProjectOfferDto(
+                projectOffer.getProjectOfferId(),
+                projectOffer.getConsultant(),
+                projectOffer.isAccepted(),
+                projectOffer.isRejected(),
+                projectOffer.getStartTime(),
+                projectOffer.isSelected(),
+                projectOffer.getBids(),
+                projectOffer.getProjectName(),
+                projectOffer.getStartDate(),
+                projectOffer.getEndDate(),
+                projectOffer.getWorkLoad(),
+                projectOffer.getDescription(),
+                projectOffer.getLocated(),
+                projectOffer.isDistanceWork(),
+                projectOffer.isCompanyHardware(),
+                projectOffer.getContactName(),
+                projectOffer.getContactEmail(),
+                projectOffer.getContactPhoneNumber(),
+                projectOffer.getClientId()
+        );
     }
 
     @Override
@@ -122,18 +159,6 @@ public class DtoConversionServiceImpl implements DtoConversionService {
         }
 
         return projectOfferDtos;
-    }
-
-    @Override
-    public ProjectOfferForm DtoToProjectOfferForm(ProjectOfferDto dto) {
-        return new ProjectOfferForm(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
-                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
-    }
-
-    @Override
-    public ProjectOffer ProjectOfferFormToProjectOffer(ProjectOfferForm dto) {
-        return new ProjectOffer(dto.getProjectOfferId(),dto.getUser(),dto.getProject(),dto.isAccepted(),
-                dto.isRejected(),dto.getStartTime(),dto.isSelected(),dto.getBids());
     }
 
     @Override

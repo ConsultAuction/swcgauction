@@ -13,26 +13,22 @@ import {
 
 const AuthState = (props) => {
   const initialState = {
-    token: localStorage.getItem('token'),
     isAuthenticated: null,
     loading: true,
     user: null,
-    userid: localStorage.getItem('id'),
+    userId: localStorage.getItem('userId')
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { userid, token } = initialState;
 
   // Load User
   const loadUser = () => {
-    if (token) {
-      console.log(localStorage.getItem('token'));
-      setAuthToken(localStorage.getItem('token'));
-    }
+
+    console.log(localStorage.getItem("userId"));
 
     try {
-      axios.get('/api/user/' + `${userid}`).then((res) => {
+      axios.get('/api/user/' + `${userId}`).then((res) => {
         console.log(res);
         dispatch({
           type: USER_LOADED,
@@ -64,7 +60,9 @@ const AuthState = (props) => {
           type: LOGIN_SUCCESS,
           payload: res.headers,
         });
+
         loadUser();
+
       });
     } catch (error) {
       console.log(error);
@@ -78,15 +76,14 @@ const AuthState = (props) => {
   const logout = () => dispatch({ type: LOGOUT });
 
   // Clear Errors
-
+  console.log(state)
   return (
     <AuthContext.Provider
       value={{
-        token: state.token,
         isAuthenticated: state.isAuthenticated,
         loading: state.loading,
         user: state.user,
-        uderid: state.userid,
+        userId: state.userId,
         loadUser,
         login,
         logout,

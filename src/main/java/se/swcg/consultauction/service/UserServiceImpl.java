@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.entity.Contact;
@@ -15,6 +16,7 @@ import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
+import se.swcg.consultauction.security.SecurityRoles;
 import se.swcg.consultauction.security.SecurityUser;
 
 import java.time.LocalDate;
@@ -23,6 +25,7 @@ import java.util.List;
 import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 @Service
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepo;
@@ -76,8 +79,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByRole(String role) {
-        return null;
+    public List<UserDto> findAllConsultants() {
+
+        return checkIfListIsEmpty(
+                converter.userToDto(
+                        userRepo.findAllByRole(SecurityRoles.CONSULTANT.name())
+                ),
+                "Could not find any consultants"
+        );
     }
 
     @Override
@@ -115,7 +124,7 @@ public class UserServiceImpl implements UserService {
                 clientRequest.getLastName(),
                 passwordEncoder.encode(clientRequest.getEmail()),
                 clientRequest.getPassword(),
-                SecurityConstants.ROLE_CLIENT,
+                SecurityRoles.CLIENT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
@@ -146,7 +155,7 @@ public class UserServiceImpl implements UserService {
                 consultantRequest.getLastName(),
                 consultantRequest.getEmail(),
                 passwordEncoder.encode(consultantRequest.getPassword()),
-                SecurityConstants.ROLE_CONSULTANT,
+                SecurityRoles.CONSULTANT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
@@ -229,7 +238,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean delete(String id) {
-
         userRepo.delete(converter.dtoToUser(findById(id)));
         return  !userRepo.findById(id).isPresent();
     }

@@ -4,11 +4,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.swcg.consultauction.dto.ProjectOfferDto;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.entity.Bids;
+import se.swcg.consultauction.entity.Project;
+import se.swcg.consultauction.entity.ProjectOffer;
+import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
+import se.swcg.consultauction.model.CreateProjectOfferRequest;
 import se.swcg.consultauction.repository.ProjectOfferRepository;
-import java.util.ArrayList;
-import java.util.List;
+import se.swcg.consultauction.security.SecurityRoles;
 
+import java.util.*;
 
 
 @Service
@@ -16,7 +21,13 @@ import java.util.List;
 public class ProjectOfferServiceImpl implements ProjectOfferService {
 
     @Autowired
-     ProjectOfferRepository repository;
+    UserService userService;
+
+    @Autowired
+    ProjectService projectService;
+
+    @Autowired
+    ProjectOfferRepository repository;
 
     @Autowired
     DtoConversionService converter;
@@ -40,7 +51,7 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
         List<ProjectOfferDto> arg = new ArrayList<>();
 
         for (ProjectOfferDto p: tmp){
-          if (user.getUserId().equals(p.getUser().getUserId()) && p.isAccepted() ){
+          if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isAccepted() ){
               arg.add(p);
           }
         }
@@ -55,7 +66,7 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
         List<ProjectOfferDto> arg = new ArrayList<>();
 
         for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getUser().getUserId()) && p.isRejected() ){
+            if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isRejected() ){
                 arg.add(p);
             }
         }
@@ -70,11 +81,50 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
         List<ProjectOfferDto> arg = new ArrayList<>();
 
         for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getUser().getUserId()) && p.isSelected() ){
+            if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isSelected() ){
                 arg.add(p);
             }
         }
 
         return arg;
+    }
+
+    @Override
+    public ProjectOfferDto createProjectOffer(CreateProjectOfferRequest projectOfferRequest) {
+
+        User foundUser = converter.dtoToUser(userService.findById(projectOfferRequest.getConsultantId()));
+        Project foundProject = converter.dtoToProject(projectService.findById(projectOfferRequest.getProjectId()));
+
+        if (!foundUser.getRole().equals(SecurityRoles.CONSULTANT.name())) {
+            throw new IllegalArgumentException("The user does not have role consultant");
+        }
+
+        ProjectOffer newProjectOffer = new ProjectOffer(
+                foundUser,
+                false,
+                false,
+                projectOfferRequest.getStartTime(),
+                false,
+                new HashSet<Bids>(Collections.singletonList(new Bids(projectOfferRequest.getBids()))),
+                foundProject.getProjectName(),
+                foundProject.getStartDate(),
+                foundProject.getEndDate(),
+                foundProject.getWorkLoad(),
+                foundProject.getDescription(),
+                foundProject.getLocated(),
+                foundProject.isDistanceWork(),
+                foundProject.isCompanyHardware(),
+                foundProject.getContactName(),
+                foundProject.getContactEmail(),
+                foundProject.getContactPhoneNumber(),
+                foundProject.getUser().getUserId()
+        );
+
+        return converter.projectOfferToDto(repository.save(newProjectOffer));
+    }
+
+    @Override
+    public ProjectOfferDto updateProjectOffer(String ProjectOfferId, CreateProjectOfferRequest projectOfferRequest) {
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package se.swcg.consultauction.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,8 @@ import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.UserLoginRequest;
 import se.swcg.consultauction.service.UserService;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -43,15 +46,36 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             // Allow subclasses to set the "details" property
             setDetails(request, token);
 
-            UserDto userDto = service.findByEmail(loginRequest.getEmail());
-            System.out.println(userDto.toString());
-            response.addHeader("UserId", userDto.getUserId());
-
             return this.getAuthenticationManager().authenticate(token);
         } catch(IOException e) {
             LOG.error(ERROR_MESSAGE, e);
             throw new InternalAuthenticationServiceException(ERROR_MESSAGE, e);
         }
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+
+        UserDto userDto = service.findByEmail(authResult.getName());
+
+        response.addHeader("UserId", userDto.getUserId());
+
+        response.setStatus(HttpStatus.OK.value());
+
+        //chain.doFilter(request, response);
+        super.successfulAuthentication(request, response, chain, authResult);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        logger.debug("failed authentication while attempting to access "
+                + urlPathHelper.getPathWithinApplication(request));
+
+        //Add more descriptive message
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                "Authentication Failed");
+
+        super.unsuccessfulAuthentication(request, response, failed);
     }
 
     /*@Override

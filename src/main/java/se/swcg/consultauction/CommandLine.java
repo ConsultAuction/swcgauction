@@ -13,7 +13,9 @@ import se.swcg.consultauction.security.SecurityRoles;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class CommandLine implements CommandLineRunner {
@@ -28,14 +30,12 @@ public class CommandLine implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        System.out.println(Keys.secretKeyFor(SignatureAlgorithm.HS512).getFormat());
-
-        List<Experience> experience = new ArrayList<>();
+        
+        Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));
 
-        List<Languages> languages = new ArrayList<>();
+        Set<Languages> languages = new HashSet<>();
         languages.add(new Languages("Java"));
         languages.add(new Languages("React"));
 
