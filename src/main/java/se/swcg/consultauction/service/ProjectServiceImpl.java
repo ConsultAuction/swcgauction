@@ -15,6 +15,8 @@ import se.swcg.consultauction.security.SecurityRoles;
 
 import java.util.List;
 
+import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
+
 @Service
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService{
@@ -30,24 +32,43 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public List<ProjectDto> findAll() {
-        return converter.projectToDto(projectRepo.findAll());
+        return checkIfListIsEmpty(
+                converter.projectToDto(
+                        projectRepo.findAll())
+                ,"Could not find any projects"
+        );
     }
 
     @Override
     public List<ProjectDto> findAllByContactEmail(String email) {
-        return converter.projectToDto(projectRepo.findAllByContactEmail(email));
+        return checkIfListIsEmpty(
+                converter.projectToDto(
+                        projectRepo.findAllByContactEmail(email))
+                ,"Could not find any projects by email"
+        );
     }
 
     @Override
     public ProjectDto findById(String projectId) {
-        return converter.projectToDto(projectRepo.findById(projectId).orElseThrow(() ->
+        return converter.projectToDto(
+                projectRepo.findById(projectId).orElseThrow(() ->
                 new ResourceNotFoundException("Could not find ProjectOffer with Id: " +projectId)));
+    }
+
+    @Override
+    public List<ProjectDto> findAllProjectByClientId(String clientId) {
+        return checkIfListIsEmpty(
+                converter.projectToDto(
+                        projectRepo.findAllByUserUserId(clientId))
+                , "Could not find any project with this clientId"
+        );
     }
 
     @Override
     public ProjectDto createProject(CreateProjectRequest projectRequest) {
 
-        User foundUser = converter.dtoToUser(userService.findById(projectRequest.getUserId()));
+        User foundUser = converter.dtoToUser(
+                userService.findById(projectRequest.getUserId()));
 
         if (!foundUser.getRole().equals(SecurityRoles.CLIENT.name())) {
             throw new IllegalArgumentException("This user is not permitted to create a project");
@@ -68,7 +89,8 @@ public class ProjectServiceImpl implements ProjectService{
                 foundUser
         );
 
-        return converter.projectToDto(projectRepo.save(newProject));
+        return converter.projectToDto(
+                projectRepo.save(newProject));
     }
 
     @Override
@@ -87,12 +109,15 @@ public class ProjectServiceImpl implements ProjectService{
         foundProject.setContactEmail(projectRequest.getContactEmail());
         foundProject.setContactPhoneNumber(projectRequest.getContactPhoneNumber());
 
-        return converter.projectToDto(projectRepo.save(foundProject));
+        return converter.projectToDto(
+                projectRepo.save(foundProject));
     }
 
     @Override
     public boolean deleteProject(String projectId) {
-        projectRepo.delete(converter.dtoToProject(findById(projectId)));
+        projectRepo.delete(
+                converter.dtoToProject(findById(projectId)));
+
         return !projectRepo.findById(projectId).isPresent();
     }
 }

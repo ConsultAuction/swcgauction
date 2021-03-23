@@ -13,6 +13,8 @@ public interface ProjectService {
     List<ProjectDto> findAllByContactEmail(String email);
     ProjectDto findById(String projectId);
 
+    List<ProjectDto> findAllProjectByClientId(String clientId);
+
     ProjectDto createProject(CreateProjectRequest projectRequest);
     ProjectDto updateProject(String projectId, UpdateProjectRequest projectRequest);
     boolean deleteProject(String projectId);

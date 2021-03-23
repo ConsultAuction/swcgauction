@@ -25,7 +25,7 @@ public class UserController {
     private UserService service;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('client:read')")
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<UserDto>> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/language/{language}")
+    /*@GetMapping("/language/{language}")
     public ResponseEntity<List<UserDto>> findByLanguage(@PathVariable String language) {
         return ResponseEntity.ok(service.findByLanguage(language));
     }
@@ -58,6 +58,12 @@ public class UserController {
     @GetMapping("/available/{available}")
     public ResponseEntity<List<UserDto>> findByAvailable(@PathVariable boolean available) {
         return ResponseEntity.ok(service.findByAvailable(available));
+    }*/
+
+    @GetMapping("/consultant")
+    @PreAuthorize("hasAuthority('client:read')")
+    public ResponseEntity<List<UserDto>> findAllConsultants() {
+        return ResponseEntity.ok(service.findAllConsultants());
     }
 
     @PostMapping("/client")
@@ -66,6 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/client/{id}")
+    @PreAuthorize("hasAuthority('client:write')")
     public ResponseEntity<UserDto> updateClient(@PathVariable String id,@Valid @RequestBody CreateClientRequest clientRequest) {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
@@ -78,6 +85,7 @@ public class UserController {
     }
 
     @PutMapping("/consultant/{id}")
+    @PreAuthorize("hasAuthority('consultant:write')")
     public ResponseEntity<?> updateConsultant(@PathVariable String id,@Valid @RequestBody CreateConsultantRequest consultantRequest) {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 

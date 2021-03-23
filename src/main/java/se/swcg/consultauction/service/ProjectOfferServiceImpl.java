@@ -92,7 +92,7 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
     @Override
     public ProjectOfferDto createProjectOffer(CreateProjectOfferRequest projectOfferRequest) {
 
-        User foundUser = converter.dtoToUser(userService.findById(projectOfferRequest.getUserId()));
+        User foundUser = converter.dtoToUser(userService.findById(projectOfferRequest.getConsultantId()));
         Project foundProject = converter.dtoToProject(projectService.findById(projectOfferRequest.getProjectId()));
 
         if (!foundUser.getRole().equals(SecurityRoles.CONSULTANT.name())) {
