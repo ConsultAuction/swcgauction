@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/user")
+@PreAuthorize("hasAuthority('user:read')")
 public class UserController {
 
     @Autowired
@@ -30,12 +31,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('user:read')")
     public ResponseEntity<UserDto> findById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/language/{language}")
+    /*@GetMapping("/language/{language}")
     public ResponseEntity<List<UserDto>> findByLanguage(@PathVariable String language) {
         return ResponseEntity.ok(service.findByLanguage(language));
     }
@@ -58,6 +58,12 @@ public class UserController {
     @GetMapping("/available/{available}")
     public ResponseEntity<List<UserDto>> findByAvailable(@PathVariable boolean available) {
         return ResponseEntity.ok(service.findByAvailable(available));
+    }*/
+
+    @GetMapping("/consultant")
+    @PreAuthorize("hasAuthority('client:read')")
+    public ResponseEntity<List<UserDto>> findAllConsultants() {
+        return ResponseEntity.ok(service.findAllConsultants());
     }
 
     @PostMapping("/client")
@@ -66,6 +72,7 @@ public class UserController {
     }
 
     @PutMapping("/client/{id}")
+    @PreAuthorize("hasAuthority('client:write')")
     public ResponseEntity<UserDto> updateClient(@PathVariable String id,@Valid @RequestBody CreateClientRequest clientRequest) {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
@@ -78,6 +85,7 @@ public class UserController {
     }
 
     @PutMapping("/consultant/{id}")
+    @PreAuthorize("hasAuthority('consultant:write')")
     public ResponseEntity<?> updateConsultant(@PathVariable String id,@Valid @RequestBody CreateConsultantRequest consultantRequest) {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
@@ -89,8 +97,9 @@ public class UserController {
         /*boolean isRemoved = service.delete(id);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete user with id: " + id);
 
-        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);
-       *//* service.delete(id);
+        return new ResponseEntity<>("User with id: " + id + " was successfully removed.", HttpStatus.OK);*/
+
+        /* service.delete(id);
         return ResponseEntity.noContent().build();*/
         return null;
     }

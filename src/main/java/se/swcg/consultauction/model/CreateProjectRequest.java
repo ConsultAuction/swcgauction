@@ -1,65 +1,51 @@
-package se.swcg.consultauction.dto;
-import se.swcg.consultauction.entity.User;
+package se.swcg.consultauction.model;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-public class ProjectForm {
+public class CreateProjectRequest {
 
-    private String projectId;
+    @NotBlank(message = "Please enter project name.")
     private String projectName;
+
+    @NotBlank(message = "Please enter start date.")
     private LocalDate startDate;
+
+    @NotBlank(message = "Please enter end date.")
     private LocalDate endDate;
+
+    @NotBlank(message = "Please enter workload.")
     private int workLoad;
+
+    @NotBlank(message = "Please enter description.")
     private String description;
+
+    @NotBlank(message = "Please enter location.")
     private String located;
+
+    @NotBlank(message = "Please enter if distance work or not.")
     private boolean distanceWork;
+
+    @NotBlank(message = "Please enter if company hardware.")
     private boolean companyHardware;
+
+    @NotBlank(message = "Please enter contact name.")
     private String contactName;
+
+    @NotBlank(message = "Please enter contact email")
+    @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
+            +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
+            +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?",
+            message="Not a valid email address")
     private String contactEmail;
+
+    @NotBlank(message = "Please enter contact phone number.")
     private String contactPhoneNumber;
-    private User user;
 
-    public ProjectForm(String projectId, String projectName, LocalDate startDate,
-                       LocalDate endDate, int workLoad, String description,
-                       String located, boolean distanceWork, boolean companyHardware,
-                       String contactName, String contactEmail, String contactPhoneNumber, User client) {
-        this.projectId = projectId;
-        this.projectName = projectName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.workLoad = workLoad;
-        this.description = description;
-        this.located = located;
-        this.distanceWork = distanceWork;
-        this.companyHardware = companyHardware;
-        this.contactName = contactName;
-        this.contactEmail = contactEmail;
-        this.contactPhoneNumber = contactPhoneNumber;
-        this.user = client;
-    }
-
-    public ProjectForm(String projectName, LocalDate startDate, LocalDate endDate,
-                       int workLoad, String description, String located,
-                       boolean distanceWork, boolean companyHardware, String contactName,
-                       String contactEmail, String contactPhoneNumber, User client) {
-        this.projectName = projectName;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.workLoad = workLoad;
-        this.description = description;
-        this.located = located;
-        this.distanceWork = distanceWork;
-        this.companyHardware = companyHardware;
-        this.contactName = contactName;
-        this.contactEmail = contactEmail;
-        this.contactPhoneNumber = contactPhoneNumber;
-        this.user = client;
-    }
-
-    public String getProjectId() {
-        return projectId;
-    }
+    @NotBlank(message = "Please enter user id.")
+    private String userId;
 
     public String getProjectName() {
         return projectName;
@@ -149,11 +135,11 @@ public class ProjectForm {
         this.contactPhoneNumber = contactPhoneNumber;
     }
 
-    public User getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

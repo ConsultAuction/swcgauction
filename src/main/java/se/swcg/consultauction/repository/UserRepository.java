@@ -15,13 +15,8 @@ public interface UserRepository extends CrudRepository<User, String> {
     //List<User> findByQualificationsLanguageLanguageIgnoreCase(String Language);
     List<User> findByCompanyNameIgnoreCase(String companyName);
     Optional<User> findByEmail(String email);
-    List<User> findByRole(String role);
+    List<User> findAllByRole(String role);
     List<User> findByLastActive(LocalDate lastActive);
     List<User> findByActive(boolean active);
     //List<User> findByAvailableForHire(boolean available);
-
-
-
-
-
 }

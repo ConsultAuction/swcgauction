@@ -23,8 +23,6 @@ public interface DtoConversionService {
     ProjectOffer dtoToProjectOffer(ProjectOfferDto dto);
     ProjectOfferDto projectOfferToDto(ProjectOffer projectOffer);
     List<ProjectOfferDto> projectOfferToDto(List<ProjectOffer> projectOffers);
-    ProjectOfferForm DtoToProjectOfferForm(ProjectOfferDto dto);
-    ProjectOffer ProjectOfferFormToProjectOffer(ProjectOfferForm dto);
 
     Project dtoToProject(ProjectDto dto);
     ProjectDto projectToDto(Project project);
