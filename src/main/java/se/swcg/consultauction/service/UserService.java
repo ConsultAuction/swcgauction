@@ -16,7 +16,7 @@ public interface UserService extends UserDetailsService{
     List<UserDto> findAll();
     List<UserDto> findByLanguage(String language);
     UserDto findByEmail(String email);
-    List<User> findByRole(String role);
+    List<UserDto> findAllConsultants();
     List<UserDto> findByLastActive(LocalDate lastActive);
     List<UserDto> findByActive(boolean active);
     List<UserDto> findByAvailable(boolean available);

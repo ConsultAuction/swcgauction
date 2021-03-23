@@ -79,8 +79,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findByRole(String role) {
-        return null;
+    public List<UserDto> findAllConsultants() {
+
+        return checkIfListIsEmpty(
+                converter.userToDto(
+                        userRepo.findAllByRole(SecurityRoles.CONSULTANT.name())
+                ),
+                "Could not find any consultants"
+        );
     }
 
     @Override

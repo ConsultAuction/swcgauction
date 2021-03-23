@@ -26,18 +26,23 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDto>> findAll(){
+    public ResponseEntity<List<ProjectDto>> findAllProjects(){
         return ResponseEntity.ok(service.findAll());
     }
 
-    @GetMapping("/{email}")
+    /*@GetMapping("/{email}")
     public ResponseEntity<List<ProjectDto>> findAllByContactEmail(@PathVariable String email) {
         return ResponseEntity.ok(service.findAllByContactEmail(email));
+    }*/
+
+    @GetMapping("/{clientId}")
+    public ResponseEntity<ProjectDto> findByClientId(@PathVariable String clientId){
+        return ResponseEntity.ok(service.findById(clientId));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectDto> findById(@PathVariable String id){
-        return ResponseEntity.ok(service.findById(id));
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<ProjectDto>> findProjectByClientId(@PathVariable String clientId) {
+        return ResponseEntity.ok(service.findAllProjectByClientId(clientId));
     }
 
     @PostMapping
@@ -51,7 +56,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<?> delete(@PathVariable String projectId) {
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {
         boolean isRemoved = service.deleteProject(projectId);
         if (!isRemoved) throw new IllegalArgumentException("Something went wrong trying to delete user with id: " + projectId);
 

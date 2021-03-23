@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class CreateProjectOfferRequest {
 
     @NotBlank(message = "please enter user id.")
-    private String userId;
+    private String consultantId;
 
     @NotBlank(message = "please enter project id.")
     private String projectId;
@@ -17,12 +17,12 @@ public class CreateProjectOfferRequest {
     @NotBlank(message = "please enter bid.")
     private double bids;
 
-    public String getUserId() {
-        return userId;
+    public String getConsultantId() {
+        return consultantId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setConsultantId(String consultantId) {
+        this.consultantId = consultantId;
     }
 
     public String getProjectId() {
