@@ -12,6 +12,7 @@ import {
 } from '../types';
 
 const AuthState = (props) => {
+  
   const initialState = {
     isAuthenticated: null,
     loading: true,
