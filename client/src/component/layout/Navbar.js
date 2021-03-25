@@ -12,6 +12,18 @@ const Navbar = () => {
     logout();
   };
 
+  const roleLinks = (
+    <Fragment>
+      {user !== null && user.role === 'CLIENT' ? (
+        <li className='nav-item'>
+          <Link to='/createProject'>Create New Project</Link>
+        </li>
+      ) : (
+        <div></div>
+      )}
+    </Fragment>
+  );
+
   const authLinks = (
     <Fragment>
       <li>Hello {user && user.firstName}</li>
@@ -44,6 +56,7 @@ const Navbar = () => {
         <img className='navbar brand' height='60px' src={Logo} alt='logo' />
       </Link>
       <h1>Konsultauktion</h1>
+      <ul className='nav navbar-nav ml-2'> {roleLinks} </ul>
       <ul className='nav navbar-nav ml-auto'>
         {localStorage.isAuthenticated ? authLinks : guestLinks}
       </ul>

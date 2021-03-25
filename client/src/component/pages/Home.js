@@ -1,14 +1,27 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Fragment } from 'react';
 import AuthContext from '../../context/auth/authContext';
 
 const Home = () => {
   const authContext = useContext(AuthContext);
 
+  const { user, loadUser, isAuthenticated, loading } = authContext;
+
   useEffect(() => {
-    localStorage.getItem('userid');
-    authContext.loadUser();
-  }, []);
-  return <div>This is the Home Page</div>;
+    if (!isAuthenticated) {
+      localStorage.getItem('userid');
+      loadUser();
+    }
+  }, [loadUser, isAuthenticated]);
+  return (
+    <div>
+      This is the Home Page.{' '}
+      {isAuthenticated && !loading && user !== null ? (
+        <Fragment>You are logged in as a {user.role}</Fragment>
+      ) : (
+        <Fragment></Fragment>
+      )}
+    </div>
+  );
 };
 
 export default Home;
