@@ -89,10 +89,6 @@ public class CountdownDate {
                 '}';
     }
 
-    private void Create(){
-
-    }
-
     private void end(){
 
     }
