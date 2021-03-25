@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class ConsultantDetails {
@@ -22,16 +23,16 @@ public class ConsultantDetails {
     private boolean availableForHire;
     private int minPrice;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private List<Experience> experience;
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private Set<Experience> experience;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private List<Languages> language;
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private Set<Languages> language;
 
-    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private List<Skills> skills;
+    @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private Set<Skills> skills;
 
-    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire, int minPrice, List<Experience> experience, List<Languages> language, List<Skills> skills) {
+    public ConsultantDetails(String qualificationsId, boolean frontend, boolean backend, boolean availableForHire, int minPrice, Set<Experience> experience, Set<Languages> language, Set<Skills> skills) {
         this.qualificationsId = qualificationsId;
         this.frontend = frontend;
         this.backend = backend;
@@ -42,7 +43,7 @@ public class ConsultantDetails {
         this.skills = skills;
     }
 
-    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire, int minPrice, List<Experience> experience, List<Languages> language, List<Skills> skills) {
+    public ConsultantDetails(boolean frontend, boolean backend, boolean availableForHire, int minPrice, Set<Experience> experience, Set<Languages> language, Set<Skills> skills) {
         this.frontend = frontend;
         this.backend = backend;
         this.availableForHire = availableForHire;
@@ -91,27 +92,27 @@ public class ConsultantDetails {
         this.minPrice = minPrice;
     }
 
-    public List<Experience> getExperience() {
+    public Set<Experience> getExperience() {
         return experience;
     }
 
-    public void setExperience(List<Experience> experience) {
+    public void setExperience(Set<Experience> experience) {
         this.experience = experience;
     }
 
-    public List<Languages> getLanguage() {
+    public Set<Languages> getLanguage() {
         return language;
     }
 
-    public void setLanguage(List<Languages> language) {
+    public void setLanguage(Set<Languages> language) {
         this.language = language;
     }
 
-    public List<Skills> getSkills() {
+    public Set<Skills> getSkills() {
         return skills;
     }
 
-    public void setSkills(List<Skills> skills) {
+    public void setSkills(Set<Skills> skills) {
         this.skills = skills;
     }
 

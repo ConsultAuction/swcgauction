@@ -3,14 +3,13 @@ package se.swcg.consultauction.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.ProjectOfferDto;
 import se.swcg.consultauction.dto.UserDto;
+import se.swcg.consultauction.model.CreateProjectOfferRequest;
 import se.swcg.consultauction.service.ProjectOfferService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -49,4 +48,8 @@ public class ProjectOfferController {
         return ResponseEntity.ok(service.findBySelectedByUserId(user));
     }
 
+    @PostMapping
+    public ResponseEntity<ProjectOfferDto> createProjectOffer(@Valid @RequestBody CreateProjectOfferRequest projectOfferRequest) {
+        return ResponseEntity.ok(service.createProjectOffer(projectOfferRequest));
+    }
 }

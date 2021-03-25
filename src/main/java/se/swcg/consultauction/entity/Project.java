@@ -17,28 +17,16 @@ public class Project {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     private String projectId;
-
-    @NotBlank
     private String projectName;
     private LocalDate startDate;
     private LocalDate endDate;
     private int workLoad;
-
-    @NotBlank
     private String description;
-
-    @NotBlank
     private String located;
     private boolean distanceWork;
     private boolean companyHardware;
-
-    @NotBlank
     private String contactName;
-
-    @Column(unique = true)
     private String contactEmail;
-
-    @NotBlank
     private String contactPhoneNumber;
 
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
