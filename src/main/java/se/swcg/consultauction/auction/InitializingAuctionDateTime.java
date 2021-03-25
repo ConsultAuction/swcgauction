@@ -2,7 +2,6 @@ package se.swcg.consultauction.auction;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Component;
 import se.swcg.consultauction.entity.AuctionDateTime;
 import se.swcg.consultauction.repository.AuctionDateTimeRepository;
@@ -45,16 +44,16 @@ public class InitializingAuctionDateTime implements InitializingBean {
         System.out.println("inside saveDateTime");
 
         LocalDateTime auctionStartDateTime = dateTime
-                .with(LocalTime.of(8, 0, 0))
-                .with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+                .with(TemporalAdjusters.next(DayOfWeek.MONDAY))
+                .with(LocalTime.of(8, 0, 0));
 
         LocalDateTime auctionEndDateTime = auctionStartDateTime
-                .with(LocalTime.of(12, 0, 0))
-                .with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+                .with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
+                .with(LocalTime.of(12, 0, 0));
 
         LocalDateTime offerEndDateTime = auctionStartDateTime
-                .with(LocalTime.of(17, 0, 0))
-                .with(TemporalAdjusters.next(DayOfWeek.FRIDAY));
+                .with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
+                .with(LocalTime.of(17, 0, 0));
 
         auctionRepository.save(new AuctionDateTime(auctionStartDateTime, auctionEndDateTime, offerEndDateTime));
     }
