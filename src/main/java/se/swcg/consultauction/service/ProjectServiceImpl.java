@@ -22,13 +22,13 @@ import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 public class ProjectServiceImpl implements ProjectService{
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProjectRepository projectRepo;
+    private ProjectRepository projectRepo;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
     @Override
     public List<ProjectDto> findAll() {

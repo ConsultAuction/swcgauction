@@ -14,10 +14,10 @@ import java.util.List;
 public class SkillsServiceImpl implements SkillsService {
 
     @Autowired
-    SkillsRepository repository;
+    private SkillsRepository repository;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
 
     @Override

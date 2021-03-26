@@ -7,11 +7,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.swcg.consultauction.entity.*;
+import se.swcg.consultauction.repository.AuctionDateTimeRepository;
 import se.swcg.consultauction.repository.ProgrammingLanguagesRepository;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityRoles;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,9 @@ import java.util.Set;
 
 @Component
 public class CommandLine implements CommandLineRunner {
+    @Autowired
+    AuctionDateTimeRepository dateTimeRepository;
+
     @Autowired
     UserRepository userRepository;
 
@@ -30,7 +35,8 @@ public class CommandLine implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        
+
+        /*
         Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));
@@ -98,5 +104,17 @@ public class CommandLine implements CommandLineRunner {
         programmingLanguagesRepository.save(new ProgrammingLanguages("C#"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C++"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));
+         */
+
+        int year = LocalDateTime.now().getYear();
+        int month = LocalDateTime.now().getMonthValue();
+        int day = LocalDateTime.now().getDayOfMonth();
+
+
+        dateTimeRepository.save(new AuctionDateTime(
+                LocalDateTime.of(year, month, 22, 8, 0),
+                LocalDateTime.of(year, month, day, 14, 0),
+                LocalDateTime.of(year, month, day, 15, 40))
+        );
     }
 }

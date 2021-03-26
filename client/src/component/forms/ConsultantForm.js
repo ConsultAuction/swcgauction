@@ -17,7 +17,7 @@ const ConsultantForm = () => {
     backEnd: false,
     forHire: false,
     salary: '',
-    experience: [],
+    experience: [{ name: "" }],
     skills: [],
   });
 
@@ -43,6 +43,28 @@ const ConsultantForm = () => {
   const [selected, setSelected] = useState('');
 
   const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+
+  const handleExperienceNameChange = idx => evt => {
+    const newExperience = experience.map((experience, sidx) => {
+      if (idx !== sidx) return experience;
+      return { ...experience, name: evt.target.value };
+    });
+
+    setUser({ experience: newExperience });
+  };
+
+  const handleAddExperience = () => {
+    setUser({
+      experience: experience.concat([{ name: "" }])
+    });
+  };
+
+  const handleRemoveExperience = idx => () => {
+    setUser({
+      experience: experience.filter((s, sidx) => idx !== sidx)
+    });
+  };
+
   return (
     <Fragment>
       <div className='form-group'>
@@ -98,7 +120,7 @@ const ConsultantForm = () => {
           <label htmlFor='password2'>Confirm Password</label>
           <input
             className='form-control'
-            type='password2'
+            type='password'
             name='password2'
             value={password2}
             onChange={onChange}
@@ -157,7 +179,7 @@ const ConsultantForm = () => {
         <input
           className='form-control'
           type='text'
-          name='phonenr'
+          name='phoneNr'
           value={phoneNr}
           onChange={onChange}
           required
@@ -213,7 +235,7 @@ const ConsultantForm = () => {
             />
           </div>
         </div>
-        <div className='form-row'>
+        {/* <div className='form-row'>
           <label htmlFor='skills'>Previous Experience:</label>
           <div className='input-group mb-3'>
             <input
@@ -234,7 +256,39 @@ const ConsultantForm = () => {
               Add
             </button>
           </div>
-        </div>
+        </div> */}
+ 
+
+
+        {experience.map((experience, idx) => (
+          <div className='form-row, input-group mb-3'>
+            <input
+              type="text"
+              placeholder={`Experience #${idx + 1} name`}
+              value={experience.name}
+              onChange={handleExperienceNameChange(idx)}
+            />
+            <button
+              type="button"
+              onClick={handleRemoveExperience(idx)}
+              className="small"
+            >
+              -
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          onClick={handleAddExperience}
+          className='btn btn-outline-secondary'
+        >
+          Add Shareholder
+        </button>
+
+
+
+
+
         <div className='form-row'>
           <label htmlFor='skills'>Special Skills:</label>
           <div className='input-group mb-3'>

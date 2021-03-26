@@ -28,9 +28,9 @@ import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepo;
-    private final DtoConversionService converter;
-    private final PasswordEncoder passwordEncoder;
+    private  UserRepository userRepo;
+    private DtoConversionService converter;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo, DtoConversionService converter, PasswordEncoder passwordEncoder) {

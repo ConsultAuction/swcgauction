@@ -21,16 +21,16 @@ import java.util.*;
 public class ProjectOfferServiceImpl implements ProjectOfferService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProjectService projectService;
+    private ProjectService projectService;
 
     @Autowired
-    ProjectOfferRepository repository;
+    private ProjectOfferRepository repository;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
 
     @Override
