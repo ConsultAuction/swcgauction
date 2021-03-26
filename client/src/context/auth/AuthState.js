@@ -11,7 +11,6 @@ import {
 } from '../types';
 
 const AuthState = (props) => {
-  
   const initialState = {
     isAuthenticated: false,
     loading: true,
@@ -21,8 +20,6 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { userid } = initialState;
-
   // Load User
   const loadUser = async () => {
     const config = {
@@ -30,13 +27,13 @@ const AuthState = (props) => {
         'Content-Type': 'application/json',
       },
     };
-    console.log(userid);
 
     try {
       const res = await axios.get(
         '/api/user/' + localStorage.getItem('userid'),
         config
       );
+      console.log(res);
 
       dispatch({
         type: USER_LOADED,
@@ -64,6 +61,7 @@ const AuthState = (props) => {
       const res = await axios.post('/api/user/login', formData, config);
       localStorage.clear();
       localStorage.setItem('userid', res.headers.userid);
+      console.log(res);
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -88,6 +86,7 @@ const AuthState = (props) => {
     };
     try {
       const res = await axios.get('/api/user/logout', config);
+      console.log(res);
       dispatch({ type: LOGOUT });
     } catch (error) {
       console.log(error);

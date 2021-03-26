@@ -4,7 +4,7 @@ import CompanyForm from '../forms/CompanyForm';
 
 const Register = () => {
   const [user, setUser] = useState({
-    desiredRole: '',
+    desiredRole: 'consultant',
   });
 
   const { desiredRole } = user;
