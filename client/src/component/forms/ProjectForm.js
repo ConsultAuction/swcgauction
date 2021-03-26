@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import AuthContext from '../../context/auth/authContext';
 
 const ProjectForm = () => {
@@ -25,7 +25,6 @@ const ProjectForm = () => {
     contactName: '',
     contactEmail: '',
     contactPhoneNumber: '',
-    userId: localStorage.getItem('userId'),
   });
 
   const {
@@ -40,7 +39,6 @@ const ProjectForm = () => {
     contactName,
     contactEmail,
     contactPhoneNumber,
-    userId,
   } = project;
 
   const onChange = (e) =>

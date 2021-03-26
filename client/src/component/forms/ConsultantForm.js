@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 
 const ConsultantForm = () => {
-  const [user, setUser] = useState({
+  const [consultant, setConsultant] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -17,7 +17,9 @@ const ConsultantForm = () => {
     backEnd: false,
     forHire: false,
     salary: '',
-    experience: [],
+    experience: '',
+    experiences: [],
+    languages: '',
     skills: [],
   });
 
@@ -37,12 +39,19 @@ const ConsultantForm = () => {
     forHire,
     salary,
     experience,
+    languages,
     skills,
-  } = user;
+  } = consultant;
 
   const [selected, setSelected] = useState('');
 
-  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  const handleAddExperience = (e) => {};
+
+  const handleAddSkills = () => {};
+
+  const onChange = (e) =>
+    setConsultant({ ...consultant, [e.target.name]: e.target.value });
+
   return (
     <Fragment>
       <div className='form-group'>
@@ -157,7 +166,7 @@ const ConsultantForm = () => {
         <input
           className='form-control'
           type='text'
-          name='phonenr'
+          name='phoneNr'
           value={phoneNr}
           onChange={onChange}
           required
@@ -229,12 +238,38 @@ const ConsultantForm = () => {
             <button
               className='btn btn-outline-secondary'
               type='button'
+              onClick={handleAddExperience}
               id='button-addon2'
             >
               Add
             </button>
           </div>
         </div>
+        <div className='form-row'>
+          <label htmlFor='skills'>Programming Language:</label>
+          <div className='input-group mb-3'>
+            <select
+              className='form-select'
+              aria-label='Add a Programming Language'
+            >
+              <option selected>Select a Programming Language</option>
+              <option value='1'>C#</option>
+              <option value='2'>C++</option>
+              <option value='3'>Java</option>
+              <option value='4'>Javascript</option>
+            </select>
+
+            <button
+              className='btn btn-outline-secondary'
+              type='button'
+              onClick={handleAddExperience}
+              id='button-addon2'
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
         <div className='form-row'>
           <label htmlFor='skills'>Special Skills:</label>
           <div className='input-group mb-3'>
