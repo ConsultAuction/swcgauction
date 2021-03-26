@@ -19,7 +19,7 @@ public class CountdownServiceImpl implements CountdownService{
     }
 
     @Override
-    public void deleteCountdown(CountdownDate countdownDate) {
+    public void deleteCountdown() {
         countdownRepo.deleteAll();
     }
 }

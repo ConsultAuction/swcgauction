@@ -1,31 +1,19 @@
 package se.swcg.consultauction.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+
+@Entity
 public class CountdownDate {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private String countDownId;
+    private long countDownId = 1L;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime deleteTime;
-
-    public CountdownDate(String countDownId, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime deleteTime) {
-        this.countDownId = countDownId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.deleteTime = deleteTime;
-    }
 
     public CountdownDate(LocalDateTime startTime, LocalDateTime endTime, LocalDateTime deleteTime) {
         this.startTime = startTime;
@@ -35,7 +23,7 @@ public class CountdownDate {
 
     public CountdownDate() {}
 
-    public String getCountDownId() {
+    public long getCountDownId() {
         return countDownId;
     }
 
@@ -90,10 +78,6 @@ public class CountdownDate {
     }
 
     private void end(){
-
-    }
-
-    private void delete(){
 
     }
 }

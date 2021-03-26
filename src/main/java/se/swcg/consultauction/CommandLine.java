@@ -7,9 +7,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import se.swcg.consultauction.entity.*;
+import se.swcg.consultauction.model.CountDownTask;
+import se.swcg.consultauction.model.DeleteAndSet;
 import se.swcg.consultauction.repository.ProgrammingLanguagesRepository;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityRoles;
+import se.swcg.consultauction.service.CountdownService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,7 +33,9 @@ public class CommandLine implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        
+        CountDownTask start = new CountDownTask();
+        start.startTime();
+
         Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));
@@ -99,4 +104,5 @@ public class CommandLine implements CommandLineRunner {
         programmingLanguagesRepository.save(new ProgrammingLanguages("C++"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));
     }
+
 }
