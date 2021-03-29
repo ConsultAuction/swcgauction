@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
 
 const ConsultantForm = () => {
-  const [consultant, setConsultant] = useState({
+  const initialState = {
     firstName: '',
     lastName: '',
     email: '',
@@ -17,11 +17,10 @@ const ConsultantForm = () => {
     backEnd: false,
     forHire: false,
     salary: '',
-    experience: '',
     experiences: [],
     languages: '',
     skills: [],
-  });
+  };
 
   const {
     firstName,
@@ -38,16 +37,42 @@ const ConsultantForm = () => {
     backEnd,
     forHire,
     salary,
-    experience,
+    experiences,
     languages,
     skills,
-  } = consultant;
+  } = initialState;
+
+  const [consultant, setConsultant] = useState(initialState);
+  const [experience, setExperience] = useState('');
+  const [skill, setSkill] = useState('');
 
   const [selected, setSelected] = useState('');
 
-  const handleAddExperience = (e) => {};
+  const handleChangeExperience = (e) => {
+    setExperience(e.target.value);
+  };
 
-  const handleAddSkills = () => {};
+  const handleAddExperience = () => {
+    const newConsultant = { ...consultant };
+    newConsultant.experiences = consultant.experiences.concat(experience);
+    setExperience('');
+    setConsultant(newConsultant);
+  };
+
+  const handleRemoveExperience = () => {};
+
+  const handleChangeSkill = (e) => {
+    setSkill(e.target.value);
+  };
+
+  const handleAddSkills = () => {
+    const newConsultant = { ...consultant };
+    newConsultant.skills = consultant.skills.concat(skill);
+    setSkill('');
+    setConsultant(newConsultant);
+  };
+
+  const handleRemoveSkill = () => {};
 
   const onChange = (e) =>
     setConsultant({ ...consultant, [e.target.name]: e.target.value });
@@ -230,8 +255,8 @@ const ConsultantForm = () => {
               className='form-control'
               name='experience'
               value={experience}
-              onChange={onChange}
               placeholder='Add A Previous Experience'
+              onChange={handleChangeExperience}
               aria-label='Add A Previous Experience'
               aria-describedby='button-addon2'
             />
@@ -244,6 +269,25 @@ const ConsultantForm = () => {
               Add
             </button>
           </div>
+        </div>
+        <div className='form-row'>
+          <ul className='list-group list-group-horizontal'>
+            {consultant.experiences.map((item, index) => (
+              <li
+                className='list-group-item'
+                key={index}
+                id={'experience' + index}
+              >
+                {item}
+                <button
+                  className='btn btn-danger btn-sm'
+                  onClick={handleRemoveExperience}
+                >
+                  x
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
         <div className='form-row'>
           <label htmlFor='skills'>Programming Language:</label>
@@ -262,7 +306,6 @@ const ConsultantForm = () => {
             <button
               className='btn btn-outline-secondary'
               type='button'
-              onClick={handleAddExperience}
               id='button-addon2'
             >
               Add
@@ -276,21 +319,37 @@ const ConsultantForm = () => {
             <input
               type='text'
               className='form-control'
-              name='skills'
-              value={skills}
-              onChange={onChange}
+              name='skill'
+              value={skill}
+              onChange={handleChangeSkill}
               placeholder='Add A Special Skill'
               aria-label='Add A Special Skill'
               aria-describedby='button-addon2'
             />
             <button
               className='btn btn-outline-secondary'
+              onClick={handleAddSkills}
               type='button'
               id='button-addon2'
             >
               Add
             </button>
           </div>
+        </div>
+        <div className='form-row'>
+          <ul className='list-group list-group-horizontal'>
+            {consultant.skills.map((item, index) => (
+              <li className='list-group-item' key={index} id={'skill' + index}>
+                {item}
+                <button
+                  className='btn btn-danger btn-sm'
+                  onClick={handleRemoveSkill}
+                >
+                  x
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </Fragment>
