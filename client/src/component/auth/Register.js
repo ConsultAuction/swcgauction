@@ -43,17 +43,7 @@ const Register = () => {
           Company{' '}
         </label>
       </div>
-      <form>
         {desiredRole === 'consultant' ? <ConsultantForm /> : <CompanyForm />}
-      </form>
-
-      <div className='form-group mt-4'>
-        <input
-          className='btn-lg btn-block btn-primary'
-          type='submit'
-          value='Submit'
-        />
-      </div>
     </div>
   );
 };

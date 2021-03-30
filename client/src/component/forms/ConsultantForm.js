@@ -1,65 +1,62 @@
 import React, { Fragment, useState } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
+import { useForm } from "react-hook-form";
+
+function createArrayWithNumbers(length) {
+  return Array.from({ length }, (_, k) => k);
+}
 
 const ConsultantForm = () => {
   const [user, setUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: 'consultant',
-    password: '',
-    password2: '',
-    address: '',
-    zipCode: '',
-    city: '',
-    phoneNr: '',
-    frontEnd: false,
-    backEnd: false,
-    forHire: false,
-    salary: '',
-    experience: [{ name: "" }],
-    skills: [],
+    experience: [""],
+    skills: [""],
   });
 
   const {
-    firstName,
-    lastName,
-    email,
-    role,
-    password,
     password2,
-    address,
-    zipCode,
-    city,
-    phoneNr,
-    frontEnd,
-    backEnd,
-    forHire,
-    salary,
     experience,
     skills,
   } = user;
 
+
   const [selected, setSelected] = useState('');
 
-  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  const { register, handleSubmit, errors } = useForm();
+
+  const [size, setSize] = useState(1);
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  const onFormSubmit  = data => {
+    console.log(data)
+  };
+
+  const onErrors = errors => console.error(errors);
 
   const handleExperienceNameChange = idx => evt => {
+    /* console.log(evt.target.value);
+    const value = evt.target.value;
     const newExperience = experience.map((experience, sidx) => {
       if (idx !== sidx) return experience;
-      return { ...experience, name: evt.target.value };
+       return { value };
     });
+ */
+    experience[idx] = evt.target.value;
 
-    setUser({ experience: newExperience });
+    setUser({ experience: experience });
   };
 
   const handleAddExperience = () => {
     setUser({
-      experience: experience.concat([{ name: "" }])
+      experience: experience.concat([ "" ])
     });
+    console.log(experience);
   };
 
   const handleRemoveExperience = idx => () => {
+    
     setUser({
       experience: experience.filter((s, sidx) => idx !== sidx)
     });
@@ -67,6 +64,9 @@ const ConsultantForm = () => {
 
   return (
     <Fragment>
+      <form
+      onSubmit={handleSubmit(onFormSubmit, onErrors)}
+      >
       <div className='form-group'>
         <div className='form-row'>
           <div className='col'>
@@ -75,8 +75,7 @@ const ConsultantForm = () => {
               className='form-control'
               type='text'
               name='firstName'
-              value={firstName}
-              onChange={onChange}
+              ref={register}
             />
           </div>
           <div className='col'>
@@ -85,8 +84,7 @@ const ConsultantForm = () => {
               className='form-control'
               type='text'
               name='lastName'
-              value={lastName}
-              onChange={onChange}
+              ref={register}
             />
           </div>
         </div>
@@ -98,8 +96,7 @@ const ConsultantForm = () => {
             className='form-control'
             type='email'
             name='email'
-            value={email}
-            onChange={onChange}
+            ref={register}
           />
         </div>
       </div>
@@ -111,9 +108,7 @@ const ConsultantForm = () => {
             className='form-control'
             type='password'
             name='password'
-            value={password}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
         <div className='col'>
@@ -122,9 +117,6 @@ const ConsultantForm = () => {
             className='form-control'
             type='password'
             name='password2'
-            value={password2}
-            onChange={onChange}
-            required
           />
         </div>
       </div>
@@ -135,9 +127,7 @@ const ConsultantForm = () => {
             className='form-control'
             type='text'
             name='address'
-            value={address}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
       </div>
@@ -148,9 +138,7 @@ const ConsultantForm = () => {
             className='form-control'
             type='text'
             name='zipCode'
-            value={zipCode}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
         <div className='col'>
@@ -159,9 +147,7 @@ const ConsultantForm = () => {
             className='form-control'
             type='text'
             name='city'
-            value={city}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
         <div className='col'>
@@ -180,9 +166,7 @@ const ConsultantForm = () => {
           className='form-control'
           type='text'
           name='phoneNr'
-          value={phoneNr}
-          onChange={onChange}
-          required
+          ref={register}
         />
       </div>
       <div className='form-group'>
@@ -192,10 +176,9 @@ const ConsultantForm = () => {
               className='form-check-input'
               type='checkbox'
               name='frontEnd'
-              value={frontEnd}
-              onChange={onChange}
+              ref={register}
             />
-            <label class='form-check-label' htmlFor='frontEnd'>
+            <label className='form-check-label' htmlFor='frontEnd'>
               Front End
             </label>
           </div>{' '}
@@ -204,10 +187,9 @@ const ConsultantForm = () => {
               className='form-check-input'
               type='checkbox'
               name='backEnd'
-              value={backEnd}
-              onChange={onChange}
+              ref={register}
             />
-            <label class='form-check-label' htmlFor='backEnd'>
+            <label className='form-check-label' htmlFor='backEnd'>
               Back End
             </label>
           </div>{' '}
@@ -216,10 +198,9 @@ const ConsultantForm = () => {
               className='form-check-input'
               type='checkbox'
               name='forHire'
-              value={forHire}
-              onChange={onChange}
+              ref={register}
             />
-            <label class='form-check-label' htmlFor='avalibleHire'>
+            <label className='form-check-label' htmlFor='avalibleHire'>
               Avalible For Hire
             </label>
           </div>
@@ -229,57 +210,39 @@ const ConsultantForm = () => {
               type='text'
               className='form-control'
               name='salary'
-              value={salary}
-              onChange={onChange}
               placeholder='SEK'
+              ref={register}
             />
           </div>
         </div>
-        {/* <div className='form-row'>
-          <label htmlFor='skills'>Previous Experience:</label>
-          <div className='input-group mb-3'>
-            <input
-              type='text'
-              className='form-control'
-              name='experience'
-              value={experience}
-              onChange={onChange}
-              placeholder='Add A Previous Experience'
-              aria-label='Add A Previous Experience'
-              aria-describedby='button-addon2'
-            />
-            <button
-              className='btn btn-outline-secondary'
-              type='button'
-              id='button-addon2'
-            >
-              Add
-            </button>
-          </div>
-        </div> */}
  
+        {createArrayWithNumbers(size).map((number) => {
+          return (
 
 
-        {experience.map((experience, idx) => (
-          <div className='form-row, input-group mb-3'>
-            <input
-              type="text"
-              placeholder={`Experience #${idx + 1} name`}
-              value={experience.name}
-              onChange={handleExperienceNameChange(idx)}
-            />
-            <button
-              type="button"
-              onClick={handleRemoveExperience(idx)}
-              className="small"
-            >
-              -
-            </button>
+
+          <div className='form-row, input-group mb-3'
+          key={number}>
+            <div>
+                <input
+                  name={`experience[${number}]`}
+                  placeholder="experience"
+                  ref={register({ required: true })}
+                />
+            </div>
+              <button
+                type="button"
+                onClick={() => setSize(size + 1)}
+                className='btn btn-outline-secondary'
+              >
+                -
+              </button>
           </div>
-        ))}
+          );
+          })}
         <button
           type="button"
-          onClick={handleAddExperience}
+          onClick={() => setSize(size + 1)}
           className='btn btn-outline-secondary'
         >
           Add Shareholder
@@ -296,8 +259,6 @@ const ConsultantForm = () => {
               type='text'
               className='form-control'
               name='skills'
-              value={skills}
-              onChange={onChange}
               placeholder='Add A Special Skill'
               aria-label='Add A Special Skill'
               aria-describedby='button-addon2'
@@ -312,6 +273,10 @@ const ConsultantForm = () => {
           </div>
         </div>
       </div>
+      <button className='btn btn-success' type='submit' >
+              Save
+            </button>
+      </form>
     </Fragment>
   );
 };
