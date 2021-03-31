@@ -8,20 +8,23 @@ import Register from './component/auth/Register';
 import PrivateRoute from './component/routing/PrivateRoute';
 
 import AuthState from './context/auth/AuthState';
+import ProfileState from './context/profile/ProfileState';
 import './App.css';
 
 const App = () => {
   return (
     <AuthState>
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route exact path='/register' component={Register} />
-          <Route exact path='/login' component={Login} />
-          <PrivateRoute exact path='/createProject' component={Project} />
-        </Switch>
-      </Router>
+      <ProfileState>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
+            <PrivateRoute exact path='/createProject' component={Project} />
+          </Switch>
+        </Router>
+      </ProfileState>
     </AuthState>
   );
 };
