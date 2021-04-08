@@ -1,23 +1,59 @@
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import CountDownContext from '../context/countdown/countdownContext';
+import moment from 'moment';
 
 const Countdown = () => {
 
     const countdownContext = useContext(CountDownContext);
+    const { loadCountdown, countdown } = countdownContext;
 
-    console.log(countdownContext);
+    const [endDate, setEndDate] = useState(new Date())
 
-    const { loadCountdown } = countdownContext;
+    const [days, setDays] = useState('00');
+    const [hours, setHours] = useState('00');
+    const [minutes, setMinutes] = useState('00');
+    const [seconds, setSeconds] = useState('00');
+
+    const calculateTimeLeft = () => {
+
+        const then = moment(endDate);
+        const now = moment();
+        const countdown = moment(then-now);
+        const days = countdown.format('D');
+        const hours = countdown.format('HH');
+        const minutes = countdown.format('mm');
+        const seconds = countdown.format('ss');
+
+        setDays(days);
+        setHours(hours);
+        setMinutes(minutes);
+        setSeconds(seconds);
+    }
 
     useEffect(() => {
-        loadCountdown();
-    }, [loadCountdown]);
 
+        if(countdown != null) {
+            console.log(countdown.auctionEndDateTime);
+            setEndDate(new Date(countdown.auctionEndDateTime));
+        } else {
+            loadCountdown();
+        }
 
+        
+
+        let intervalId;
+
+        intervalId = setInterval(() => {
+            calculateTimeLeft();
+        }, 1000)
+
+        return () => clearInterval(intervalId);
+        
+    }, [countdown, loadCountdown]);
 
   return (
     <Fragment>
-
+        <p>Days: {days} Hours: {hours} Minutes: {minutes} Seconds: {seconds}</p>
     </Fragment>
   );
 };

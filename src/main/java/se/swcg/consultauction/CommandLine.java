@@ -111,10 +111,10 @@ public class CommandLine implements CommandLineRunner {
         int day = LocalDateTime.now().getDayOfMonth();
 
 
-        dateTimeRepository.save(new AuctionDateTime(
-                LocalDateTime.of(year, month, 22, 8, 0),
-                LocalDateTime.of(year, month, day, 14, 0),
-                LocalDateTime.of(year, month, day, 15, 40))
-        );
+        /*dateTimeRepository.save(new AuctionDateTime(
+                LocalDateTime.of(year, month, 5, 8, 0),
+                LocalDateTime.of(year, month, 9, 14, 0),
+                LocalDateTime.of(year, month, 9, 15, 40))
+        );*/
     }
 }
