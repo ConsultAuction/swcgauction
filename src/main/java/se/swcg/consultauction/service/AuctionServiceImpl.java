@@ -18,8 +18,8 @@ public class AuctionServiceImpl implements AuctionService {
     @Autowired
     private AuctionDateTimeRepository auctionRepository;
 
-    public AuctionDateTime findById(Long auctionDateTimeId) {
-        return auctionRepository.findById(auctionDateTimeId)
+    public AuctionDateTime getDateTime() {
+        return auctionRepository.findById(AUCTION_ID)
                 .orElseThrow(() -> new UsernameNotFoundException("Could not find an auction date time."));
     }
 
@@ -45,7 +45,7 @@ public class AuctionServiceImpl implements AuctionService {
 
     public boolean checkIfAuctionIsAllowed() {
         LocalDateTime dateTimeNow = LocalDateTime.now();
-        AuctionDateTime auctionDateTime = findById(AUCTION_ID);
+        AuctionDateTime auctionDateTime = getDateTime();
 
         return dateTimeNow.isAfter(auctionDateTime.getAuctionStartDateTime())
                 && dateTimeNow.isBefore(auctionDateTime.getAuctionEndDateTime());

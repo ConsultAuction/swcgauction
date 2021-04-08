@@ -42,7 +42,9 @@ const ConsultantForm = () => {
     skills,
   } = initialState;
 
-  const [consultant, setConsultant] = useState(initialState);
+  const [consultant, setConsultant] = useState(() => {
+    return initialState;
+  })
   const [experience, setExperience] = useState('');
   const [skill, setSkill] = useState('');
 
@@ -53,13 +55,17 @@ const ConsultantForm = () => {
   };
 
   const handleAddExperience = () => {
-    const newConsultant = { ...consultant };
+     const newConsultant = { ...consultant };
     newConsultant.experiences = consultant.experiences.concat(experience);
     setExperience('');
     setConsultant(newConsultant);
   };
 
-  const handleRemoveExperience = () => {};
+  const handleRemoveExperience = idx => () => {
+    const newConsultant = { ...consultant };
+    newConsultant.experiences = consultant.experiences.filter((s, sidx) => idx !== sidx);
+    setConsultant(newConsultant);
+  };
 
   const handleChangeSkill = (e) => {
     setSkill(e.target.value);
@@ -281,7 +287,7 @@ const ConsultantForm = () => {
                 {item}
                 <button
                   className='btn btn-danger btn-sm'
-                  onClick={handleRemoveExperience}
+                  onClick={handleRemoveExperience(index)}
                 >
                   x
                 </button>

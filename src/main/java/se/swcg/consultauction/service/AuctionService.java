@@ -6,5 +6,7 @@ import java.time.LocalDateTime;
 
 public interface AuctionService {
 
+    AuctionDateTime getDateTime ();
     void createNextAuctionDateTime(LocalDateTime previousLastDay);
+    boolean checkIfAuctionIsAllowed();
 }

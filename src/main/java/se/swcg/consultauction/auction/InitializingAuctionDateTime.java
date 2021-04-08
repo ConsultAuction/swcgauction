@@ -24,7 +24,7 @@ public class InitializingAuctionDateTime implements InitializingBean {
 
         try {
 
-            foundDateTime = auctionService.findById(AUCTION_ID);
+            foundDateTime = auctionService.getDateTime();
 
         } catch (Exception e) {
 
@@ -33,11 +33,11 @@ public class InitializingAuctionDateTime implements InitializingBean {
 
         if (foundDateTime != null && today.isAfter(foundDateTime.getOfferEndDateTime())) {
 
-            //auctionService.createNextAuctionDateTime(foundDateTime.getOfferEndDateTime());
+            auctionService.createNextAuctionDateTime(foundDateTime.getOfferEndDateTime());
             return;
 
         }
 
-        //auctionService.createNextAuctionDateTime(today);
+        auctionService.createNextAuctionDateTime(today);
     }
 }
