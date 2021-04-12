@@ -8,23 +8,28 @@ import Register from './component/auth/Register';
 import PrivateRoute from './component/routing/PrivateRoute';
 
 import AuthState from './context/auth/AuthState';
-import CountDownState from './context/countdown/countdownState';
+import CountdownState from './context/countdown/countdownState';
 import './App.css';
+import AuctionState from './context/auction/AuctionState';
+import ProjectForm from './component/forms/ProjectForm';
 
 const App = () => {
   return (
     <AuthState>
-      <CountDownState>
-        <Router>
-          <Navbar />
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/login' component={Login} />
-            <PrivateRoute exact path='/createProject' component={Project} />
-          </Switch>
-        </Router>
-      </CountDownState>
+      <CountdownState>
+        <AuctionState>
+          <Router>
+            <Navbar />
+            <Switch>
+              <Route exact path='/' component={Home} />
+              <Route exact path='/register' component={Register} />
+              <Route exact path='/login' component={Login} />
+              <PrivateRoute exact path='/Project' component={Project} />
+              <PrivateRoute exact path='/createProject' component={ProjectForm} />
+            </Switch>
+          </Router>
+        </AuctionState>
+      </CountdownState>
     </AuthState>
   );
 };

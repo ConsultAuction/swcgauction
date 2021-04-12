@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
-import CountDownContext from './countdownContext';
-import CountDownReducer from './countdownReducer';
+import CountdownContext from './countdownContext';
+import CountdownReducer from './countdownReducer';
 import {
     COUNTDOWN_LOADED
 } from '../types';
@@ -11,7 +11,7 @@ const CountdownState = props => {
       countdown: null
     };
   
-    const [state, dispatch] = useReducer(CountDownReducer, initialState);
+    const [state, dispatch] = useReducer(CountdownReducer, initialState);
   
     // Load User
     const loadCountdown =  async () => {
@@ -29,14 +29,14 @@ const CountdownState = props => {
     };
   
     return (
-      <CountDownContext.Provider
+      <CountdownContext.Provider
         value={{
           countdown: state.countdown,
           loadCountdown,
         }}
       >
         {props.children}
-      </CountDownContext.Provider>
+      </CountdownContext.Provider>
     );
   };
   

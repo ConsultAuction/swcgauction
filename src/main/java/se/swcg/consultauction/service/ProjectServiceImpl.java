@@ -18,7 +18,6 @@ import java.util.List;
 import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 @Service
-@Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService{
 
     @Autowired

@@ -1,10 +1,10 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import CountDownContext from '../context/countdown/countdownContext';
+import CountdownContext from '../context/countdown/countdownContext';
 import moment from 'moment';
 
 const Countdown = () => {
 
-    const countdownContext = useContext(CountDownContext);
+    const countdownContext = useContext(CountdownContext);
     const { loadCountdown, countdown } = countdownContext;
 
     const [endDate, setEndDate] = useState(new Date())
@@ -32,6 +32,8 @@ const Countdown = () => {
 
     useEffect(() => {
 
+        
+
         if(countdown != null) {
             console.log(countdown.auctionEndDateTime);
             setEndDate(new Date(countdown.auctionEndDateTime));
@@ -39,6 +41,7 @@ const Countdown = () => {
             loadCountdown();
         }
 
+        console.log(countdown)
         
 
         let intervalId;

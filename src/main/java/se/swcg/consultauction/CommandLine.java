@@ -36,7 +36,7 @@ public class CommandLine implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Set<Experience> experience = new HashSet<>();
+        /*Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));
 
@@ -102,7 +102,7 @@ public class CommandLine implements CommandLineRunner {
         programmingLanguagesRepository.save(new ProgrammingLanguages("Java"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C#"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C++"));
-        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));
+        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));*/
 
         int year = LocalDateTime.now().getYear();
         int month = LocalDateTime.now().getMonthValue();

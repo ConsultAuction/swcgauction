@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const CountDownContext = createContext();
+const CountdownContext = createContext();
 
-export default CountDownContext;
+export default CountdownContext;

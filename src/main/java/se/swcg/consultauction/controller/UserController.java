@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/user")
-@PreAuthorize("hasAuthority('user:read')")
 public class UserController {
 
     @Autowired

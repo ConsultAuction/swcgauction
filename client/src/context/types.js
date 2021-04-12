@@ -17,3 +17,8 @@ export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const COUNTDOWN_LOADED = 'COUNTDOWN_LOADED';
+
+export const LOAD_PROJECT = 'LOAD_PROJECT';
+export const LOAD_ALL_PROJECTS = 'LOAD_ALL_PROJECTS';
+export const ADD_PROJECT = 'ADD_PROJECT';
+export const DELETE_PROJECT = 'DELETE_PROJECT';

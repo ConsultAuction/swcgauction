@@ -29,7 +29,7 @@ public class Project {
     private String contactEmail;
     private String contactPhoneNumber;
 
-    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private User user;
 
     public Project(String projectId, String projectName, LocalDate startDate, LocalDate endDate, int workLoad,
