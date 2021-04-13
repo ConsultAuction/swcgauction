@@ -11,7 +11,7 @@ const Home = () => {
       localStorage.getItem('userid');
       loadUser();
     }
-  }, [loadUser, isAuthenticated]);
+  }, [loadUser, isAuthenticated, user]);
   return (
     <div>
       This is the Home Page.{' '}

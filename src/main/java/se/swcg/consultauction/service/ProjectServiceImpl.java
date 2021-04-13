@@ -58,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService{
     public List<ProjectDto> findAllProjectByClientId(String clientId) {
         return checkIfListIsEmpty(
                 converter.projectToDto(
-                        projectRepo.findAllByUserUserId(clientId))
+                        projectRepo.findAllByUser_UserId(clientId))
                 , "Could not find any project with this clientId"
         );
     }

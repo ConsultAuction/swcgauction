@@ -10,6 +10,9 @@ const countdownReducer = (state, action) => {
       ...state,
       countdown: action.payload
     };
+
+    default:
+      return state;
   }
 };
 

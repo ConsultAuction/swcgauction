@@ -28,14 +28,26 @@ const AuctionState = props => {
       });
     };
 
-    const saveProject = (project) => {
-      axios.post('/api/project', project)
+    const saveProject = (project, isNew) => {
+
+      if(isNew) {
+        axios.post('/api/project', project)
       .then((res) => {
         console.log(res);
       })
       .catch((error) => {
         console.log(error);
       })
+      } else {
+        axios.put('/api/project/' + project.projectId, project)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      }
+      
 
     }
 

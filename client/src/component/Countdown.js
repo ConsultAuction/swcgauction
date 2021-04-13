@@ -41,7 +41,7 @@ const Countdown = () => {
             loadCountdown();
         }
 
-        console.log(countdown)
+        console.log(countdown);
         
 
         let intervalId;
@@ -56,7 +56,7 @@ const Countdown = () => {
 
   return (
     <Fragment>
-        <p>Days: {days} Hours: {hours} Minutes: {minutes} Seconds: {seconds}</p>
+        <p> {days}:{hours}:{minutes}:{seconds}</p>
     </Fragment>
   );
 };

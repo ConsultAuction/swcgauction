@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuctionContext from '../../context/auction/AuctionContext';
 import Countdown from '../Countdown';
@@ -7,15 +7,15 @@ import ProjectForm from '../forms/ProjectForm';
 const Project = () => {
   const auctionContext = useContext(AuctionContext);
   const {loadAllProject, allProjects} = auctionContext;
+  const [clientId, setClientId] = useState(localStorage.getItem('userid'));
 
   useEffect(() => {
 
-    if(allProjects === null) {
-      loadAllProject(localStorage.getItem('userid'));
+      loadAllProject(clientId);
       console.log(allProjects);
-    }
+    
 
-  }, [allProjects]);
+  }, [clientId]);
   return (
     <Fragment>
       <Link to='/createProject'><p>Create new project</p></Link>
@@ -24,7 +24,14 @@ const Project = () => {
       <div>
         {allProjects ? (
           allProjects.map((project) => (
-            <p></p>
+            <Link to={{
+              pathname: '/createProject',
+              state: {
+                linkedProject: project
+              }
+            }}>
+              <p>{project.projectName}</p>
+            </Link>
           ))
         ): (
           <p>No projects found</p>

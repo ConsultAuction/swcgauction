@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import Logo from '../layout/logo.png';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
@@ -12,11 +12,22 @@ const Navbar = () => {
     logout();
   };
 
+  useEffect(() => {
+
+  }, [user])
+
   const roleLinks = (
     <Fragment>
       {user !== null && user.role === 'CLIENT' ? (
         <li className='nav-item'>
           <Link to='/Project'>Projects</Link>
+        </li>
+      ) : (
+        <div></div>
+      )}
+      {user !== null && user.role === 'CONSULTANT' ? (
+        <li className='nav-item'>
+          <Link to='/ProjectOffers'>Project offers</Link>
         </li>
       ) : (
         <div></div>

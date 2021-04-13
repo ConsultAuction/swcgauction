@@ -1,30 +1,52 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams } from 'react-router';
 import AuctionContext from '../../context/auction/AuctionContext';
 
-const ProjectForm = () => {
+const ProjectForm = (props) => {
   const auctionContext = useContext(AuctionContext);
-  const { saveProject, project } = auctionContext;
+  const { saveProject } = auctionContext;
 
-  //project id if edit
-  let params = useParams();
-  let isNew = true;
-
-  useEffect(() => {
-   
-  }, []);
+  const [isNew, setIsNew] = useState(true);
+  const [isDistance, setIsDistance] = useState(false);
+  const [isCompanyHw, setIsComanyHw] = useState(false);
+  const [project, setProject] = useState(null);
 
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = data =>{
-    console.log(data);
-    saveProject(data);
-  }
+  
 
+
+  useEffect(() => {
+    
+    if(props.location.state != null) {
+      setProject(props.location.state.linkedProject)
+      setIsNew(false);
+    }
+
+    if(project) {
+      setIsDistance(project.distanceWork);
+      setIsComanyHw(project.companyHardware);
+    }
+   
+  }, [project, isNew, props.location.state]);
+
+  const onSubmit = data =>{
+    console.log(data, isNew);
+    saveProject(data, isNew);
+  }
 
   return (
     <form   onSubmit={handleSubmit(onSubmit)}>
+      
+      {!isNew && (
+            <input
+              type='hidden'
+              name='projectId'
+              value={project.projectId}
+              ref={register}
+            />
+          )}
+
       <div className='container' style={{ maxWidth: '750px' }}>
         <label htmlFor='projectName'>Project name</label>
         <input
@@ -80,14 +102,14 @@ const ProjectForm = () => {
         <input
           type='checkbox'
           name='distanceWork'
-          defaultValue={isNew ? '' : project.distanceWork}
+          defaultChecked={isNew ? '' : project.distanceWork}
           ref={register}
         />{' '}
         <label htmlFor='companyHardware'>Company hardware: </label>{' '}
         <input
           type='checkbox'
           name='companyHardware'
-          defaultValue={isNew ? '' : project.companyHardware}
+          defaultChecked={isNew ? '' : project.companyHardware}
           ref={register}
         />
         <div className='form-row'>

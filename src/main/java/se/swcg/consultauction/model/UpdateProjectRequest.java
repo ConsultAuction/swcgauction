@@ -10,13 +10,13 @@ public class UpdateProjectRequest {
     @NotBlank(message = "Please enter project name.")
     private String projectName;
 
-    @NotBlank(message = "Please enter start date.")
+
     private LocalDate startDate;
 
-    @NotBlank(message = "Please enter end date.")
+
     private LocalDate endDate;
 
-    @NotBlank(message = "Please enter workload.")
+
     private int workLoad;
 
     @NotBlank(message = "Please enter description.")
@@ -25,10 +25,10 @@ public class UpdateProjectRequest {
     @NotBlank(message = "Please enter location.")
     private String located;
 
-    @NotBlank(message = "Please enter if distance work or not.")
+
     private boolean distanceWork;
 
-    @NotBlank(message = "Please enter if company hardware.")
+
     private boolean companyHardware;
 
     @NotBlank(message = "Please enter contact name.")

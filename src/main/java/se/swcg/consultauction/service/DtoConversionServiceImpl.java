@@ -170,7 +170,21 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public ProjectDto projectToDto(Project project) {
-        return null;
+        return new ProjectDto(
+                project.getProjectId(),
+                project.getProjectName(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getWorkLoad(),
+                project.getDescription(),
+                project.getLocated(),
+                project.isDistanceWork(),
+                project.isCompanyHardware(),
+                project.getContactName(),
+                project.getContactEmail(),
+                project.getContactPhoneNumber(),
+                project.getUser()
+        );
     }
 
     @Override

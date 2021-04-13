@@ -12,6 +12,7 @@ import CountdownState from './context/countdown/countdownState';
 import './App.css';
 import AuctionState from './context/auction/AuctionState';
 import ProjectForm from './component/forms/ProjectForm';
+import ProjectOfferForm from './component/forms/ProjectOfferForm';
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
               <Route exact path='/login' component={Login} />
               <PrivateRoute exact path='/Project' component={Project} />
               <PrivateRoute exact path='/createProject' component={ProjectForm} />
+              <PrivateRoute exact path='/ProjectOffers' component={ProjectOfferForm} />
             </Switch>
           </Router>
         </AuctionState>
