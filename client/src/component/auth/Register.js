@@ -40,20 +40,11 @@ const Register = () => {
         />
         <label className='form-check-label' htmlFor='company'>
           {' '}
-          Company{' '}
+          Client{' '}
         </label>
       </div>
-      <form>
-        {desiredRole === 'consultant' ? <ConsultantForm /> : <CompanyForm />}
-      </form>
 
-      <div className='form-group mt-4'>
-        <input
-          className='btn-lg btn-block btn-primary'
-          type='submit'
-          value='Submit'
-        />
-      </div>
+      {desiredRole === 'consultant' ? <ConsultantForm /> : <CompanyForm />}
     </div>
   );
 };

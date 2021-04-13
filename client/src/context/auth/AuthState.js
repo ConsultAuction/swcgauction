@@ -47,8 +47,6 @@ const AuthState = (props) => {
     }
   };
 
-  // Register User
-
   // Login User
   const login = async (formData) => {
     const config = {

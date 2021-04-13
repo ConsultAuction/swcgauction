@@ -140,7 +140,7 @@ const ConsultantForm = () => {
           <label htmlFor='password2'>Confirm Password</label>
           <input
             className='form-control'
-            type='password2'
+            type='password'
             name='password2'
             value={password2}
             onChange={onChange}
@@ -281,10 +281,10 @@ const ConsultantForm = () => {
                 key={index}
                 id={'experience' + index}
               >
-                {item}
+                {item}{' '}
                 <span item={item.name}>
                   <button
-                    className='btn btn-danger btn-sm'
+                    className='btn btn-sm'
                     onClick={handleRemoveExperience(index)}
                   >
                     x
@@ -345,10 +345,10 @@ const ConsultantForm = () => {
           <ul className='list-group list-group-horizontal'>
             {skills.map((item, index) => (
               <li className='list-group-item' key={index} id={'skill' + index}>
-                {item}
+                {item}{' '}
                 <span item={item.name}>
                   <button
-                    className='btn btn-danger btn-sm'
+                    className='btn btn-sm'
                     onClick={handleRemoveSkill(index)}
                   >
                     x

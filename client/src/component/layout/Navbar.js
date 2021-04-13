@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react';
-import Logo from '../layout/logo.png';
+import Logo from '../layout/images/logo.png';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
@@ -27,6 +27,9 @@ const Navbar = () => {
   const authLinks = (
     <Fragment>
       <li>Hello {user && user.firstName}</li>
+      <li className='nav-item ml-2'>
+        <Link to='/userProfile'>My Profile</Link>
+      </li>
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
           <span className='hide-sm'> Logout</span>

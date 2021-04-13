@@ -35,7 +35,6 @@ const authReducer = (state, action) => {
       };
     case USER_LOADED:
       localStorage.setItem('user', action.payload);
-
       return {
         ...state,
         isAuthenticated: true,
