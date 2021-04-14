@@ -36,10 +36,10 @@ const UserProfile = () => {
     city: user.contact.city,
     country: user.contact.country,
     phoneNr: user.contact.phoneNumber,
-    frontEnd: user.consultantDetails.frontend,
-    backEnd: user.consultantDetails.backend,
-    forHire: user.consultantDetails.availableForHire,
-    salary: user.consultantDetails.minPrice,
+    // frontEnd: user.consultantDetails.frontend,
+    // backEnd: user.consultantDetails.backend,
+    // forHire: user.consultantDetails.availableForHire,
+    // salary: user.consultantDetails.minPrice,
   });
 
   const {
@@ -105,7 +105,7 @@ const UserProfile = () => {
 
   return (
     <div className='container'>
-      <div className='main-body'>
+      <div className='main-body mt-2'>
         <div className='row gutters-sm'>
           <div className='col-md-4 mb-3'>
             <div className='card'>
@@ -121,7 +121,7 @@ const UserProfile = () => {
                     {firstName} {lastName}
                   </h4>
                   <h5>{role}</h5>
-                  <h6>{user.contact.country}</h6>
+                  <h6>{country}</h6>
                 </div>
               </div>
             </div>
@@ -133,7 +133,7 @@ const UserProfile = () => {
                   <ul className='list-group list-group-flush'>
                     <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                       <h6 className='mb-0'>FrontEnd: </h6>
-                      {frontEnd ? (
+                      {user.consultantDetails.frontend ? (
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           width='16'
@@ -161,7 +161,7 @@ const UserProfile = () => {
                     </li>
                     <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                       <h6 className='mb-0'>BackEnd: </h6>
-                      {backEnd ? (
+                      {user.consultantDetails.backend ? (
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           width='16'
@@ -189,7 +189,7 @@ const UserProfile = () => {
                     </li>
                     <li className='list-group-item d-flex justify-content-between align-items-center flex-wrap'>
                       <h6 className='mb-0'>Avalible for hire: </h6>
-                      {forHire ? (
+                      {user.consultantDetails.availableForHire ? (
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           width='16'
@@ -221,7 +221,7 @@ const UserProfile = () => {
                         className='form-control-sm'
                         type='text'
                         name='salary'
-                        value={salary}
+                        value={user.consultantDetails.minPrice}
                         onChange={onChange}
                       />
                       SEK
