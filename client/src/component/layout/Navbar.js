@@ -18,18 +18,23 @@ const Navbar = () => {
         <li className='nav-item'>
           <Link to='/createProject'>Create New Project</Link>
         </li>
-      ) : (
-        <div></div>
-      )}
+      ) : null}
     </Fragment>
   );
 
   const authLinks = (
     <Fragment>
       <li>Hello {user && user.firstName}</li>
-      <li className='nav-item ml-2'>
-        <Link to='/userProfile'>My Profile</Link>
-      </li>
+      {user !== null && user.role === 'CONSULTANT' ? (
+        <li className='nav-item ml-2'>
+          <Link to='/consultantUserProfile'>My Profile</Link>
+        </li>
+      ) : null}
+      {user !== null && user.role === 'CLIENT' ? (
+        <li className='nav-item ml-2'>
+          <Link to='/clientUserProfile'>My Profile</Link>
+        </li>
+      ) : null}
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
           <span className='hide-sm'> Logout</span>

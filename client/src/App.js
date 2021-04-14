@@ -6,7 +6,8 @@ import Login from './component/auth/Login';
 import Project from './component/pages/Project';
 import Success from './component/pages/Success';
 import Register from './component/auth/Register';
-import UserProfile from './component/pages/UserProfile';
+import ClientUserProfile from './component/pages/ClientUserProfile';
+import ConsultantUserProfile from './component/pages/ConsultantUserProfile';
 import PrivateRoute from './component/routing/PrivateRoute';
 
 import AuthState from './context/auth/AuthState';
@@ -25,7 +26,16 @@ const App = () => {
             <Route exact path='/login' component={Login} />
             <Route exact path='/registerSuccess' component={Success} />
             <PrivateRoute exact path='/createProject' component={Project} />
-            <PrivateRoute exact path='/userProfile' component={UserProfile} />
+            <PrivateRoute
+              exact
+              path='/clientUserProfile'
+              component={ClientUserProfile}
+            />
+            <PrivateRoute
+              exact
+              path='/consultantUserProfile'
+              component={ConsultantUserProfile}
+            />
           </Switch>
         </Router>
       </ProfileState>
