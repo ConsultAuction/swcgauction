@@ -30,6 +30,9 @@ const Countdown = () => {
         setSeconds(seconds);
     }
 
+
+    
+
     useEffect(() => {
 
         
@@ -56,7 +59,7 @@ const Countdown = () => {
 
   return (
     <Fragment>
-        <p> {days}:{hours}:{minutes}:{seconds}</p>
+        <p> {days}:{hours}:{minutes}:{seconds} </p>
     </Fragment>
   );
 };

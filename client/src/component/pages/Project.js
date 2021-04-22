@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import AuctionContext from '../../context/auction/AuctionContext';
 import Countdown from '../Countdown';
 import ProjectForm from '../forms/ProjectForm';
+import SearchbarDropdown from './SearchbarDropdown';
+import axios from 'axios';
 
 const Project = () => {
   const auctionContext = useContext(AuctionContext);
@@ -13,14 +15,15 @@ const Project = () => {
 
       loadAllProject(clientId);
       console.log(allProjects);
+
     
 
   }, [clientId]);
   return (
     <Fragment>
+      
       <Link to='/createProject'><p>Create new project</p></Link>
       <Countdown />
-
       <div>
         {allProjects ? (
           allProjects.map((project) => (
@@ -37,8 +40,8 @@ const Project = () => {
           <p>No projects found</p>
         )}
       </div>
+
     </Fragment>
-    
   );
 };
 

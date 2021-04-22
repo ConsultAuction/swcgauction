@@ -19,7 +19,7 @@ public interface UserService extends UserDetailsService{
     List<UserDto> findAllConsultants();
     List<UserDto> findByLastActive(LocalDate lastActive);
     List<UserDto> findByActive(boolean active);
-    List<UserDto> findByAvailable(boolean available);
+    List<UserDto> findByAvailable();
 
     UserDto createClient(CreateClientRequest createClientRequest);
     UserDto createConsultant(CreateConsultantRequest createConsultantRequest);

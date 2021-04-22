@@ -52,12 +52,12 @@ public class UserController {
     @GetMapping("/active/{active}")
     public ResponseEntity<List<UserDto>> findAllByActive(@PathVariable boolean active) {
         return ResponseEntity.ok(service.findByActive(active));
-    }
-
-    @GetMapping("/available/{available}")
-    public ResponseEntity<List<UserDto>> findByAvailable(@PathVariable boolean available) {
-        return ResponseEntity.ok(service.findByAvailable(available));
     }*/
+
+    @GetMapping("/available/hire")
+    public ResponseEntity<List<UserDto>> findByAvailable() {
+        return ResponseEntity.ok(service.findByAvailable());
+    }
 
     @GetMapping("/consultant")
     @PreAuthorize("hasAuthority('client:read')")

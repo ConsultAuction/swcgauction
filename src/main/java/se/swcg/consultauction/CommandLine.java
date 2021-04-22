@@ -36,7 +36,7 @@ public class CommandLine implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        /*Set<Experience> experience = new HashSet<>();
+        Set<Experience> experience = new HashSet<>();
         experience.add(new Experience("Lexicon"));
         experience.add(new Experience("Scania"));
 
@@ -44,6 +44,24 @@ public class CommandLine implements CommandLineRunner {
         languages.add(new Languages("Java"));
         languages.add(new Languages("React"));
 
+        Set<Experience> robinExperience = new HashSet<>();
+        experience.add(new Experience("Lexicon"));
+        experience.add(new Experience("FortNox"));
+
+        Set<Languages> robinLanguages = new HashSet<>();
+        languages.add(new Languages("Java"));
+
+        Set<Experience> tobiasExperience = new HashSet<>();
+        experience.add(new Experience("Lexicon"));
+        experience.add(new Experience("Ikea"));
+
+        Set<Languages> tobiasLanguages = new HashSet<>();
+        languages.add(new Languages("React"));
+
+
+
+
+        /*
         userRepository.save(
                 new User(null,
                         "Anders",
@@ -102,7 +120,54 @@ public class CommandLine implements CommandLineRunner {
         programmingLanguagesRepository.save(new ProgrammingLanguages("Java"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C#"));
         programmingLanguagesRepository.save(new ProgrammingLanguages("C++"));
-        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));*/
+        programmingLanguagesRepository.save(new ProgrammingLanguages("JavaScript"));
+
+        userRepository.save(
+                new User(null,
+                        "Robin",
+                        "sandberg",
+                        "r@s.com",
+                        passwordEncoder.encode("Password12!"),
+                        SecurityRoles.CONSULTANT.name(),
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        true,
+                        null,
+                        new Contact("KalmarGatan 12", "333 57", "Kalmar", "Sweden", "0701234456"),
+                        new ConsultantDetails(false,
+                                true,
+                                true,
+                                800,
+                                robinExperience,
+                                robinLanguages,
+                                null
+                        )
+                )
+        );
+
+        userRepository.save(
+                new User(null,
+                        "Tobias",
+                        "Håkansson",
+                        "t@h.com",
+                        passwordEncoder.encode("Password12!"),
+                        SecurityRoles.CONSULTANT.name(),
+                        LocalDate.now(),
+                        LocalDate.now(),
+                        true,
+                        null,
+                        new Contact("KalmarGatan 12", "333 57", "Kalmar", "Sweden", "0701234456"),
+                        new ConsultantDetails(true,
+                                true,
+                                true,
+                                800,
+                                tobiasExperience,
+                                tobiasLanguages,
+                                null
+                        )
+                )
+        );
+        */
 
         int year = LocalDateTime.now().getYear();
         int month = LocalDateTime.now().getMonthValue();

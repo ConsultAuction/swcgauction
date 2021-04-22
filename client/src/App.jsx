@@ -127,8 +127,7 @@ const SearchbarDropdown = (props) => {
       </Router>
     </AuthState>
   );
-
- };
+};
 
 
 export default App;

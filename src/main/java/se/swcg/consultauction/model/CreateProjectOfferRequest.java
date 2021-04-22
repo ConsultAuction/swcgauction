@@ -1,6 +1,7 @@
 package se.swcg.consultauction.model;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class CreateProjectOfferRequest {
@@ -11,10 +12,8 @@ public class CreateProjectOfferRequest {
     @NotBlank(message = "please enter project id.")
     private String projectId;
 
-    @NotBlank(message = "please enter start time.")
-    private LocalDateTime startTime;
+    private LocalDate startTime;
 
-    @NotBlank(message = "please enter bid.")
     private double bids;
 
     public String getConsultantId() {
@@ -33,11 +32,11 @@ public class CreateProjectOfferRequest {
         this.projectId = projectId;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 

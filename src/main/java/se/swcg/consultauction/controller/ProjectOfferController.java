@@ -9,10 +9,12 @@ import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.CreateProjectOfferRequest;
 import se.swcg.consultauction.service.ProjectOfferService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping(path = "/api/projectOffer")
 public class ProjectOfferController {
 
@@ -46,6 +48,11 @@ public class ProjectOfferController {
     @GetMapping("/selected/{user}")
     public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable UserDto user){
         return ResponseEntity.ok(service.findBySelectedByUserId(user));
+    }
+
+    @GetMapping("/user/{consultantId}")
+    public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable String consultantId){
+        return ResponseEntity.ok(service.findByConsultantId(consultantId));
     }
 
     @PostMapping

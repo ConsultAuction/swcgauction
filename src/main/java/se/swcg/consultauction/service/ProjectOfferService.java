@@ -14,6 +14,8 @@ public interface ProjectOfferService {
     List<ProjectOfferDto> findAll();
     ProjectOfferDto findById(String projectOfferId);
 
+    List<ProjectOfferDto> findByConsultantId(String consultantId);
+
     List<ProjectOfferDto> findByAcceptedByUserId(UserDto  user);
     List<ProjectOfferDto> findByRejectByUserId(UserDto user);
     List<ProjectOfferDto> findBySelectedByUserId(UserDto user);

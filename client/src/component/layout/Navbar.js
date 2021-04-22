@@ -19,9 +19,14 @@ const Navbar = () => {
   const roleLinks = (
     <Fragment>
       {user !== null && user.role === 'CLIENT' ? (
-        <li className='nav-item'>
-          <Link to='/Project'>Projects</Link>
-        </li>
+        <Fragment>
+          <li className='nav-item'>
+            <Link to='/Project'>Projects</Link>
+          </li>
+          <li className='nav-item'>
+            <Link to='/Search'>Search</Link>
+          </li>
+        </Fragment>
       ) : (
         <div></div>
       )}

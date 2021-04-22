@@ -104,11 +104,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findByAvailable(boolean available) {
-        /*return checkIfListIsEmpty(
+    public List<UserDto> findByAvailable() {
+        return checkIfListIsEmpty(
                 converter.userToDto(
-                        repo.findByAvailableForHire(available)), "Could not find any users with available status: " + available);*/
-        return null;
+                        userRepo.findAllByConsultantDetailsAvailableForHire(true)), "Could not find any users with available status: ");
     }
 
 
