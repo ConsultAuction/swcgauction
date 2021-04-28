@@ -10,6 +10,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
 } from '../types';
+import { useHistory } from 'react-router-dom';
 
 const AuthState = (props) => {
   const initialState = {
@@ -21,31 +22,35 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
+  const history = useHistory();
+  const goToPage = (path) => {
+    history.push(path);
+  };
+
   // Load User
   const loadUser = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
+    await axios
+      .get('/api/user/' + localStorage.getItem('userid'))
+      .then((res) => {
+        console.log(res);
 
-    try {
-      const res = await axios.get(
-        '/api/user/' + localStorage.getItem('userid'),
-        config
-      );
-      console.log(res);
+        dispatch({
+          type: USER_LOADED,
+          payload: res.data,
+        });
 
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
+        if (!res.data.firstName && res.data.role === 'CLIENT') {
+          goToPage('/clientUserProfile');
+        } else {
+          goToPage('/consultantUserProfile');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: AUTH_ERROR,
-      });
-    }
   };
 
   // Login User
@@ -94,46 +99,32 @@ const AuthState = (props) => {
 
   // Register Consultant
   const registerConsultant = async (formData) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      const res = await axios.post('/api/user/consultant', formData, config);
-
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data,
+    await axios
+      .post('/api/user/consultant', formData)
+      .then((res) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      loadUser();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   // Register Client
   const registerClient = async (formData) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
-      const res = await axios.post('/api/user/client', formData, config);
-
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.data,
+    await axios
+      .post('/api/user/client', formData)
+      .then((res) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-
-      loadUser();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   // Clear Errors

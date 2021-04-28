@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class DtoConversionServiceImpl implements DtoConversionService {
 
     /*

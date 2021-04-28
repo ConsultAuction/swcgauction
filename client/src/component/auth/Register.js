@@ -1,33 +1,24 @@
 import React, { useState, useContext } from 'react';
 import AuthContext from '../../context/auth/authContext';
+import { useForm } from 'react-hook-form';
 
 const Register = () => {
-  const [user, setUser] = useState({
-    desiredRole: 'consultant',
-    email: '',
-    password: '',
-  });
-
   const authContext = useContext(AuthContext);
 
   const { registerClient, registerConsultant } = authContext;
 
-  const { desiredRole, email, password } = user;
+  const [role, setRole] = useState('CONSULTANT');
+  const onChange = (e) => setRole(e.target.value);
 
-  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  const { register, handleSubmit } = useForm();
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (desiredRole === 'CLIENT') {
-      registerClient({
-        email,
-        password,
-      });
+  const onSubmit = (data) => {
+    if (role === 'CONSULTANT') {
+      console.log('CONSULTANT');
+      registerConsultant(data);
     } else {
-      registerConsultant({
-        email,
-        password,
-      });
+      console.log('CLIENT');
+      registerClient(data);
     }
   };
 
@@ -36,7 +27,7 @@ const Register = () => {
       className='container rounded bg-light mt-2'
       style={{ maxWidth: '750px' }}
     >
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <h1>Create New Account</h1>
         <div className='form-check'>
           <input
@@ -44,7 +35,7 @@ const Register = () => {
             type='radio'
             name='desiredRole'
             value='CONSULTANT'
-            checked={desiredRole === 'CONSULTANT'}
+            checked={role === 'CONSULTANT'}
             onChange={onChange}
           />
 
@@ -59,7 +50,7 @@ const Register = () => {
             type='radio'
             name='desiredRole'
             value='CLIENT'
-            checked={desiredRole === 'CLIENT'}
+            checked={role === 'CLIENT'}
             onChange={onChange}
           />
           <label className='form-check-label' htmlFor='client'>
@@ -74,9 +65,7 @@ const Register = () => {
             type='email'
             className='form-control'
             name='email'
-            value={email}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
         <div className='form-row'>
@@ -85,9 +74,7 @@ const Register = () => {
             type='password'
             className='form-control'
             name='password'
-            value={password}
-            onChange={onChange}
-            required
+            ref={register}
           />
         </div>
         <div className='form-group mt-4'>

@@ -6,6 +6,8 @@ const ClientUserProfile = () => {
   const authContext = useContext(AuthContext);
 
   const { user, isAuthenticated, loadUser } = authContext;
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordAgain, setNewPasswordAgain] = useState('');
 
   const [currentUser, setCurrentUser] = useState({
     companyName: user.companyName,
@@ -14,7 +16,6 @@ const ClientUserProfile = () => {
     email: user.email,
     role: user.role,
     password: user.password,
-    password2: user.password2,
     address: user.contact.address,
     zipCode: user.contact.zipCode,
     city: user.contact.city,
@@ -29,7 +30,6 @@ const ClientUserProfile = () => {
     email,
     role,
     password,
-    password2,
     address,
     zipCode,
     city,
@@ -46,6 +46,11 @@ const ClientUserProfile = () => {
       loadUser();
     }
   }, [loadUser, isAuthenticated]);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(e);
+  };
 
   return (
     <div className='container'>
@@ -70,140 +75,152 @@ const ClientUserProfile = () => {
               </div>
             </div>
           </div>
+          <form onSubmit={onSubmit}>
+            <div className='col md-8'>
+              <div className='card mb-3'>
+                <div className='card-body'>
+                  <h6>User Details</h6>
+                  <div className='form-row'>
+                    <div className='col-sm-3'>
+                      <label htmlFor='companyName'>Company Name</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='companyName'
+                        value={companyName ? companyName : ''}
+                        onChange={onChange}
+                      />
+                    </div>
 
-          <div className='col md-8'>
-            <div className='card mb-3'>
-              <div className='card-body'>
-                <h6>User Details</h6>
-                <div className='form-row'>
-                  <div className='col-sm-3'>
-                    <label htmlFor='companyName'>Company Name</label>
-                    <input
-                      className='form-control'
-                      type='text'
-                      name='companyName'
-                      value={companyName}
-                      onChange={onChange}
-                    />
+                    <div className='col-sm-3'>
+                      <label htmlFor='firstName'>First Name</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='firstName'
+                        value={firstName ? firstName : ''}
+                        onChange={onChange}
+                      />
+                    </div>
+                    <div className='col-sm-3'>
+                      <label htmlFor='lastName'>Last Name</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='lastName'
+                        value={lastName ? lastName : ''}
+                        onChange={onChange}
+                      />
+                    </div>
+                  </div>
+                  <div className='form-row'>
+                    <div className='col'>
+                      <label htmlFor='email'>Email Address</label>
+                      <input
+                        className='form-control'
+                        type='email'
+                        name='email'
+                        value={email}
+                        onChange={onChange}
+                      />
+                    </div>
                   </div>
 
-                  <div className='col-sm-3'>
-                    <label htmlFor='firstName'>First Name</label>
+                  <div className='form-row'>
+                    <label htmlFor='address'>Address</label>
                     <input
                       className='form-control'
                       type='text'
-                      name='firstName'
-                      value={firstName}
-                      onChange={onChange}
-                    />
-                  </div>
-                  <div className='col-sm-3'>
-                    <label htmlFor='lastName'>Last Name</label>
-                    <input
-                      className='form-control'
-                      type='text'
-                      name='lastName'
-                      value={lastName}
-                      onChange={onChange}
-                    />
-                  </div>
-                </div>
-                <div className='form-row'>
-                  <div className='col'>
-                    <label htmlFor='email'>Email Address</label>
-                    <input
-                      className='form-control'
-                      type='email'
-                      name='email'
-                      value={email}
-                      onChange={onChange}
-                    />
-                  </div>
-                </div>
-                <div className='form-row'>
-                  <div className='col'>
-                    <label htmlFor='password'>Current Password</label>
-                    <input
-                      className='form-control'
-                      type='password'
-                      name='password'
-                      value={password}
+                      name='address'
+                      value={address ? address : ''}
                       onChange={onChange}
                       required
                     />
                   </div>
-                  <div className='col'>
-                    <label htmlFor='password2'>New Password</label>
-                    <input
-                      className='form-control'
-                      type='password'
-                      name='password2'
-                      value={password2}
-                      onChange={onChange}
-                      required
-                    />
+                  <div className='form-row'>
+                    <div className='col'>
+                      <label htmlFor='zipCode'>Postal Code</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='zipCode'
+                        value={zipCode ? zipCode : ''}
+                        onChange={onChange}
+                        required
+                      />
+                    </div>
+                    <div className='col'>
+                      <label htmlFor='city'>City</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='city'
+                        value={city ? city : ''}
+                        onChange={onChange}
+                        required
+                      />
+                    </div>
+                    <div className='col'>
+                      <label htmlFor='country'>Country</label>
+                      <input
+                        className='form-control'
+                        type='text'
+                        name='country'
+                        value={country ? country : ''}
+                        onChange={onChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className='form-row'>
-                  <label htmlFor='address'>Address</label>
-                  <input
-                    className='form-control'
-                    type='text'
-                    name='address'
-                    value={address}
-                    onChange={onChange}
-                    required
-                  />
-                </div>
-                <div className='form-row'>
-                  <div className='col'>
-                    <label htmlFor='zipCode'>Postal Code</label>
+                  <div className='form-row'>
+                    <label htmlFor='phonenr'>Phone Number</label>
                     <input
                       className='form-control'
                       type='text'
-                      name='zipCode'
-                      value={zipCode}
-                      onChange={onChange}
-                      required
-                    />
-                  </div>
-                  <div className='col'>
-                    <label htmlFor='city'>City</label>
-                    <input
-                      className='form-control'
-                      type='text'
-                      name='city'
-                      value={city}
-                      onChange={onChange}
-                      required
-                    />
-                  </div>
-                  <div className='col'>
-                    <label htmlFor='country'>Country</label>
-                    <input
-                      className='form-control'
-                      type='text'
-                      name='country'
-                      value={country}
+                      name='phoneNr'
+                      value={phoneNr ? phoneNr : ''}
                       onChange={onChange}
                       required
                     />
                   </div>
                 </div>
-                <div className='form-row'>
-                  <label htmlFor='phonenr'>Phone Number</label>
-                  <input
-                    className='form-control'
-                    type='text'
-                    name='phoneNr'
-                    value={phoneNr}
-                    onChange={onChange}
-                    required
-                  />
-                </div>
+                <input type='submit' value='Save' />
               </div>
             </div>
-          </div>
+          </form>
+          <form>
+            <div className='col md-8'>
+              <div className='card mb-3'>
+                <div className='card-body'>
+                  <div className='form-row'>
+                    <div className='col'>
+                      <label htmlFor='password'>New Password</label>
+                      <input
+                        className='form-control'
+                        type='password'
+                        name='password'
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </div>
+                    <div className='col'>
+                      <label htmlFor='password2'>New Password again</label>
+                      <input
+                        className='form-control'
+                        type='password'
+                        name='password2'
+                        value={newPasswordAgain}
+                        onChange={(e) => {
+                          setNewPasswordAgain(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <input type='submit' value='Save new password' />
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>

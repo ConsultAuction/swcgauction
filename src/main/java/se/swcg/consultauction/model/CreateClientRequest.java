@@ -5,7 +5,7 @@ import javax.validation.constraints.Pattern;
 
 public class CreateClientRequest {
 
-
+    @NotBlank
     private String companyName;
 
     private String firstName;
@@ -24,20 +24,20 @@ public class CreateClientRequest {
 
     private String image;
 
-
+    @NotBlank
     private String address;
 
-
+    @NotBlank
     // Swedish postal regex: ^(s-|S-){0,1}[0-9]{3}\s?[0-9]{2}$
     private String zipCode;
 
-
+    @NotBlank
     private String city;
 
-
+    @NotBlank
     private String country;
 
-
+    @NotBlank
     //@Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$")
     private String phoneNumber;
 

@@ -19,7 +19,6 @@ import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 
 @Service
-@Transactional(readOnly = true)
 public class ProjectOfferServiceImpl implements ProjectOfferService {
 
     @Autowired

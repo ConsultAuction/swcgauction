@@ -61,7 +61,7 @@ public class CommandLine implements CommandLineRunner {
 
 
 
-        /*
+
         userRepository.save(
                 new User(null,
                         "Anders",
@@ -167,7 +167,6 @@ public class CommandLine implements CommandLineRunner {
                         )
                 )
         );
-        */
 
         int year = LocalDateTime.now().getYear();
         int month = LocalDateTime.now().getMonthValue();

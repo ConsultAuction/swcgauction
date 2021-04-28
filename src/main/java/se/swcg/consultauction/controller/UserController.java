@@ -1,19 +1,17 @@
 package se.swcg.consultauction.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.entity.ConsultantDetails;
 import se.swcg.consultauction.model.CreateClientRequest;
+import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
 import se.swcg.consultauction.service.UserService;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -66,21 +64,21 @@ public class UserController {
     }
 
     @PostMapping("/client")
-    public ResponseEntity<UserDto> createClient(@Valid @RequestBody CreateClientRequest clientRequest){
+    public ResponseEntity<UserDto> createClient(@Valid @RequestBody CreateRequest clientRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createClient(clientRequest));
     }
 
     @PutMapping("/client/{id}")
     @PreAuthorize("hasAuthority('client:write')")
-    public ResponseEntity<UserDto> updateClient(@PathVariable String id,@Valid @RequestBody CreateClientRequest clientRequest) {
+    public ResponseEntity<UserDto> updateClient(@PathVariable String id, @Valid @RequestBody CreateClientRequest createClientRequest) {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
-        return ResponseEntity.ok(service.updateClient(id, clientRequest));
+        return ResponseEntity.ok(service.updateClient(id, createClientRequest));
     }
 
     @PostMapping("/consultant")
-    public ResponseEntity<?> createConsultant(@Valid @RequestBody CreateConsultantRequest consultantRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createConsultant(consultantRequest));
+    public ResponseEntity<?> createConsultant(@Valid @RequestBody CreateRequest createRequest){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createConsultant(createRequest));
     }
 
     @PutMapping("/consultant/{id}")

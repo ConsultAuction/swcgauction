@@ -24,11 +24,11 @@ import ProfileState from './context/profile/ProfileState';
 
 const App = () => {
   return (
-    <AuthState>
-      <ProfileState>
-        <CountdownState>
-          <AuctionState>
-            <Router>
+    <Router>
+      <AuthState>
+        <ProfileState>
+          <CountdownState>
+            <AuctionState>
               <Navbar />
               <Switch>
                 <Route exact path='/' component={Home} />
@@ -73,11 +73,11 @@ const App = () => {
                   component={ConsultantUserProfile}
                 />
               </Switch>
-            </Router>
-          </AuctionState>
-        </CountdownState>
-      </ProfileState>
-    </AuthState>
+            </AuctionState>
+          </CountdownState>
+        </ProfileState>
+      </AuthState>
+    </Router>
   );
 };
 
