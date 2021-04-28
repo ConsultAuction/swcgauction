@@ -1,10 +1,11 @@
 import React, { Fragment, useContext, useEffect } from 'react';
-import Logo from '../layout/logo.png';
+import Logo from '../layout/images/logo.png';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
 const Navbar = () => {
   const authContext = useContext(AuthContext);
+
   const { logout, user } = authContext;
 
   const onLogout = () => {
@@ -31,15 +32,25 @@ const Navbar = () => {
         <li className='nav-item'>
           <Link to='/ProjectOffers'>Project offers</Link>
         </li>
-      ) : (
-        <div></div>
-      )}
+      ) : null}
     </Fragment>
   );
 
   const authLinks = (
     <Fragment>
       <li>Hello {user && user.firstName}</li>
+      {user !== null && user.role === 'CONSULTANT' ? (
+        <li className='nav-item ml-2'>
+          <Link className='btn btn-primary' to='/consultantUserProfile'>
+            My Profile
+          </Link>
+        </li>
+      ) : null}
+      {user !== null && user.role === 'CLIENT' ? (
+        <li className='nav-item ml-2'>
+          <Link to='/clientUserProfile'>My Profile</Link>
+        </li>
+      ) : null}
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
           <span className='hide-sm'> Logout</span>

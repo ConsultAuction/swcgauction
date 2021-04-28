@@ -1,8 +1,19 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
+import ProfileContext from '../../context/profile/profileContext';
 
 const ConsultantForm = () => {
-  const initialState = {
+  const profileContext = useContext(ProfileContext);
+  const {
+    addExperience,
+    deleteExperience,
+    addSkill,
+    deleteSkill,
+    experiences,
+    skills,
+  } = profileContext;
+
+  const [consultant, setConsultant] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -17,10 +28,7 @@ const ConsultantForm = () => {
     backEnd: false,
     forHire: false,
     salary: '',
-    experiences: [],
-    languages: '',
-    skills: [],
-  };
+  });
 
   const {
     firstName,
@@ -37,48 +45,43 @@ const ConsultantForm = () => {
     backEnd,
     forHire,
     salary,
-    experiences,
-    languages,
-    skills,
-  } = initialState;
+  } = consultant;
 
-  const [consultant, setConsultant] = useState(() => {
-    return initialState;
-  })
   const [experience, setExperience] = useState('');
   const [skill, setSkill] = useState('');
-
   const [selected, setSelected] = useState('');
 
   const handleChangeExperience = (e) => {
     setExperience(e.target.value);
   };
 
-  const handleAddExperience = () => {
-     const newConsultant = { ...consultant };
-    newConsultant.experiences = consultant.experiences.concat(experience);
+  const handleAddExperience = (e) => {
+    e.preventDefault();
+    addExperience(experience);
     setExperience('');
-    setConsultant(newConsultant);
   };
 
-  const handleRemoveExperience = idx => () => {
-    const newConsultant = { ...consultant };
-    newConsultant.experiences = consultant.experiences.filter((s, sidx) => idx !== sidx);
-    setConsultant(newConsultant);
+  const handleRemoveExperience = (index) => (e) => {
+    e.preventDefault();
+    deleteExperience(index);
+    setExperience('');
   };
 
   const handleChangeSkill = (e) => {
     setSkill(e.target.value);
   };
 
-  const handleAddSkills = () => {
-    const newConsultant = { ...consultant };
-    newConsultant.skills = consultant.skills.concat(skill);
+  const handleAddSkills = (e) => {
+    e.preventDefault();
+    addSkill(skill);
     setSkill('');
-    setConsultant(newConsultant);
   };
 
-  const handleRemoveSkill = () => {};
+  const handleRemoveSkill = (index) => (e) => {
+    e.preventDefault();
+    deleteSkill(index);
+    setSkill('');
+  };
 
   const onChange = (e) =>
     setConsultant({ ...consultant, [e.target.name]: e.target.value });
@@ -131,18 +134,16 @@ const ConsultantForm = () => {
             name='password'
             value={password}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
           <label htmlFor='password2'>Confirm Password</label>
           <input
             className='form-control'
-            type='password2'
+            type='password'
             name='password2'
             value={password2}
             onChange={onChange}
-            required
           />
         </div>
       </div>
@@ -155,7 +156,6 @@ const ConsultantForm = () => {
             name='address'
             value={address}
             onChange={onChange}
-            required
           />
         </div>
       </div>
@@ -168,7 +168,6 @@ const ConsultantForm = () => {
             name='zipCode'
             value={zipCode}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
@@ -179,7 +178,6 @@ const ConsultantForm = () => {
             name='city'
             value={city}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
@@ -200,7 +198,6 @@ const ConsultantForm = () => {
           name='phoneNr'
           value={phoneNr}
           onChange={onChange}
-          required
         />
       </div>
       <div className='form-group'>
@@ -213,7 +210,7 @@ const ConsultantForm = () => {
               value={frontEnd}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='frontEnd'>
+            <label className='form-check-label' htmlFor='frontEnd'>
               Front End
             </label>
           </div>{' '}
@@ -225,7 +222,7 @@ const ConsultantForm = () => {
               value={backEnd}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='backEnd'>
+            <label className='form-check-label' htmlFor='backEnd'>
               Back End
             </label>
           </div>{' '}
@@ -237,7 +234,7 @@ const ConsultantForm = () => {
               value={forHire}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='avalibleHire'>
+            <label className='form-check-label' htmlFor='avalibleHire'>
               Avalible For Hire
             </label>
           </div>
@@ -278,19 +275,21 @@ const ConsultantForm = () => {
         </div>
         <div className='form-row'>
           <ul className='list-group list-group-horizontal'>
-            {consultant.experiences.map((item, index) => (
+            {experiences.map((item, index) => (
               <li
                 className='list-group-item'
                 key={index}
                 id={'experience' + index}
               >
-                {item}
-                <button
-                  className='btn btn-danger btn-sm'
-                  onClick={handleRemoveExperience(index)}
-                >
-                  x
-                </button>
+                {item}{' '}
+                <span item={item.name}>
+                  <button
+                    className='btn btn-sm'
+                    onClick={handleRemoveExperience(index)}
+                  >
+                    x
+                  </button>
+                </span>
               </li>
             ))}
           </ul>
@@ -344,15 +343,17 @@ const ConsultantForm = () => {
         </div>
         <div className='form-row'>
           <ul className='list-group list-group-horizontal'>
-            {consultant.skills.map((item, index) => (
+            {skills.map((item, index) => (
               <li className='list-group-item' key={index} id={'skill' + index}>
-                {item}
-                <button
-                  className='btn btn-danger btn-sm'
-                  onClick={handleRemoveSkill}
-                >
-                  x
-                </button>
+                {item}{' '}
+                <span item={item.name}>
+                  <button
+                    className='btn btn-sm'
+                    onClick={handleRemoveSkill(index)}
+                  >
+                    x
+                  </button>
+                </span>
               </li>
             ))}
           </ul>

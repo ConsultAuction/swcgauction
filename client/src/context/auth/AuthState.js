@@ -3,6 +3,7 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
 import {
+  REGISTER_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
@@ -46,8 +47,6 @@ const AuthState = (props) => {
       });
     }
   };
-
-  // Register User
 
   // Login User
   const login = async (formData) => {
@@ -93,6 +92,50 @@ const AuthState = (props) => {
     }
   };
 
+  // Register Consultant
+  const registerConsultant = async (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const res = await axios.post('/api/user/consultant', formData, config);
+
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data,
+      });
+
+      loadUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Register Client
+  const registerClient = async (formData) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      const res = await axios.post('/api/user/client', formData, config);
+
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: res.data,
+      });
+
+      loadUser();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Clear Errors
 
   return (
@@ -105,6 +148,8 @@ const AuthState = (props) => {
         loadUser,
         login,
         logout,
+        registerClient,
+        registerConsultant,
       }}
     >
       {props.children}
