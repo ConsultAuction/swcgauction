@@ -18,11 +18,25 @@ const Navbar = () => {
     <Fragment>
       {user !== null && user.role === 'CLIENT' ? (
         <Fragment>
-          <li className='nav-item'>
-            <Link to='/Project'>Projects</Link>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/Project'>
+              Projects
+            </Link>
           </li>
-          <li className='nav-item'>
-            <Link to='/Search'>Search</Link>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/Search'>
+              Search
+            </Link>
+          </li>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/createProject'>
+              Create new project
+            </Link>
+          </li>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/createProject'>
+              My offers
+            </Link>
           </li>
         </Fragment>
       ) : (
@@ -38,7 +52,9 @@ const Navbar = () => {
 
   const authLinks = (
     <Fragment>
-      <li>Hello {user && user.firstName}</li>
+      <li>
+        <h5>Hello {user && user.firstName}</h5>
+      </li>
       {user !== null && user.role === 'CONSULTANT' ? (
         <li className='nav-item ml-2'>
           <Link className='btn btn-primary' to='/consultantUserProfile'>
@@ -48,12 +64,14 @@ const Navbar = () => {
       ) : null}
       {user !== null && user.role === 'CLIENT' ? (
         <li className='nav-item ml-2'>
-          <Link to='/clientUserProfile'>My Profile</Link>
+          <Link className='btn btn-primary' to='/clientUserProfile'>
+            My Profile
+          </Link>
         </li>
       ) : null}
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
-          <span className='hide-sm'> Logout</span>
+          <span className='btn btn-secondary hide-sm'> Logout</span>
         </a>
       </li>
     </Fragment>

@@ -1,149 +1,142 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useForm } from 'react-hook-form';
-import AuctionContext from '../../context/auction/AuctionContext';
+import AuthContext from '../../context/auth/authContext';
 
-const ProjectForm = (props) => {
-  const auctionContext = useContext(AuctionContext);
-  const { saveProject } = auctionContext;
+const ProjectForm = () => {
+  const authContext = useContext(AuthContext);
 
-  const [isNew, setIsNew] = useState(true);
-  const [isDistance, setIsDistance] = useState(false);
-  const [isCompanyHw, setIsComanyHw] = useState(false);
-  const [project, setProject] = useState(null);
-
-  const { register, handleSubmit, errors } = useForm();
+  const { loadUser, isAuthenticated } = authContext;
 
   useEffect(() => {
-    if (props.location.state != null) {
-      setProject(props.location.state.linkedProject);
-      setIsNew(false);
+    if (!isAuthenticated) {
+      localStorage.getItem('userid');
+      loadUser();
     }
+  }, [loadUser, isAuthenticated]);
 
-    if (project) {
-      setIsDistance(project.distanceWork);
-      setIsComanyHw(project.companyHardware);
-    }
-  }, [project, isNew, props.location.state]);
+  const [project, setProject] = useState({
+    projectName: '',
+    startDate: '',
+    endDate: '',
+    workLoad: 100,
+    description: '',
+    located: '',
+    distanceWork: false,
+    companyHardware: false,
+    contactName: '',
+    contactEmail: '',
+    contactPhoneNumber: '',
+  });
 
-  const onSubmit = (data) => {
-    console.log(data, isNew);
-    saveProject(data, isNew);
-  };
+  const {
+    projectName,
+    startDate,
+    endDate,
+    workLoad,
+    description,
+    located,
+    distanceWork,
+    companyHardware,
+    contactName,
+    contactEmail,
+    contactPhoneNumber,
+  } = project;
+
+  const onChange = (e) =>
+    setProject({ ...project, [e.target.name]: e.target.value });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {!isNew && (
-        <input
-          type='hidden'
-          name='projectId'
-          value={project.projectId}
-          ref={register}
-        />
-      )}
-
-      <div className='container' style={{ maxWidth: '750px' }}>
-        <label htmlFor='projectName'>Project name</label>
+    <div className='container' style={{ maxWidth: '750px' }}>
+      <label htmlFor='projectName'>Project name</label>
+      <input
+        type='text'
+        className='form-control'
+        name='projectName'
+        value={projectName}
+        onChange={onChange}
+      />
+      <label htmlFor='startDate'>Start date</label>
+      <input
+        type='date'
+        className='form-control'
+        name='startDate'
+        value={startDate}
+        onChange={onChange}
+      />
+      <label htmlFor='endDate'>End date</label>
+      <input
+        type='date'
+        className='form-control'
+        name='endDate'
+        value={endDate}
+        onChange={onChange}
+      />
+      <label htmlFor='workLoad'>Work load</label>
+      <input
+        type='number'
+        className='form-control'
+        min='0'
+        max='100'
+        name='workLoad'
+        value={workLoad}
+        onChange={onChange}
+      />
+      <label htmlFor='description'>Description</label>
+      <input
+        type='text'
+        className='form-control'
+        name='description'
+        value={description}
+        onChange={onChange}
+      />
+      <label htmlFor='located'>Location</label>
+      <input
+        type='text'
+        className='form-control'
+        name='located'
+        value={located}
+        onChange={onChange}
+      />
+      <label htmlFor='distanceWork'>Distance work: </label>{' '}
+      <input
+        type='checkbox'
+        name='distanceWork'
+        value={distanceWork}
+        onChange={onChange}
+      />{' '}
+      <label htmlFor='companyHardware'>Company hardware: </label>{' '}
+      <input
+        type='checkbox'
+        name='companyHardware'
+        value={companyHardware}
+        onChange={onChange}
+      />
+      <div className='form-row'>
+        <label htmlFor='contactName'>Contact name</label>
         <input
           type='text'
           className='form-control'
-          name='projectName'
-          defaultValue={isNew ? '' : project.projectName}
-          ref={register({ required: true })}
+          name='contactName'
+          value={contactName}
+          onChange={onChange}
         />
-        <label htmlFor='startDate'>Start date</label>
-        <input
-          type='date'
-          className='form-control'
-          name='startDate'
-          defaultValue={isNew ? '' : project.startDate}
-          ref={register({ required: true })}
-        />
-        <label htmlFor='endDate'>End date</label>
-        <input
-          type='date'
-          className='form-control'
-          name='endDate'
-          defaultValue={isNew ? '' : project.endDate}
-          ref={register({ required: true })}
-        />
-        <label htmlFor='workLoad'>Work load</label>
-        <input
-          type='number'
-          className='form-control'
-          min='0'
-          max='100'
-          name='workLoad'
-          defaultValue={isNew ? '' : project.workLoad}
-          ref={register({ required: true })}
-        />
-        <label htmlFor='description'>Description</label>
+        <label htmlFor='contactEmail'>Contact email</label>
         <input
           type='text'
           className='form-control'
-          name='description'
-          defaultValue={isNew ? '' : project.description}
-          ref={register({ required: true })}
+          name='contactEmail'
+          value={contactEmail}
+          onChange={onChange}
         />
-        <label htmlFor='located'>Location</label>
+        <label htmlFor='contactPhoneNumber'>Contact phoneNumber</label>
         <input
           type='text'
           className='form-control'
-          name='located'
-          defaultValue={isNew ? '' : project.located}
-          ref={register({ required: true })}
-        />
-        <label htmlFor='distanceWork'>Distance work: </label>{' '}
-        <input
-          type='checkbox'
-          name='distanceWork'
-          defaultChecked={isNew ? '' : project.distanceWork}
-          ref={register}
-        />{' '}
-        <label htmlFor='companyHardware'>Company hardware: </label>{' '}
-        <input
-          type='checkbox'
-          name='companyHardware'
-          defaultChecked={isNew ? '' : project.companyHardware}
-          ref={register}
-        />
-        <div className='form-row'>
-          <label htmlFor='contactName'>Contact name</label>
-          <input
-            type='text'
-            className='form-control'
-            name='contactName'
-            defaultValue={isNew ? '' : project.contactName}
-            ref={register({ required: true })}
-          />
-          <label htmlFor='contactEmail'>Contact email</label>
-          <input
-            type='text'
-            className='form-control'
-            name='contactEmail'
-            defaultValue={isNew ? '' : project.contactEmail}
-            ref={register({ required: true })}
-          />
-          <label htmlFor='contactPhoneNumber'>Contact phoneNumber</label>
-          <input
-            type='text'
-            className='form-control'
-            name='contactPhoneNumber'
-            defaultValue={isNew ? '' : project.contactPhoneNumber}
-            ref={register({ required: true })}
-          />
-        </div>
-        <input
-          type='hidden'
-          name='userId'
-          readOnly
-          value={localStorage.getItem('userid')}
-          ref={register}
+          name='contactPhoneNumber'
+          value={contactPhoneNumber}
+          onChange={onChange}
         />
       </div>
-      <button className='btn btn-success' type='submit'>
-        Save project
-      </button>
-    </form>
+    </div>
   );
 };
 export default ProjectForm;

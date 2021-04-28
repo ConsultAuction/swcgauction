@@ -75,10 +75,12 @@ const ClientUserProfile = () => {
               </div>
             </div>
           </div>
-          <form onSubmit={onSubmit}>
-            <div className='col md-8'>
-              <div className='card mb-3'>
-                <div className='card-body'>
+
+          <div className='col md-8'>
+            <div className='card mb-3'>
+              <div className='card-body'>
+                <div className='form-body'></div>
+                <form onSubmit={onSubmit}>
                   <h6>User Details</h6>
                   <div className='form-row'>
                     <div className='col-sm-3'>
@@ -183,15 +185,16 @@ const ClientUserProfile = () => {
                       required
                     />
                   </div>
-                </div>
-                <input type='submit' value='Save' />
+
+                  <input
+                    className='btn-block mt-2'
+                    type='submit'
+                    value='Save'
+                  />
+                </form>
               </div>
-            </div>
-          </form>
-          <form>
-            <div className='col md-8'>
-              <div className='card mb-3'>
-                <div className='card-body'>
+              <form>
+                <div className='form-body mb-3 ml-3 mr-3'>
                   <div className='form-row'>
                     <div className='col'>
                       <label htmlFor='password'>New Password</label>
@@ -216,11 +219,15 @@ const ClientUserProfile = () => {
                       />
                     </div>
                   </div>
+                  <input
+                    className='btn-block mt-2'
+                    type='submit'
+                    value='Save new password'
+                  />
                 </div>
-                <input type='submit' value='Save new password' />
-              </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

@@ -17,13 +17,7 @@ const Project = () => {
   }, [clientId]);
   return (
     <Fragment>
-      <Link to='/createProject'>
-        <p>Create new project</p>
-      </Link>
-      <Link to='/createProject'>
-        <p>My offers</p>
-      </Link>
-      <Countdown />
+      {/* <Countdown /> */}
       <div>
         {allProjects ? (
           allProjects.map((project) => (
