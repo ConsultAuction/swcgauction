@@ -20,11 +20,12 @@ public interface ProjectOfferService {
     List<ProjectOfferDto> findByRejectByUserId(UserDto user);
     List<ProjectOfferDto> findBySelectedByUserId(UserDto user);
 
+    ProjectOfferDto setAccepted(String offerId);
+    ProjectOfferDto setRejected(String offerId);
+    ProjectOfferDto setSelected(String offerId);
+
     ProjectOfferDto createProjectOffer(CreateProjectOfferRequest projectOfferRequest);
     ProjectOfferDto updateProjectOffer(String ProjectOfferId, CreateProjectOfferRequest projectOfferRequest);
 
-
-
-
-
+    void deleteAllSelectedWithFalse();
 }

@@ -99,6 +99,33 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
         return arg;
     }
 
+    public ProjectOfferDto setAccepted(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
+
+        foundOffer.setAccepted(true);
+
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
+    }
+
+    public ProjectOfferDto setRejected(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
+
+        foundOffer.setRejected(true);
+
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
+    }
+
+    public ProjectOfferDto setSelected(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
+
+        foundOffer.setSelected(true);
+
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
+    }
+
 
 
     @Override
@@ -135,5 +162,11 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
     @Override
     public ProjectOfferDto updateProjectOffer(String ProjectOfferId, CreateProjectOfferRequest projectOfferRequest) {
         return null;
+    }
+
+    @Override
+    public void deleteAllSelectedWithFalse() {
+        List<ProjectOffer> foundOffers = repository.findAllBySelected(false);
+        repository.deleteAll(foundOffers);
     }
 }

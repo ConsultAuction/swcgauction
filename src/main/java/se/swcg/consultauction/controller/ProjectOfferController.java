@@ -35,7 +35,7 @@ public class ProjectOfferController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/accepted/{user}")
+    /*@GetMapping("/accepted/{user}")
     public ResponseEntity<List<ProjectOfferDto>> findByAcceptedByUserId(@PathVariable UserDto user){
         return ResponseEntity.ok(service.findByAcceptedByUserId(user));
     }
@@ -43,7 +43,7 @@ public class ProjectOfferController {
     @GetMapping("/rejected/{user}")
     public ResponseEntity<List<ProjectOfferDto>> findByRejectByUserId(@PathVariable UserDto user){
         return ResponseEntity.ok(service.findByRejectByUserId(user));
-    }
+    }*/
 
     @GetMapping("/selected/{user}")
     public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable UserDto user){
@@ -53,6 +53,21 @@ public class ProjectOfferController {
     @GetMapping("/user/{consultantId}")
     public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable String consultantId){
         return ResponseEntity.ok(service.findByConsultantId(consultantId));
+    }
+
+    @PostMapping("/accepted/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setAccepted(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setAccepted(offerId));
+    }
+
+    @PostMapping("/rejected/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setRejected(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setRejected(offerId));
+    }
+
+    @PostMapping("/selected/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setSelected(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setSelected(offerId));
     }
 
     @PostMapping

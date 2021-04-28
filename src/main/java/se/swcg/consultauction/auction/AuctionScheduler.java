@@ -19,6 +19,7 @@ public class AuctionScheduler {
         System.out.println("doThing");
         System.out.println("doThing");
         System.out.println(LocalDateTime.now().toString());
+        auctionService.deleteAllOffersWithSelectedFalse();
         auctionService.createNextAuctionDateTime(LocalDateTime.now());
     }
 }

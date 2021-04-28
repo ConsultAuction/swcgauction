@@ -14,10 +14,6 @@ import java.util.List;
 public interface ProjectOfferRepository extends CrudRepository<ProjectOffer, String> {
 
             List<ProjectOffer> findAll();
-
             List<ProjectOffer> findAllByConsultantId(String consultantId);
-
-
-
-
+            List<ProjectOffer> findAllBySelected(boolean selected);
 }

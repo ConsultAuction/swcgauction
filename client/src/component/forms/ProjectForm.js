@@ -13,39 +13,33 @@ const ProjectForm = (props) => {
 
   const { register, handleSubmit, errors } = useForm();
 
-  
-
-
   useEffect(() => {
-    
-    if(props.location.state != null) {
-      setProject(props.location.state.linkedProject)
+    if (props.location.state != null) {
+      setProject(props.location.state.linkedProject);
       setIsNew(false);
     }
 
-    if(project) {
+    if (project) {
       setIsDistance(project.distanceWork);
       setIsComanyHw(project.companyHardware);
     }
-   
   }, [project, isNew, props.location.state]);
 
-  const onSubmit = data =>{
+  const onSubmit = (data) => {
     console.log(data, isNew);
     saveProject(data, isNew);
-  }
+  };
 
   return (
-    <form   onSubmit={handleSubmit(onSubmit)}>
-      
+    <form onSubmit={handleSubmit(onSubmit)}>
       {!isNew && (
-            <input
-              type='hidden'
-              name='projectId'
-              value={project.projectId}
-              ref={register}
-            />
-          )}
+        <input
+          type='hidden'
+          name='projectId'
+          value={project.projectId}
+          ref={register}
+        />
+      )}
 
       <div className='container' style={{ maxWidth: '750px' }}>
         <label htmlFor='projectName'>Project name</label>
@@ -138,18 +132,17 @@ const ProjectForm = (props) => {
             ref={register({ required: true })}
           />
         </div>
-
-            <input
-              type='hidden'
-              name='userId'
-              readOnly value={localStorage.getItem('userid')}
-              ref={register}
-            />
-
+        <input
+          type='hidden'
+          name='userId'
+          readOnly
+          value={localStorage.getItem('userid')}
+          ref={register}
+        />
       </div>
       <button className='btn btn-success' type='submit'>
-              Save project
-            </button>
+        Save project
+      </button>
     </form>
   );
 };

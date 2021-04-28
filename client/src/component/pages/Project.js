@@ -8,39 +8,40 @@ import axios from 'axios';
 
 const Project = () => {
   const auctionContext = useContext(AuctionContext);
-  const {loadAllProject, allProjects} = auctionContext;
+  const { loadAllProject, allProjects } = auctionContext;
   const [clientId, setClientId] = useState(localStorage.getItem('userid'));
 
   useEffect(() => {
-
-      loadAllProject(clientId);
-      console.log(allProjects);
-
-    
-
+    loadAllProject(clientId);
+    console.log(allProjects);
   }, [clientId]);
   return (
     <Fragment>
-      
-      <Link to='/createProject'><p>Create new project</p></Link>
+      <Link to='/createProject'>
+        <p>Create new project</p>
+      </Link>
+      <Link to='/createProject'>
+        <p>My offers</p>
+      </Link>
       <Countdown />
       <div>
         {allProjects ? (
           allProjects.map((project) => (
-            <Link to={{
-              pathname: '/createProject',
-              state: {
-                linkedProject: project
-              }
-            }}>
+            <Link
+              to={{
+                pathname: '/createProject',
+                state: {
+                  linkedProject: project,
+                },
+              }}
+            >
               <p>{project.projectName}</p>
             </Link>
           ))
-        ): (
+        ) : (
           <p>No projects found</p>
         )}
       </div>
-
     </Fragment>
   );
 };

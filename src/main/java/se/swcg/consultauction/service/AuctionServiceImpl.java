@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import se.swcg.consultauction.auction.AuctionConstants;
 import se.swcg.consultauction.entity.AuctionDateTime;
+import se.swcg.consultauction.entity.ProjectOffer;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.repository.AuctionDateTimeRepository;
 
@@ -17,6 +18,9 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Autowired
     private AuctionDateTimeRepository auctionRepository;
+
+    @Autowired
+    private ProjectOfferService projectOfferService;
 
     public AuctionDateTime getDateTime() {
         return auctionRepository.findById(AUCTION_ID)
@@ -49,5 +53,10 @@ public class AuctionServiceImpl implements AuctionService {
 
         return dateTimeNow.isAfter(auctionDateTime.getAuctionStartDateTime())
                 && dateTimeNow.isBefore(auctionDateTime.getAuctionEndDateTime());
+    }
+
+    @Override
+    public void deleteAllOffersWithSelectedFalse() {
+        projectOfferService.deleteAllSelectedWithFalse();
     }
 }

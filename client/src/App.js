@@ -15,7 +15,8 @@ import ProjectForm from './component/forms/ProjectForm';
 import ProjectOfferForm from './component/forms/ProjectOfferForm';
 import SearchbarDropdown from './component/pages/SearchbarDropdown';
 import Projects from './component/pages/Projects';
-import ProjectOffers from './component/pages/ProjectOffer';
+import ProjectOffers from './component/pages/ProjectOffers';
+import ProjectOffer from './component/pages/ProjectOffer';
 
 const App = () => {
   return (
@@ -36,7 +37,7 @@ const App = () => {
               />
               <PrivateRoute
                 exact
-                path='/projectOffer'
+                path='/projectOfferForm'
                 component={ProjectOfferForm}
               />
               <PrivateRoute
@@ -49,6 +50,11 @@ const App = () => {
                 exact
                 path='/ProjectOffers'
                 component={ProjectOffers}
+              />
+              <PrivateRoute
+                exact
+                path='/ProjectOffer'
+                component={ProjectOffer}
               />
             </Switch>
           </Router>

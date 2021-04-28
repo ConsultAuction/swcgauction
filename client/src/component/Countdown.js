@@ -1,65 +1,60 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import CountdownContext from '../context/countdown/countdownContext';
 import moment from 'moment';
+import axios from 'axios';
 
 const Countdown = () => {
+  const [endDate, setEndDate] = useState();
 
-    const countdownContext = useContext(CountdownContext);
-    const { loadCountdown, countdown } = countdownContext;
+  const [days, setDays] = useState('00');
+  const [hours, setHours] = useState('00');
+  const [minutes, setMinutes] = useState('00');
+  const [seconds, setSeconds] = useState('00');
 
-    const [endDate, setEndDate] = useState(new Date())
+  const calculateTimeLeft = () => {
+    const then = moment(endDate);
+    const now = moment();
+    const countdown = moment(then - now);
+    const days = countdown.format('D');
+    const hours = countdown.format('HH');
+    const minutes = countdown.format('mm');
+    const seconds = countdown.format('ss');
 
-    const [days, setDays] = useState('00');
-    const [hours, setHours] = useState('00');
-    const [minutes, setMinutes] = useState('00');
-    const [seconds, setSeconds] = useState('00');
+    setDays(days);
+    setHours(hours);
+    setMinutes(minutes);
+    setSeconds(seconds);
+  };
 
-    const calculateTimeLeft = () => {
+  useEffect(() => {
+    axios
+      .get('/api/auction')
+      .then((res) => {
+        setEndDate(new Date(res.data.auctionEndDateTime));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
-        const then = moment(endDate);
-        const now = moment();
-        const countdown = moment(then-now);
-        const days = countdown.format('D');
-        const hours = countdown.format('HH');
-        const minutes = countdown.format('mm');
-        const seconds = countdown.format('ss');
+    let intervalId;
 
-        setDays(days);
-        setHours(hours);
-        setMinutes(minutes);
-        setSeconds(seconds);
-    }
+    intervalId = setInterval(() => {
+      calculateTimeLeft();
+    }, 1000);
 
+    return () => clearInterval(intervalId);
+  }, []);
 
-    
-
-    useEffect(() => {
-
-        
-
-        if(countdown != null) {
-            console.log(countdown.auctionEndDateTime);
-            setEndDate(new Date(countdown.auctionEndDateTime));
-        } else {
-            loadCountdown();
-        }
-
-        console.log(countdown);
-        
-
-        let intervalId;
-
-        intervalId = setInterval(() => {
-            calculateTimeLeft();
-        }, 1000)
-
-        return () => clearInterval(intervalId);
-        
-    }, [countdown, loadCountdown]);
+  useEffect(() => {
+    calculateTimeLeft();
+    console.log(endDate);
+  }, [calculateTimeLeft]);
 
   return (
     <Fragment>
-        <p> {days}:{hours}:{minutes}:{seconds} </p>
+      <p>
+        {' '}
+        {days}:{hours}:{minutes}:{seconds}{' '}
+      </p>
     </Fragment>
   );
 };

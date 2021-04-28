@@ -9,4 +9,5 @@ public interface AuctionService {
     AuctionDateTime getDateTime ();
     void createNextAuctionDateTime(LocalDateTime previousLastDay);
     boolean checkIfAuctionIsAllowed();
+    void deleteAllOffersWithSelectedFalse();
 }

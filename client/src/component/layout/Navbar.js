@@ -5,16 +5,13 @@ import AuthContext from '../../context/auth/authContext';
 
 const Navbar = () => {
   const authContext = useContext(AuthContext);
-
   const { logout, user } = authContext;
 
   const onLogout = () => {
     logout();
   };
 
-  useEffect(() => {
-
-  }, [user])
+  useEffect(() => {}, [user]);
 
   const roleLinks = (
     <Fragment>
