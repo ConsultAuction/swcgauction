@@ -27,7 +27,9 @@ const Navbar = () => {
       <li>Hello {user && user.firstName}</li>
       {user !== null && user.role === 'CONSULTANT' ? (
         <li className='nav-item ml-2'>
-          <Link to='/consultantUserProfile'>My Profile</Link>
+          <Link className='btn btn-primary' to='/consultantUserProfile'>
+            My Profile
+          </Link>
         </li>
       ) : null}
       {user !== null && user.role === 'CLIENT' ? (
@@ -37,7 +39,7 @@ const Navbar = () => {
       ) : null}
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
-          <span className='hide-sm'> Logout</span>
+          <span className='btn btn-secondary hide-sm'> Logout</span>
         </a>
       </li>
     </Fragment>
