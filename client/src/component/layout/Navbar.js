@@ -1,5 +1,5 @@
-import React, { Fragment, useContext } from 'react';
-import Logo from '../layout/logo.png';
+import React, { Fragment, useContext, useEffect } from 'react';
+import Logo from '../layout/images/logo.png';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
@@ -12,12 +12,66 @@ const Navbar = () => {
     logout();
   };
 
+  useEffect(() => {}, [user]);
+
+  const roleLinks = (
+    <Fragment>
+      {user !== null && user.role === 'CLIENT' ? (
+        <Fragment>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/Project'>
+              Projects
+            </Link>
+          </li>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/Search'>
+              Search
+            </Link>
+          </li>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/createProject'>
+              Create new project
+            </Link>
+          </li>
+          <li className='nav-item ml-2'>
+            <Link className='btn btn-secondary' to='/myOffers'>
+              My offers
+            </Link>
+          </li>
+        </Fragment>
+      ) : (
+        <div></div>
+      )}
+      {user !== null && user.role === 'CONSULTANT' ? (
+        <li className='nav-item'>
+          <Link to='/ProjectOffers'>Project offers</Link>
+        </li>
+      ) : null}
+    </Fragment>
+  );
+
   const authLinks = (
     <Fragment>
-      <li>Hello {user && user.firstName}</li>
+      <li>
+        <h5>Hello {user && user.firstName}</h5>
+      </li>
+      {user !== null && user.role === 'CONSULTANT' ? (
+        <li className='nav-item ml-2'>
+          <Link className='btn btn-primary' to='/consultantUserProfile'>
+            My Profile
+          </Link>
+        </li>
+      ) : null}
+      {user !== null && user.role === 'CLIENT' ? (
+        <li className='nav-item ml-2'>
+          <Link className='btn btn-primary' to='/clientUserProfile'>
+            My Profile
+          </Link>
+        </li>
+      ) : null}
       <li className='nav-item ml-2'>
         <a onClick={onLogout} href='#!'>
-          <span className='hide-sm'> Logout</span>
+          <span className='btn btn-secondary hide-sm'> Logout</span>
         </a>
       </li>
     </Fragment>
@@ -44,6 +98,7 @@ const Navbar = () => {
         <img className='navbar brand' height='60px' src={Logo} alt='logo' />
       </Link>
       <h1>Konsultauktion</h1>
+      <ul className='nav navbar-nav ml-2'> {roleLinks} </ul>
       <ul className='nav navbar-nav ml-auto'>
         {localStorage.isAuthenticated ? authLinks : guestLinks}
       </ul>

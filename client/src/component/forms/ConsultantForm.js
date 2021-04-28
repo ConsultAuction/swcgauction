@@ -1,8 +1,19 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import ReactFlagsSelect from 'react-flags-select';
+import ProfileContext from '../../context/profile/profileContext';
 
 const ConsultantForm = () => {
-  const [user, setUser] = useState({
+  const profileContext = useContext(ProfileContext);
+  const {
+    addExperience,
+    deleteExperience,
+    addSkill,
+    deleteSkill,
+    experiences,
+    skills,
+  } = profileContext;
+
+  const [consultant, setConsultant] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -17,8 +28,6 @@ const ConsultantForm = () => {
     backEnd: false,
     forHire: false,
     salary: '',
-    experience: [],
-    skills: [],
   });
 
   const {
@@ -36,13 +45,47 @@ const ConsultantForm = () => {
     backEnd,
     forHire,
     salary,
-    experience,
-    skills,
-  } = user;
+  } = consultant;
 
+  const [experience, setExperience] = useState('');
+  const [skill, setSkill] = useState('');
   const [selected, setSelected] = useState('');
 
-  const onChange = (e) => setUser({ ...user, [e.target.name]: e.target.value });
+  const handleChangeExperience = (e) => {
+    setExperience(e.target.value);
+  };
+
+  const handleAddExperience = (e) => {
+    e.preventDefault();
+    addExperience(experience);
+    setExperience('');
+  };
+
+  const handleRemoveExperience = (index) => (e) => {
+    e.preventDefault();
+    deleteExperience(index);
+    setExperience('');
+  };
+
+  const handleChangeSkill = (e) => {
+    setSkill(e.target.value);
+  };
+
+  const handleAddSkills = (e) => {
+    e.preventDefault();
+    addSkill(skill);
+    setSkill('');
+  };
+
+  const handleRemoveSkill = (index) => (e) => {
+    e.preventDefault();
+    deleteSkill(index);
+    setSkill('');
+  };
+
+  const onChange = (e) =>
+    setConsultant({ ...consultant, [e.target.name]: e.target.value });
+
   return (
     <Fragment>
       <div className='form-group'>
@@ -91,18 +134,16 @@ const ConsultantForm = () => {
             name='password'
             value={password}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
           <label htmlFor='password2'>Confirm Password</label>
           <input
             className='form-control'
-            type='password2'
+            type='password'
             name='password2'
             value={password2}
             onChange={onChange}
-            required
           />
         </div>
       </div>
@@ -115,7 +156,6 @@ const ConsultantForm = () => {
             name='address'
             value={address}
             onChange={onChange}
-            required
           />
         </div>
       </div>
@@ -128,7 +168,6 @@ const ConsultantForm = () => {
             name='zipCode'
             value={zipCode}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
@@ -139,7 +178,6 @@ const ConsultantForm = () => {
             name='city'
             value={city}
             onChange={onChange}
-            required
           />
         </div>
         <div className='col'>
@@ -157,10 +195,9 @@ const ConsultantForm = () => {
         <input
           className='form-control'
           type='text'
-          name='phonenr'
+          name='phoneNr'
           value={phoneNr}
           onChange={onChange}
-          required
         />
       </div>
       <div className='form-group'>
@@ -173,7 +210,7 @@ const ConsultantForm = () => {
               value={frontEnd}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='frontEnd'>
+            <label className='form-check-label' htmlFor='frontEnd'>
               Front End
             </label>
           </div>{' '}
@@ -185,7 +222,7 @@ const ConsultantForm = () => {
               value={backEnd}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='backEnd'>
+            <label className='form-check-label' htmlFor='backEnd'>
               Back End
             </label>
           </div>{' '}
@@ -197,7 +234,7 @@ const ConsultantForm = () => {
               value={forHire}
               onChange={onChange}
             />
-            <label class='form-check-label' htmlFor='avalibleHire'>
+            <label className='form-check-label' htmlFor='avalibleHire'>
               Avalible For Hire
             </label>
           </div>
@@ -221,11 +258,56 @@ const ConsultantForm = () => {
               className='form-control'
               name='experience'
               value={experience}
-              onChange={onChange}
               placeholder='Add A Previous Experience'
+              onChange={handleChangeExperience}
               aria-label='Add A Previous Experience'
               aria-describedby='button-addon2'
             />
+            <button
+              className='btn btn-outline-secondary'
+              type='button'
+              onClick={handleAddExperience}
+              id='button-addon2'
+            >
+              Add
+            </button>
+          </div>
+        </div>
+        <div className='form-row'>
+          <ul className='list-group list-group-horizontal'>
+            {experiences.map((item, index) => (
+              <li
+                className='list-group-item'
+                key={index}
+                id={'experience' + index}
+              >
+                {item}{' '}
+                <span item={item.name}>
+                  <button
+                    className='btn btn-sm'
+                    onClick={handleRemoveExperience(index)}
+                  >
+                    x
+                  </button>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className='form-row'>
+          <label htmlFor='skills'>Programming Language:</label>
+          <div className='input-group mb-3'>
+            <select
+              className='form-select'
+              aria-label='Add a Programming Language'
+            >
+              <option selected>Select a Programming Language</option>
+              <option value='1'>C#</option>
+              <option value='2'>C++</option>
+              <option value='3'>Java</option>
+              <option value='4'>Javascript</option>
+            </select>
+
             <button
               className='btn btn-outline-secondary'
               type='button'
@@ -235,27 +317,46 @@ const ConsultantForm = () => {
             </button>
           </div>
         </div>
+
         <div className='form-row'>
           <label htmlFor='skills'>Special Skills:</label>
           <div className='input-group mb-3'>
             <input
               type='text'
               className='form-control'
-              name='skills'
-              value={skills}
-              onChange={onChange}
+              name='skill'
+              value={skill}
+              onChange={handleChangeSkill}
               placeholder='Add A Special Skill'
               aria-label='Add A Special Skill'
               aria-describedby='button-addon2'
             />
             <button
               className='btn btn-outline-secondary'
+              onClick={handleAddSkills}
               type='button'
               id='button-addon2'
             >
               Add
             </button>
           </div>
+        </div>
+        <div className='form-row'>
+          <ul className='list-group list-group-horizontal'>
+            {skills.map((item, index) => (
+              <li className='list-group-item' key={index} id={'skill' + index}>
+                {item}{' '}
+                <span item={item.name}>
+                  <button
+                    className='btn btn-sm'
+                    onClick={handleRemoveSkill(index)}
+                  >
+                    x
+                  </button>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </Fragment>

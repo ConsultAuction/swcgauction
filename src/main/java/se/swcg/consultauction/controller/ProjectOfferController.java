@@ -9,10 +9,12 @@ import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.CreateProjectOfferRequest;
 import se.swcg.consultauction.service.ProjectOfferService;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping(path = "/api/projectOffer")
 public class ProjectOfferController {
 
@@ -33,19 +35,29 @@ public class ProjectOfferController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/accepted/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findByAcceptedByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findByAcceptedByUserId(user));
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<ProjectOfferDto>> findByClientId(@PathVariable String clientId){
+        return ResponseEntity.ok(service.findByClientId(clientId));
     }
 
-    @GetMapping("/rejected/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findByRejectByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findByRejectByUserId(user));
+    @GetMapping("/user/{consultantId}")
+    public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable String consultantId){
+        return ResponseEntity.ok(service.findByConsultantId(consultantId));
     }
 
-    @GetMapping("/selected/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findBySelectedByUserId(user));
+    @PostMapping("/accepted/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setAccepted(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setAccepted(offerId));
+    }
+
+    @PostMapping("/rejected/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setRejected(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setRejected(offerId));
+    }
+
+    @PostMapping("/selected/{offerId}")
+    public ResponseEntity<ProjectOfferDto> setSelected(@PathVariable String offerId){
+        return ResponseEntity.ok(service.setSelected(offerId));
     }
 
     @PostMapping

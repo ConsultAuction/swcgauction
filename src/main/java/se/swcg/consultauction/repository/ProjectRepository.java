@@ -11,5 +11,5 @@ import java.util.List;
 public interface ProjectRepository extends CrudRepository <Project, String > {
         List<Project> findAll();
         List<Project> findAllByContactEmail(String email);
-        List<Project> findAllByUserUserId(String userId);
+        List<Project> findAllByUser_UserId(String userId);
 }

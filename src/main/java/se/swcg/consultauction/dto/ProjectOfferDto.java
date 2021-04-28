@@ -1,22 +1,19 @@
 package se.swcg.consultauction.dto;
 
 import se.swcg.consultauction.entity.Bids;
-import se.swcg.consultauction.entity.Project;
 import se.swcg.consultauction.entity.User;
 
-import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
 public class ProjectOfferDto {
 
     private String projectOfferId;
-    private User consultant;
+    private String consultantId;
     private boolean accepted;
     private boolean rejected;
-    private LocalDateTime startTime;
+    private LocalDate startTime;
     private boolean selected;
     private Set<Bids> bids;
     private String projectName;
@@ -32,9 +29,9 @@ public class ProjectOfferDto {
     private String contactPhoneNumber;
     private String clientId;
 
-    public ProjectOfferDto(String projectOfferId, User consultant, boolean accepted, boolean rejected, LocalDateTime startTime, boolean selected, Set<Bids> bids, String projectName, LocalDate startDate, LocalDate endDate, int workLoad, String description, String located, boolean distanceWork, boolean companyHardware, String contactName, String contactEmail, String contactPhoneNumber, String clientId) {
+    public ProjectOfferDto(String projectOfferId, String consultantId, boolean accepted, boolean rejected, LocalDate startTime, boolean selected, Set<Bids> bids, String projectName, LocalDate startDate, LocalDate endDate, int workLoad, String description, String located, boolean distanceWork, boolean companyHardware, String contactName, String contactEmail, String contactPhoneNumber, String clientId) {
         this.projectOfferId = projectOfferId;
-        this.consultant = consultant;
+        this.consultantId = consultantId;
         this.accepted = accepted;
         this.rejected = rejected;
         this.startTime = startTime;
@@ -54,8 +51,8 @@ public class ProjectOfferDto {
         this.clientId = clientId;
     }
 
-    public ProjectOfferDto(User consultant, boolean accepted, boolean rejected, LocalDateTime startTime, boolean selected, Set<Bids> bids, String projectName, LocalDate startDate, LocalDate endDate, int workLoad, String description, String located, boolean distanceWork, boolean companyHardware, String contactName, String contactEmail, String contactPhoneNumber, String clientId) {
-        this.consultant = consultant;
+    public ProjectOfferDto(String consultantId, boolean accepted, boolean rejected, LocalDate startTime, boolean selected, Set<Bids> bids, String projectName, LocalDate startDate, LocalDate endDate, int workLoad, String description, String located, boolean distanceWork, boolean companyHardware, String contactName, String contactEmail, String contactPhoneNumber, String clientId) {
+        this.consultantId = consultantId;
         this.accepted = accepted;
         this.rejected = rejected;
         this.startTime = startTime;
@@ -82,12 +79,12 @@ public class ProjectOfferDto {
         return projectOfferId;
     }
 
-    public User getConsultant() {
-        return consultant;
+    public String getConsultantId() {
+        return consultantId;
     }
 
-    public void setConsultant(User consultant) {
-        this.consultant = consultant;
+    public void setConsultantId(String consultantId) {
+        this.consultantId = consultantId;
     }
 
     public boolean isAccepted() {
@@ -106,11 +103,11 @@ public class ProjectOfferDto {
         this.rejected = rejected;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
@@ -238,7 +235,7 @@ public class ProjectOfferDto {
                 distanceWork == that.distanceWork &&
                 companyHardware == that.companyHardware &&
                 Objects.equals(projectOfferId, that.projectOfferId) &&
-                Objects.equals(consultant, that.consultant) &&
+                Objects.equals(consultantId, that.consultantId) &&
                 Objects.equals(startTime, that.startTime) &&
                 Objects.equals(bids, that.bids) &&
                 Objects.equals(projectName, that.projectName) &&
@@ -254,14 +251,14 @@ public class ProjectOfferDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectOfferId, consultant, accepted, rejected, startTime, selected, bids, projectName, startDate, endDate, workLoad, description, located, distanceWork, companyHardware, contactName, contactEmail, contactPhoneNumber, clientId);
+        return Objects.hash(projectOfferId, consultantId, accepted, rejected, startTime, selected, bids, projectName, startDate, endDate, workLoad, description, located, distanceWork, companyHardware, contactName, contactEmail, contactPhoneNumber, clientId);
     }
 
     @Override
     public String toString() {
         return "ProjectOfferDto{" +
                 "projectOfferId='" + projectOfferId + '\'' +
-                ", consultant=" + consultant +
+                ", consultant=" + consultantId +
                 ", accepted=" + accepted +
                 ", rejected=" + rejected +
                 ", startTime=" + startTime +

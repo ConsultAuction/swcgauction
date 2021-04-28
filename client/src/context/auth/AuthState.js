@@ -3,15 +3,16 @@ import axios from 'axios';
 import AuthContext from './authContext';
 import AuthReducer from './authReducer';
 import {
+  REGISTER_SUCCESS,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
 } from '../types';
+import { useHistory } from 'react-router-dom';
 
 const AuthState = (props) => {
-  
   const initialState = {
     isAuthenticated: false,
     loading: true,
@@ -21,36 +22,36 @@ const AuthState = (props) => {
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
-  const { userid } = initialState;
+  const history = useHistory();
+  const goToPage = (path) => {
+    history.push(path);
+  };
 
   // Load User
   const loadUser = async () => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    console.log(userid);
+    await axios
+      .get('/api/user/' + localStorage.getItem('userid'))
+      .then((res) => {
+        console.log(res);
 
-    try {
-      const res = await axios.get(
-        '/api/user/' + localStorage.getItem('userid'),
-        config
-      );
+        dispatch({
+          type: USER_LOADED,
+          payload: res.data,
+        });
 
-      dispatch({
-        type: USER_LOADED,
-        payload: res.data,
+        if (!res.data.firstName && res.data.role === 'CLIENT') {
+          goToPage('/clientUserProfile');
+        } else if (!res.data.firstName && res.data.role === 'CONSULTANT') {
+          goToPage('/consultantUserProfile');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({
+          type: AUTH_ERROR,
+        });
       });
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: AUTH_ERROR,
-      });
-    }
   };
-
-  // Register User
 
   // Login User
   const login = async (formData) => {
@@ -64,6 +65,7 @@ const AuthState = (props) => {
       const res = await axios.post('/api/user/login', formData, config);
       localStorage.clear();
       localStorage.setItem('userid', res.headers.userid);
+      console.log(res);
 
       dispatch({
         type: LOGIN_SUCCESS,
@@ -88,10 +90,41 @@ const AuthState = (props) => {
     };
     try {
       const res = await axios.get('/api/user/logout', config);
+      console.log(res);
       dispatch({ type: LOGOUT });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  // Register Consultant
+  const registerConsultant = async (formData) => {
+    await axios
+      .post('/api/user/consultant', formData)
+      .then((res) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // Register Client
+  const registerClient = async (formData) => {
+    await axios
+      .post('/api/user/client', formData)
+      .then((res) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   // Clear Errors
@@ -106,6 +139,8 @@ const AuthState = (props) => {
         loadUser,
         login,
         logout,
+        registerClient,
+        registerConsultant,
       }}
     >
       {props.children}

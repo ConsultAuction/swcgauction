@@ -13,9 +13,9 @@ import java.util.List;
 public class ProgrammingLanguagesServiceImpl extends ServiceHelper implements ProgrammingLanguagesService {
 
     @Autowired
-    ProgrammingLanguagesRepository repo;
+    private ProgrammingLanguagesRepository repo;
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
     /*// Problem with test
     @Autowired

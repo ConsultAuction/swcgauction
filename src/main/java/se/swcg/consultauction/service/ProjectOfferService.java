@@ -14,15 +14,16 @@ public interface ProjectOfferService {
     List<ProjectOfferDto> findAll();
     ProjectOfferDto findById(String projectOfferId);
 
-    List<ProjectOfferDto> findByAcceptedByUserId(UserDto  user);
-    List<ProjectOfferDto> findByRejectByUserId(UserDto user);
-    List<ProjectOfferDto> findBySelectedByUserId(UserDto user);
+    List<ProjectOfferDto> findByConsultantId(String consultantId);
+
+    List<ProjectOfferDto> findByClientId(String  clientId);
+
+    ProjectOfferDto setAccepted(String offerId);
+    ProjectOfferDto setRejected(String offerId);
+    ProjectOfferDto setSelected(String offerId);
 
     ProjectOfferDto createProjectOffer(CreateProjectOfferRequest projectOfferRequest);
     ProjectOfferDto updateProjectOffer(String ProjectOfferId, CreateProjectOfferRequest projectOfferRequest);
 
-
-
-
-
+    void deleteAllSelectedWithFalse();
 }

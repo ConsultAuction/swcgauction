@@ -18,17 +18,16 @@ import java.util.List;
 import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 @Service
-@Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService{
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProjectRepository projectRepo;
+    private ProjectRepository projectRepo;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
     @Override
     public List<ProjectDto> findAll() {
@@ -59,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService{
     public List<ProjectDto> findAllProjectByClientId(String clientId) {
         return checkIfListIsEmpty(
                 converter.projectToDto(
-                        projectRepo.findAllByUserUserId(clientId))
+                        projectRepo.findAllByUser_UserId(clientId))
                 , "Could not find any project with this clientId"
         );
     }

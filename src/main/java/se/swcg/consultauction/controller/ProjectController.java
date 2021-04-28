@@ -26,6 +26,7 @@ public class ProjectController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<ProjectDto>> findAllProjects(){
         return ResponseEntity.ok(service.findAll());
     }

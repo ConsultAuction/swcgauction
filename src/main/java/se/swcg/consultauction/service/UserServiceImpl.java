@@ -2,7 +2,6 @@ package se.swcg.consultauction.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,9 @@ import se.swcg.consultauction.entity.Contact;
 import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.model.CreateClientRequest;
+import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.model.UpdatePassword;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
 import se.swcg.consultauction.security.SecurityRoles;
@@ -25,12 +26,11 @@ import java.util.List;
 import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
 
 @Service
-@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepo;
-    private final DtoConversionService converter;
-    private final PasswordEncoder passwordEncoder;
+    private  UserRepository userRepo;
+    private DtoConversionService converter;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepo, DtoConversionService converter, PasswordEncoder passwordEncoder) {
@@ -104,38 +104,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> findByAvailable(boolean available) {
-        /*return checkIfListIsEmpty(
+    public List<UserDto> findByAvailable() {
+        return checkIfListIsEmpty(
                 converter.userToDto(
-                        repo.findByAvailableForHire(available)), "Could not find any users with available status: " + available);*/
-        return null;
+                        userRepo.findAllByConsultantDetailsAvailableForHire(true)), "Could not find any users with available status: ");
     }
 
 
     @Override
-    public UserDto createClient(CreateClientRequest clientRequest) {
+    public UserDto createClient(CreateRequest clientRequest) {
         LocalDate todayDate = LocalDate.now();
 
         if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + clientRequest.getEmail());
 
         User newClient = new User(
-                clientRequest.getCompanyName(),
-                clientRequest.getFirstName(),
-                clientRequest.getLastName(),
-                passwordEncoder.encode(clientRequest.getEmail()),
-                clientRequest.getPassword(),
+                null,
+                null,
+                null,
+                clientRequest.getEmail(),
+                passwordEncoder.encode(clientRequest.getPassword()),
                 SecurityRoles.CLIENT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
-                clientRequest.getImage(),
-                new Contact(
-                        clientRequest.getAddress(),
-                        clientRequest.getZipCode(),
-                        clientRequest.getCity(),
-                        clientRequest.getCountry(),
-                        clientRequest.getPhoneNumber()
-                ),
+                null,
+                new Contact(),
                 null
         );
 
@@ -144,38 +137,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto createConsultant(CreateConsultantRequest consultantRequest) {
+    public UserDto createConsultant(CreateRequest createRequest) {
         LocalDate todayDate = LocalDate.now();
 
-        if (userRepo.findByEmail(consultantRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + consultantRequest.getEmail());
+        if (userRepo.findByEmail(createRequest.getEmail()).isPresent()) throw new IllegalArgumentException("Email does already exists: " + createRequest.getEmail());
 
         User newConsultant = new User(
                 null,
-                consultantRequest.getFirstName(),
-                consultantRequest.getLastName(),
-                consultantRequest.getEmail(),
-                passwordEncoder.encode(consultantRequest.getPassword()),
+                null,
+                null,
+                createRequest.getEmail(),
+                passwordEncoder.encode(createRequest.getPassword()),
                 SecurityRoles.CONSULTANT.name(),
                 todayDate,
                 todayDate,
                 SecurityConstants.DEFAULT_ACTIVE,
-                consultantRequest.getImage(),
-                new Contact(
-                        consultantRequest.getAddress(),
-                        consultantRequest.getZipCode(),
-                        consultantRequest.getCity(),
-                        consultantRequest.getCountry(),
-                        consultantRequest.getPhoneNumber()
-                ),
-                new ConsultantDetails(
-                        consultantRequest.isFrontend(),
-                        consultantRequest.isBackend(),
-                        consultantRequest.isAvailableForHire(),
-                        consultantRequest.getMinPrice(),
-                        consultantRequest.getExperience(),
-                        consultantRequest.getLanguage(),
-                        consultantRequest.getSkills()
-                )
+                null,
+                new Contact(),
+                new ConsultantDetails()
         );
 
 
@@ -185,25 +164,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateClient(String id, CreateClientRequest clientRequest) {
+    public UserDto updateClient(String id, CreateClientRequest createClientRequest) {
         User foundUser = converter.dtoToUser(findById(id));
 
         //if (userRepo.findByEmail(clientRequest.getEmail()).isPresent()) throw new IllegalArgumentException("New Email does already exist");
 
-        foundUser.setCompanyName(clientRequest.getCompanyName());
-        foundUser.setFirstName(clientRequest.getFirstName());
-        foundUser.setLastName(clientRequest.getLastName());
-        foundUser.setEmail(clientRequest.getEmail());
-        foundUser.setPassword(passwordEncoder.encode(clientRequest.getPassword()));
-        foundUser.setImage(clientRequest.getImage());
+        foundUser.setCompanyName(createClientRequest.getCompanyName());
+        foundUser.setFirstName(createClientRequest.getFirstName());
+        foundUser.setLastName(createClientRequest.getLastName());
+        foundUser.setEmail(createClientRequest.getEmail());
+        foundUser.setImage(createClientRequest.getImage());
 
-        foundUser.getContact().setAddress(clientRequest.getAddress());
-        foundUser.getContact().setZipCode(clientRequest.getZipCode());
-        foundUser.getContact().setCity(clientRequest.getCity());
-        foundUser.getContact().setCountry(clientRequest.getCountry());
-        foundUser.getContact().setPhoneNumber(clientRequest.getPhoneNumber());
+        foundUser.getContact().setAddress(createClientRequest.getAddress());
+        foundUser.getContact().setZipCode(createClientRequest.getZipCode());
+        foundUser.getContact().setCity(createClientRequest.getCity());
+        foundUser.getContact().setCountry(createClientRequest.getCountry());
+        foundUser.getContact().setPhoneNumber(createClientRequest.getPhoneNumber());
 
         return converter.userToDto(userRepo.save(foundUser));
+    }
+
+    @Override
+    public UserDto updatePassword(String id, UpdatePassword updatePassword) {
+        User foundUser = converter.dtoToUser(findById(id));
+
+        foundUser.setPassword(passwordEncoder.encode(updatePassword.getPassword()));
+
+        return converter.userToDto(
+                userRepo.save(foundUser)
+        );
     }
 
     @Override
@@ -215,7 +204,6 @@ public class UserServiceImpl implements UserService {
 
         foundUser.setLastName(consultantRequest.getLastName());
         foundUser.setEmail(consultantRequest.getEmail());
-        foundUser.setPassword(passwordEncoder.encode(consultantRequest.getPassword()));
         foundUser.setImage(consultantRequest.getImage());
 
         foundUser.getContact().setAddress(consultantRequest.getAddress());

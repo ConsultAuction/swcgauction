@@ -2,10 +2,10 @@ package se.swcg.consultauction.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import se.swcg.consultauction.dto.UserDto;
-import se.swcg.consultauction.entity.ConsultantDetails;
-import se.swcg.consultauction.entity.User;
 import se.swcg.consultauction.model.CreateClientRequest;
+import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.model.UpdatePassword;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,12 +19,14 @@ public interface UserService extends UserDetailsService{
     List<UserDto> findAllConsultants();
     List<UserDto> findByLastActive(LocalDate lastActive);
     List<UserDto> findByActive(boolean active);
-    List<UserDto> findByAvailable(boolean available);
+    List<UserDto> findByAvailable();
 
-    UserDto createClient(CreateClientRequest createClientRequest);
-    UserDto createConsultant(CreateConsultantRequest createConsultantRequest);
+    UserDto createClient(CreateRequest createRequest);
+    UserDto createConsultant(CreateRequest createRequest);
 
     UserDto updateClient(String id, CreateClientRequest createClientRequest);
+    UserDto updatePassword(String id, UpdatePassword updatePassword);
+
     UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
 
     boolean delete(String id);

@@ -15,22 +15,23 @@ import se.swcg.consultauction.security.SecurityRoles;
 
 import java.util.*;
 
+import static se.swcg.consultauction.service.ServiceHelper.checkIfListIsEmpty;
+
 
 @Service
-@Transactional(readOnly = true)
 public class ProjectOfferServiceImpl implements ProjectOfferService {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
-    ProjectService projectService;
+    private ProjectService projectService;
 
     @Autowired
-    ProjectOfferRepository repository;
+    private ProjectOfferRepository repository;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
 
     @Override
@@ -45,62 +46,57 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
     }
 
     @Override
-    public List<ProjectOfferDto> findByAcceptedByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
-
-        List<ProjectOfferDto> arg = new ArrayList<>();
-
-        for (ProjectOfferDto p: tmp){
-          if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isAccepted() ){
-              arg.add(p);
-          }
-        }
-
-        return arg;
+    public List<ProjectOfferDto> findByConsultantId(String consultantId) {
+        return checkIfListIsEmpty(
+                converter.projectOfferToDto(
+                        repository.findAllByConsultantId(consultantId)),
+                "Could not find any project offers");
     }
 
     @Override
-    public List<ProjectOfferDto> findByRejectByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
-
-        List<ProjectOfferDto> arg = new ArrayList<>();
-
-        for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isRejected() ){
-                arg.add(p);
-            }
-        }
-
-        return arg;
+    public List<ProjectOfferDto> findByClientId(String clientId) {
+        return checkIfListIsEmpty(
+            converter.projectOfferToDto(
+                    repository.findAllByClientId(clientId)),
+            "Could not find any project offers");
     }
 
-    @Override
-    public List<ProjectOfferDto> findBySelectedByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
+    public ProjectOfferDto setAccepted(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
 
-        List<ProjectOfferDto> arg = new ArrayList<>();
+        foundOffer.setAccepted(true);
 
-        for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getConsultant().getUserId()) && p.isSelected() ){
-                arg.add(p);
-            }
-        }
-
-        return arg;
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
     }
+
+    public ProjectOfferDto setRejected(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
+
+        foundOffer.setRejected(true);
+
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
+    }
+
+    public ProjectOfferDto setSelected(String offerId) {
+        ProjectOffer foundOffer = converter.dtoToProjectOffer(findById(offerId));
+
+        foundOffer.setSelected(true);
+
+        return converter.projectOfferToDto(
+                repository.save(foundOffer));
+    }
+
+
 
     @Override
     public ProjectOfferDto createProjectOffer(CreateProjectOfferRequest projectOfferRequest) {
 
-        User foundUser = converter.dtoToUser(userService.findById(projectOfferRequest.getConsultantId()));
         Project foundProject = converter.dtoToProject(projectService.findById(projectOfferRequest.getProjectId()));
 
-        if (!foundUser.getRole().equals(SecurityRoles.CONSULTANT.name())) {
-            throw new IllegalArgumentException("The user does not have role consultant");
-        }
-
         ProjectOffer newProjectOffer = new ProjectOffer(
-                foundUser,
+                projectOfferRequest.getConsultantId(),
                 false,
                 false,
                 projectOfferRequest.getStartTime(),
@@ -120,11 +116,19 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
                 foundProject.getUser().getUserId()
         );
 
+        System.out.println(newProjectOffer.toString());
+
         return converter.projectOfferToDto(repository.save(newProjectOffer));
     }
 
     @Override
     public ProjectOfferDto updateProjectOffer(String ProjectOfferId, CreateProjectOfferRequest projectOfferRequest) {
         return null;
+    }
+
+    @Override
+    public void deleteAllSelectedWithFalse() {
+        List<ProjectOffer> foundOffers = repository.findAllBySelected(false);
+        repository.deleteAll(foundOffers);
     }
 }

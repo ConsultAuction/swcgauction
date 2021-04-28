@@ -12,6 +12,7 @@ import {
 const authReducer = (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
+
     case LOGIN_SUCCESS:
       localStorage.setItem('userid', action.payload);
 
@@ -35,7 +36,6 @@ const authReducer = (state, action) => {
       };
     case USER_LOADED:
       localStorage.setItem('user', action.payload);
-
       return {
         ...state,
         isAuthenticated: true,

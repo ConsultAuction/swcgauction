@@ -10,14 +10,13 @@ import se.swcg.consultauction.repository.SkillsRepository;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class SkillsServiceImpl implements SkillsService {
 
     @Autowired
-    SkillsRepository repository;
+    private SkillsRepository repository;
 
     @Autowired
-    DtoConversionService converter;
+    private DtoConversionService converter;
 
 
     @Override

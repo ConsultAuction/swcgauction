@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class DtoConversionServiceImpl implements DtoConversionService {
 
     /*
@@ -100,7 +99,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     public ProjectOffer dtoToProjectOffer(ProjectOfferDto dto) {
         return new ProjectOffer(
                 dto.getProjectOfferId(),
-                dto.getConsultant(),
+                dto.getConsultantId(),
                 dto.isAccepted(),
                 dto.isRejected(),
                 dto.getStartTime(),
@@ -125,7 +124,7 @@ public class DtoConversionServiceImpl implements DtoConversionService {
     public ProjectOfferDto projectOfferToDto(ProjectOffer projectOffer) {
         return new ProjectOfferDto(
                 projectOffer.getProjectOfferId(),
-                projectOffer.getConsultant(),
+                projectOffer.getConsultantId(),
                 projectOffer.isAccepted(),
                 projectOffer.isRejected(),
                 projectOffer.getStartTime(),
@@ -170,7 +169,21 @@ public class DtoConversionServiceImpl implements DtoConversionService {
 
     @Override
     public ProjectDto projectToDto(Project project) {
-        return null;
+        return new ProjectDto(
+                project.getProjectId(),
+                project.getProjectName(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getWorkLoad(),
+                project.getDescription(),
+                project.getLocated(),
+                project.isDistanceWork(),
+                project.isCompanyHardware(),
+                project.getContactName(),
+                project.getContactEmail(),
+                project.getContactPhoneNumber(),
+                project.getUser()
+        );
     }
 
     @Override
