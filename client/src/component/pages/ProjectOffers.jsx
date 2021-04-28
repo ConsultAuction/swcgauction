@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 const ProjectOffers = (props) => {
-  const [offers, setOffers] = useState([]);
+  const [offers, setOffers] = useState();
 
   useEffect(() => {
     axios
@@ -13,7 +13,6 @@ const ProjectOffers = (props) => {
       });
   }, []);
 
-  console.log(offers);
   return (
     <Fragment>
       {offers ? (

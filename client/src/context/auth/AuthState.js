@@ -39,9 +39,9 @@ const AuthState = (props) => {
           payload: res.data,
         });
 
-        if (res.data.role === 'CLIENT') {
+        if (!res.data.firstName && res.data.role === 'CLIENT') {
           goToPage('/clientUserProfile');
-        } else {
+        } else if (!res.data.firstName && res.data.role === 'CONSULTANT') {
           goToPage('/consultantUserProfile');
         }
       })

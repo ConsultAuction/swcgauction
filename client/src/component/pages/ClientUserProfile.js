@@ -1,13 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import EmptyProfile from '../layout/images/blank-profile-picture.png';
 import AuthContext from '../../context/auth/authContext';
+import axios from 'axios';
 
 const ClientUserProfile = () => {
   const authContext = useContext(AuthContext);
 
   const { user, isAuthenticated, loadUser } = authContext;
   const [newPassword, setNewPassword] = useState('');
-  const [newPasswordAgain, setNewPasswordAgain] = useState('');
+  const [newPasswordAgain, setNewPasswordAgain] = useState();
+  const [password, setPassword] = useState({
+    password: '',
+  });
 
   const [currentUser, setCurrentUser] = useState({
     companyName: user.companyName,
@@ -15,12 +19,11 @@ const ClientUserProfile = () => {
     lastName: user.lastName,
     email: user.email,
     role: user.role,
-    password: user.password,
     address: user.contact.address,
     zipCode: user.contact.zipCode,
     city: user.contact.city,
     country: user.contact.country,
-    phoneNr: user.contact.phoneNumber,
+    phoneNumber: user.contact.phoneNumber,
   });
 
   const {
@@ -29,12 +32,11 @@ const ClientUserProfile = () => {
     lastName,
     email,
     role,
-    password,
     address,
     zipCode,
     city,
     country,
-    phoneNr,
+    phoneNumber,
   } = currentUser;
 
   const onChange = (e) =>
@@ -50,6 +52,21 @@ const ClientUserProfile = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(e);
+    axios.put('/api/user/client/' + user.userId, currentUser).catch((error) => {
+      console.log(error);
+    });
+  };
+
+  const submitPassword = (e) => {
+    e.preventDefault();
+    if (newPassword === newPasswordAgain) {
+      setPassword({ ...password, password: newPassword });
+      axios
+        .put('/api/user/password/' + user.userId, password)
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -175,12 +192,12 @@ const ClientUserProfile = () => {
                     </div>
                   </div>
                   <div className='form-row'>
-                    <label htmlFor='phonenr'>Phone Number</label>
+                    <label htmlFor='phoneNumber'>Phone Number</label>
                     <input
                       className='form-control'
                       type='text'
-                      name='phoneNr'
-                      value={phoneNr ? phoneNr : ''}
+                      name='phoneNumber'
+                      value={phoneNumber ? phoneNumber : ''}
                       onChange={onChange}
                       required
                     />
@@ -193,7 +210,7 @@ const ClientUserProfile = () => {
                   />
                 </form>
               </div>
-              <form>
+              <form onSubmit={submitPassword}>
                 <div className='form-body mb-3 ml-3 mr-3'>
                   <div className='form-row'>
                     <div className='col'>
@@ -204,10 +221,11 @@ const ClientUserProfile = () => {
                         name='password'
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
+                        required
                       />
                     </div>
                     <div className='col'>
-                      <label htmlFor='password2'>New Password again</label>
+                      <label htmlFor='password2'>New Password Again</label>
                       <input
                         className='form-control'
                         type='password'
@@ -216,6 +234,7 @@ const ClientUserProfile = () => {
                         onChange={(e) => {
                           setNewPasswordAgain(e.target.value);
                         }}
+                        required
                       />
                     </div>
                   </div>

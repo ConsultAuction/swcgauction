@@ -34,7 +34,7 @@ const Navbar = () => {
             </Link>
           </li>
           <li className='nav-item ml-2'>
-            <Link className='btn btn-secondary' to='/createProject'>
+            <Link className='btn btn-secondary' to='/myOffers'>
               My offers
             </Link>
           </li>

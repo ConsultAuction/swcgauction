@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Fragment, useEffect, useState } from 'react';
 
 const ProjectOffer = (props) => {
-  const [offer, setOffer] = useState([]);
+  const [offer, setOffer] = useState();
 
   useEffect(() => {
     if (props.location.state) {

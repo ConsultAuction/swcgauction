@@ -54,48 +54,11 @@ public class ProjectOfferServiceImpl implements ProjectOfferService {
     }
 
     @Override
-    public List<ProjectOfferDto> findByAcceptedByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
-
-        List<ProjectOfferDto> arg = new ArrayList<>();
-
-        for (ProjectOfferDto p: tmp){
-          if (user.getUserId().equals(p.getConsultantId()) && p.isAccepted() ){
-              arg.add(p);
-          }
-        }
-
-        return arg;
-    }
-
-    @Override
-    public List<ProjectOfferDto> findByRejectByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
-
-        List<ProjectOfferDto> arg = new ArrayList<>();
-
-        for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getConsultantId()) && p.isRejected() ){
-                arg.add(p);
-            }
-        }
-
-        return arg;
-    }
-
-    @Override
-    public List<ProjectOfferDto> findBySelectedByUserId(UserDto user) {
-        List<ProjectOfferDto> tmp = findAll();
-
-        List<ProjectOfferDto> arg = new ArrayList<>();
-
-        for (ProjectOfferDto p: tmp){
-            if (user.getUserId().equals(p.getConsultantId()) && p.isSelected() ){
-                arg.add(p);
-            }
-        }
-
-        return arg;
+    public List<ProjectOfferDto> findByClientId(String clientId) {
+        return checkIfListIsEmpty(
+            converter.projectOfferToDto(
+                    repository.findAllByClientId(clientId)),
+            "Could not find any project offers");
     }
 
     public ProjectOfferDto setAccepted(String offerId) {

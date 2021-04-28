@@ -15,5 +15,6 @@ public interface ProjectOfferRepository extends CrudRepository<ProjectOffer, Str
 
             List<ProjectOffer> findAll();
             List<ProjectOffer> findAllByConsultantId(String consultantId);
+            List<ProjectOffer> findAllByClientId(String clientId);
             List<ProjectOffer> findAllBySelected(boolean selected);
 }

@@ -14,6 +14,7 @@ import se.swcg.consultauction.exception.ResourceNotFoundException;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.model.UpdatePassword;
 import se.swcg.consultauction.repository.UserRepository;
 import se.swcg.consultauction.security.SecurityConstants;
 import se.swcg.consultauction.security.SecurityRoles;
@@ -172,7 +173,6 @@ public class UserServiceImpl implements UserService {
         foundUser.setFirstName(createClientRequest.getFirstName());
         foundUser.setLastName(createClientRequest.getLastName());
         foundUser.setEmail(createClientRequest.getEmail());
-        foundUser.setPassword(passwordEncoder.encode(createClientRequest.getPassword()));
         foundUser.setImage(createClientRequest.getImage());
 
         foundUser.getContact().setAddress(createClientRequest.getAddress());
@@ -185,6 +185,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDto updatePassword(String id, UpdatePassword updatePassword) {
+        User foundUser = converter.dtoToUser(findById(id));
+
+        foundUser.setPassword(passwordEncoder.encode(updatePassword.getPassword()));
+
+        return converter.userToDto(
+                userRepo.save(foundUser)
+        );
+    }
+
+    @Override
     public UserDto updateConsultant(String id, CreateConsultantRequest consultantRequest) {
 
         User foundUser = converter.dtoToUser(findById(id));
@@ -193,7 +204,6 @@ public class UserServiceImpl implements UserService {
 
         foundUser.setLastName(consultantRequest.getLastName());
         foundUser.setEmail(consultantRequest.getEmail());
-        foundUser.setPassword(passwordEncoder.encode(consultantRequest.getPassword()));
         foundUser.setImage(consultantRequest.getImage());
 
         foundUser.getContact().setAddress(consultantRequest.getAddress());

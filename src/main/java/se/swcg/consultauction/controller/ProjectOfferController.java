@@ -35,19 +35,9 @@ public class ProjectOfferController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    /*@GetMapping("/accepted/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findByAcceptedByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findByAcceptedByUserId(user));
-    }
-
-    @GetMapping("/rejected/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findByRejectByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findByRejectByUserId(user));
-    }*/
-
-    @GetMapping("/selected/{user}")
-    public ResponseEntity<List<ProjectOfferDto>> findBySelectedByUserId(@PathVariable UserDto user){
-        return ResponseEntity.ok(service.findBySelectedByUserId(user));
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<ProjectOfferDto>> findByClientId(@PathVariable String clientId){
+        return ResponseEntity.ok(service.findByClientId(clientId));
     }
 
     @GetMapping("/user/{consultantId}")

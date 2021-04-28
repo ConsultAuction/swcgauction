@@ -5,6 +5,7 @@ import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.model.UpdatePassword;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,8 @@ public interface UserService extends UserDetailsService{
     UserDto createConsultant(CreateRequest createRequest);
 
     UserDto updateClient(String id, CreateClientRequest createClientRequest);
+    UserDto updatePassword(String id, UpdatePassword updatePassword);
+
     UserDto updateConsultant(String id, CreateConsultantRequest createConsultantRequest);
 
     boolean delete(String id);

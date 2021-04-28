@@ -21,6 +21,7 @@ import Projects from './component/pages/Projects';
 import ProjectOffers from './component/pages/ProjectOffers';
 import ProjectOffer from './component/pages/ProjectOffer';
 import ProfileState from './context/profile/ProfileState';
+import MyOffers from './component/pages/MyOffers';
 
 const App = () => {
   return (
@@ -72,6 +73,7 @@ const App = () => {
                   path='/consultantUserProfile'
                   component={ConsultantUserProfile}
                 />
+                <PrivateRoute exact path='/myOffers' component={MyOffers} />
               </Switch>
             </AuctionState>
           </CountdownState>

@@ -9,6 +9,7 @@ import se.swcg.consultauction.dto.UserDto;
 import se.swcg.consultauction.model.CreateClientRequest;
 import se.swcg.consultauction.model.CreateRequest;
 import se.swcg.consultauction.model.CreateConsultantRequest;
+import se.swcg.consultauction.model.UpdatePassword;
 import se.swcg.consultauction.service.UserService;
 
 import javax.validation.Valid;
@@ -74,6 +75,14 @@ public class UserController {
         //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
 
         return ResponseEntity.ok(service.updateClient(id, createClientRequest));
+    }
+
+    @PutMapping("/password/{id}")
+    @PreAuthorize("hasAuthority('client:write')")
+    public ResponseEntity<UserDto> updateClient(@PathVariable String id, @Valid @RequestBody UpdatePassword updatePassword) {
+        //if (!updatedDto.getUserId().equals(id)) throw new IllegalArgumentException("Id does not match.");
+
+        return ResponseEntity.ok(service.updatePassword(id, updatePassword));
     }
 
     @PostMapping("/consultant")
