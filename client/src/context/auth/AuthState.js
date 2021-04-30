@@ -27,6 +27,8 @@ const AuthState = (props) => {
     history.push(path);
   };
 
+  //Context for dealing with actions related to authenticating users, registering new users, loading users
+
   // Load User
   const loadUser = async () => {
     await axios

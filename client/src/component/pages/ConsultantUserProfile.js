@@ -108,6 +108,8 @@ const ConsultantUserProfile = () => {
     }
   }, [loadUser, isAuthenticated]);
 
+  //User profile for users with the CONSULTANT role
+
   return (
     <div className='container'>
       <div className='form-body'>

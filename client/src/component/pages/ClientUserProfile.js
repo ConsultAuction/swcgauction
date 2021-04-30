@@ -52,6 +52,8 @@ const ClientUserProfile = () => {
     console.log(e);
   };
 
+  //User profile for users with the CLIENT role
+
   return (
     <div className='container'>
       <div className='main-body mt-2'>

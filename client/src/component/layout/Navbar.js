@@ -14,6 +14,8 @@ const Navbar = () => {
 
   useEffect(() => {}, [user]);
 
+  //Basic Navbar that provides links depending on if the user is logged in and what kind of roles the user has
+
   const roleLinks = (
     <Fragment>
       {user !== null && user.role === 'CLIENT' ? (
