@@ -6,12 +6,11 @@ import se.swcg.consultauction.entity.Skills;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 import java.util.Set;
 
 public class CreateConsultantRequest {
 
-
+    //Model för att uppdatera consultant user
 
     private String firstName;
     private String lastName;
@@ -21,11 +20,6 @@ public class CreateConsultantRequest {
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
-
-    /*@NotBlank
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,32}$",
-            message = "At least one digit, one lower case, one upper case, one special character(!@#$%^&+=)")
-    private String password;*/
 
     private String image;
 

@@ -16,6 +16,8 @@ public class InitializingAuctionDateTime implements InitializingBean {
     @Autowired
     private AuctionServiceImpl auctionService;
 
+    //kollar om det finns sparat datum i databasen och ifall dom datumen har passerat.
+     //ifall dom har passerat skapas nya datum för kommande vecka
     @Override
     public void afterPropertiesSet() throws Exception {
 

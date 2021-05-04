@@ -34,9 +34,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         this.service = service;
     }
 
+
+    //Metod som testar att logga in
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
+            //Använder sig av UserLoginRequest från model
             UserLoginRequest loginRequest = new ObjectMapper()
                     .readValue(request.getInputStream(), UserLoginRequest.class);
 
@@ -53,6 +56,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
     }
 
+
+    //Skickar med userid från den user som loggar in,
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
@@ -66,6 +71,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         super.successfulAuthentication(request, response, chain, authResult);
     }
 
+    // Metod för att skriva eget meddelande när inloggning inte lyckas
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
         logger.debug("failed authentication while attempting to access "
@@ -77,41 +83,4 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         super.unsuccessfulAuthentication(request, response, failed);
     }
-
-    /*@Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-                                            Authentication authResult) throws IOException, ServletException {
-        SecurityContextHolder.getContext().setAuthentication(authResult);
-
-        chain.doFilter(request, response);
-    }
-
-    /*@Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                              AuthenticationException failed) throws IOException, ServletException {
-        logger.debug("failed authentication while attempting to access "
-                + urlPathHelper.getPathWithinApplication((HttpServletRequest) request));
-
-        //Add more descriptive message
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                "Authentication Failed");
-    }*/
-
-   /* @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-
-        String userName = (authResult.getName());
-        //String tokenSecret =  new SecurityConstants().getTokenSecret();
-
-        *//*String token = Jwts.builder()
-                .setSubject(userName)
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SecurityConstants.TOKEN_SECRET)
-                .compact();*//*
-
-        UserDto userDto = service.findByEmail(userName);
-
-        //response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-        response.addHeader("UserId", userDto.getUserId());
-    }*/
 }

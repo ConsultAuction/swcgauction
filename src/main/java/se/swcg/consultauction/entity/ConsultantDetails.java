@@ -23,12 +23,15 @@ public class ConsultantDetails {
     private boolean availableForHire;
     private int minPrice;
 
+    //Lista med tidigare jobb/erfarenheter
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<Experience> experience;
 
+    //Lista med programerings språk som kommer från redan populerad programingLanguages
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<Languages> language;
 
+    //Lista med vilken typ av jobb(web developer, systemutvecklare...)
     @OneToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<Skills> skills;
 

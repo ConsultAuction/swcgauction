@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 public class CreateProjectOfferRequest {
 
+    //Model för att skapa ny project offer
+
     @NotBlank(message = "please enter user id.")
     private String consultantId;
 
@@ -13,6 +15,7 @@ public class CreateProjectOfferRequest {
     private String projectId;
 
     private LocalDate startTime;
+
 
     private double bids;
 

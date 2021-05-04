@@ -5,6 +5,8 @@ import javax.validation.constraints.Pattern;
 
 public class CreateClientRequest {
 
+    //Model för att Updatera client user
+
     @NotBlank
     private String companyName;
 
@@ -16,11 +18,6 @@ public class CreateClientRequest {
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
             +"(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
     private String email;
-
-   /* @NotBlank
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{8,32}$",
-            message = "At least one digit, one lower case, one upper case, one special character(!@#$%^&+=)")
-    private String password;*/
 
     private String image;
 

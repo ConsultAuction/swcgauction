@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.objectMapper = objectMapper;
     }
 
+    //Sätter vilken lösenords kryptering som ska användas
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
@@ -65,7 +66,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(restAuthEntryPoint)
                 .and()
                     .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                    //.addFilterBefore(getAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .logout()
                     .logoutUrl("/api/user/logout")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/api/user/logout", "GET"))
@@ -86,11 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
         return authenticationFilter;
     }
-    /*public AuthenticationFilter getAuthenticationFilter() throws Exception {
-        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager(), userService);
-        filter.setFilterProcessesUrl("/api/user/login");
-        return filter;
-    }*/
 
     private void loginSuccessHandler(
             HttpServletRequest request,
@@ -98,8 +93,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             Authentication authentication) throws IOException {
 
         response.setStatus(HttpStatus.OK.value());
-
-        objectMapper.writeValue(response.getWriter(), "Yayy you logged in!");
     }
 
     private void loginFailureHandler(
@@ -108,7 +101,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             AuthenticationException e) throws IOException {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        objectMapper.writeValue(response.getWriter(), "Nopity nop!");
     }
 
     private void logoutSuccessHandler(
@@ -117,6 +109,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             Authentication authentication) throws IOException {
 
         response.setStatus(HttpStatus.OK.value());
-        objectMapper.writeValue(response.getWriter(), "Bye!");
     }
 }

@@ -13,12 +13,10 @@ public class AuctionScheduler {
     @Autowired
     AuctionServiceImpl auctionService;
 
+    //Körs varje fredag klockan 17
+    //Tar bort alla offers som inte är selected = true, skapar nya datum för nästa vecka
     @Scheduled(cron = "0 0 17 ? * FRI", zone="Europe/Stockholm")
     public void newDateTimeTask() {
-        System.out.println("doThing");
-        System.out.println("doThing");
-        System.out.println("doThing");
-        System.out.println(LocalDateTime.now().toString());
         auctionService.deleteAllOffersWithSelectedFalse();
         auctionService.createNextAuctionDateTime(LocalDateTime.now());
     }

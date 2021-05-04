@@ -25,16 +25,14 @@ public class ProjectController {
         this.service = service;
     }
 
+    //Hantering av project
+
     @GetMapping
+    //PreAuthorize tillåter bara användeare med rollen admin att använda
     @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<List<ProjectDto>> findAllProjects(){
         return ResponseEntity.ok(service.findAll());
     }
-
-    /*@GetMapping("/{email}")
-    public ResponseEntity<List<ProjectDto>> findAllByContactEmail(@PathVariable String email) {
-        return ResponseEntity.ok(service.findAllByContactEmail(email));
-    }*/
 
     @GetMapping("/{clientId}")
     public ResponseEntity<ProjectDto> findByClientId(@PathVariable String clientId){

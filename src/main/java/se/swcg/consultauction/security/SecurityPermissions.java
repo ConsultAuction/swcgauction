@@ -1,5 +1,6 @@
 package se.swcg.consultauction.security;
 
+//Sätter dom olika behörigheterna som används sen i SecurityRoles
 public enum SecurityPermissions {
     USER_READ("user:read"),
     USER_WRITE("user:write"),

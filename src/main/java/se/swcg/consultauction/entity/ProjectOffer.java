@@ -23,6 +23,7 @@ public class ProjectOffer {
 
     private boolean accepted;
     private boolean rejected;
+
     private LocalDate startTime;
     private boolean selected;
 

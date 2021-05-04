@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+//Visar var user information finns som används vid inlogg.
 public class SecurityUser implements UserDetails {
 
     private final User user;

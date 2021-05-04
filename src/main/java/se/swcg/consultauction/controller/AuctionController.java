@@ -17,6 +17,7 @@ public class AuctionController {
     @Autowired
     private AuctionService auctionService;
 
+    //Retunerar AuctionDateTime
     @GetMapping
     public ResponseEntity<AuctionDateTime> getDateTime() {
         return ResponseEntity.ok(auctionService.getDateTime());

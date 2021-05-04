@@ -17,6 +17,8 @@ public class ProgrammingLanguagesController {
     @Autowired
     ProgrammingLanguagesService programmingLanguagesService;
 
+    // Controller för hantering av programming languages (tänkt att vara en populerad databas med programerings språk)
+
     @GetMapping
     public ResponseEntity<List<ProgrammingLanguagesDto>> findAll() {
         return ResponseEntity.ok(programmingLanguagesService.findAll());

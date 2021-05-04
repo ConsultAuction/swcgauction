@@ -7,6 +7,8 @@ import java.time.LocalDate;
 
 public class CreateProjectRequest {
 
+    //Model för att skapa nytt project
+
     @NotBlank(message = "Please enter project name.")
     private String projectName;
 

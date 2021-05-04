@@ -6,6 +6,7 @@ import java.util.Set;
 
 import static se.swcg.consultauction.security.SecurityPermissions.*;
 
+// Sätter dom olika rollerna och vilka behörighter dom har
 public enum SecurityRoles {
     //USER(Sets.newHashSet(USER_READ, USER_WRITE)),
     CLIENT(Sets.newHashSet(USER_READ, USER_WRITE, CLIENT_READ, CLIENT_WRITE)),

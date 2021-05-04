@@ -5,6 +5,8 @@ import javax.validation.constraints.Pattern;
 
 public class CreateRequest {
 
+    //Model för att skapa ny user med bara email och password
+
     @NotBlank
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             +"[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"
